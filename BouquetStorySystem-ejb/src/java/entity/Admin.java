@@ -7,6 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +25,22 @@ public class Admin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
+    @Column(nullable = false, length = 32)
+    @NotNull
+    @Size(max = 32)
+    private String firstName;
+    @Column(nullable = false, length = 32)
+    @NotNull
+    @Size(max = 32)
+    private String lastName;
+    @Column(nullable = false, unique = true, length = 32)
+    @NotNull
+    @Size(min = 4, max = 32)
+    private String username;
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    @NotNull
+    private String password;
+     
 
     public Long getAdminId() {
         return adminId;
@@ -29,6 +48,38 @@ public class Admin implements Serializable {
 
     public void setAdminId(Long adminId) {
         this.adminId = adminId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
