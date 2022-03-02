@@ -6,26 +6,27 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
 import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import util.security.CryptographicHelper;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import util.security.CryptographicHelper;
 
 /**
  *
  * @author msipc
  */
 @Entity
-public class Admin implements Serializable {
+public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminId;
+    private Long customerId;
     @Column(nullable = false, length = 32)
     @NotNull
     @Size(max = 32)
@@ -34,40 +35,41 @@ public class Admin implements Serializable {
     @NotNull
     @Size(max = 32)
     private String lastName;
-    @Column(nullable = false, unique = true, length = 32)
+    @Column(nullable = false, unique = true, length = 64)
     @NotNull
-    @Size(min = 4, max = 32)
-    private String username;
+    @Size(max = 64)
+    @Email
+    private String email;
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String password;
-    // for password encryption
     // ask prof if we need to include this in UML diagram
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
-     
 
-    public Long getAdminId() {
-        return adminId;
+    public Customer() {
     }
 
-    public Admin() {
-        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-    }
-
-    public Admin(String firstName, String lastName, String username, String password) {
+    public Customer(String firstName, String lastName, String email, String password) {
         
         this();
         
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
+        this.email = email;
         
         setPassword(password);
     }
 
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
+    
+    
+    
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {
@@ -86,12 +88,12 @@ public class Admin implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -99,7 +101,6 @@ public class Admin implements Serializable {
     }
 
     public void setPassword(String password) {
-        
         if(password != null) 
         {
             this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
@@ -113,18 +114,18 @@ public class Admin implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (adminId != null ? adminId.hashCode() : 0);
+        hash += (customerId != null ? customerId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Admin)) {
+        if (!(object instanceof Customer)) {
             return false;
         }
-        Admin other = (Admin) object;
-        if ((this.adminId == null && other.adminId != null) || (this.adminId != null && !this.adminId.equals(other.adminId))) {
+        Customer other = (Customer) object;
+        if ((this.customerId == null && other.customerId != null) || (this.customerId != null && !this.customerId.equals(other.customerId))) {
             return false;
         }
         return true;
@@ -132,7 +133,7 @@ public class Admin implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Admin[ id=" + adminId + " ]";
+        return "entity.Customer[ id=" + customerId + " ]";
     }
     
 }
