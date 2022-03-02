@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import util.security.CryptographicHelper;
 import javax.persistence.Id;
 
 /**
@@ -40,10 +41,29 @@ public class Admin implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String password;
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    // for password encryption
+    // ask prof if we need to include this in UML diagram
+    private String salt; 
      
 
     public Long getAdminId() {
         return adminId;
+    }
+
+    public Admin() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+    }
+
+    public Admin(String firstName, String lastName, String username, String password) {
+        
+        this();
+        
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        
+        setPassword(password);
     }
 
     public void setAdminId(Long adminId) {
@@ -79,7 +99,15 @@ public class Admin implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        
+        if(password != null) 
+        {
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        }
+        else
+        {
+            this.password = null;
+        }
     }
 
     @Override
