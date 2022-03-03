@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,6 +39,8 @@ public class Flower implements Serializable {
     @NotNull
     @Size(max = 64)
     private String name;
+    @Column(nullable = false)
+    @NotNull
     private String imgAddress;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -53,6 +58,11 @@ public class Flower implements Serializable {
     @NotNull
     @Min(0)
     private Integer reorderQuantity;
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+    private BigDecimal unitPrice;   
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;

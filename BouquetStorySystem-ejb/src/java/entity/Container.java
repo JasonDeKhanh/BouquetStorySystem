@@ -23,12 +23,12 @@ import javax.validation.constraints.Size;
  * @author msipc
  */
 @Entity
-public class AddOn implements Serializable {
+public class Container implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long addOnId;
+    private Long containerId;
     @Column(nullable = false, length = 64)
     @NotNull
     @Size(max = 64)
@@ -38,7 +38,7 @@ public class AddOn implements Serializable {
     private String imgAddress;
     @Column(length = 128)
     @Size(max = 128)
-    private String description; // if we want longer descriptions, how??
+    private String description;
     @Column(nullable = false)
     @NotNull
     @Min(0)
@@ -51,15 +51,19 @@ public class AddOn implements Serializable {
     @NotNull
     @DecimalMin("0.00")
     @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
-    private BigDecimal unitPrice;
+    private BigDecimal unitPrice;   
+    @Column(nullable = false)
+    @NotNull
+    @Min(0)
+    private Integer flowerLimit;
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
 
-    public AddOn() {
+    public Container() {
     }
 
-    public AddOn(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Boolean isOnDisplay) {
+    public Container(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer flowerLimit, Boolean isOnDisplay) {
         
         this();
         
@@ -69,17 +73,20 @@ public class AddOn implements Serializable {
         this.quantityOnHand = quantityOnHand;
         this.reorderQuantity = reorderQuantity;
         this.unitPrice = unitPrice;
+        this.flowerLimit = flowerLimit;
         this.isOnDisplay = isOnDisplay;
     }
 
     
     
-    public Long getAddOnId() {
-        return addOnId;
+    
+    
+    public Long getContainerId() {
+        return containerId;
     }
 
-    public void setAddOnId(Long addOnId) {
-        this.addOnId = addOnId;
+    public void setContainerId(Long containerId) {
+        this.containerId = containerId;
     }
 
     public String getName() {
@@ -130,29 +137,37 @@ public class AddOn implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public boolean isIsOnDisplay() {
+    public Integer getFlowerLimit() {
+        return flowerLimit;
+    }
+
+    public void setFlowerLimit(Integer flowerLimit) {
+        this.flowerLimit = flowerLimit;
+    }
+
+    public Boolean getIsOnDisplay() {
         return isOnDisplay;
     }
 
-    public void setIsOnDisplay(boolean isOnDisplay) {
+    public void setIsOnDisplay(Boolean isOnDisplay) {
         this.isOnDisplay = isOnDisplay;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (addOnId != null ? addOnId.hashCode() : 0);
+        hash += (containerId != null ? containerId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AddOn)) {
+        if (!(object instanceof Container)) {
             return false;
         }
-        AddOn other = (AddOn) object;
-        if ((this.addOnId == null && other.addOnId != null) || (this.addOnId != null && !this.addOnId.equals(other.addOnId))) {
+        Container other = (Container) object;
+        if ((this.containerId == null && other.containerId != null) || (this.containerId != null && !this.containerId.equals(other.containerId))) {
             return false;
         }
         return true;
@@ -160,7 +175,7 @@ public class AddOn implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.AddOn[ id=" + addOnId + " ]";
+        return "entity.Container[ id=" + containerId + " ]";
     }
     
 }
