@@ -62,9 +62,13 @@ public class Decoration implements Serializable {
     private Boolean isOnDisplay;
 
     public Decoration() {
+        this.isOnDisplay = false;
     }
 
     public Decoration(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Boolean isOnDisplay) {
+        
+        this();
+        
         this.name = name;
         this.imgAddress = imgAddress;
         this.description = description;

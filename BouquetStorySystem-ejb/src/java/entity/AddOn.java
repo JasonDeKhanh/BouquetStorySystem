@@ -57,6 +57,7 @@ public class AddOn implements Serializable {
     private Boolean isOnDisplay;
 
     public AddOn() {
+        this.isOnDisplay = false;
     }
 
     public AddOn(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Boolean isOnDisplay) {

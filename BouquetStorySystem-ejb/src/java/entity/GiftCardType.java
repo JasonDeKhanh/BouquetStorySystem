@@ -62,6 +62,7 @@ public class GiftCardType implements Serializable {
 
 
     public GiftCardType() {
+        this.isOnDisplay = false;
     }
 
     public GiftCardType(String name, String imgAddress, String sizeDimensions, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Boolean isOnDisplay) {

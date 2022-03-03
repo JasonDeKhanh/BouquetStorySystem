@@ -71,6 +71,7 @@ public class Flower implements Serializable {
     
     public Flower() {
         this.occasions = new ArrayList<Occasion>();
+        this.isOnDisplay = false;
     }
 
     public Flower(String name, String imgAddress, FlowerColorEnum flowerColor, List<Occasion> occasions, String description, Integer quantityOnHand, Integer reorderQuantity, Boolean isOnDisplay) {

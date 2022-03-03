@@ -61,9 +61,11 @@ public class Container implements Serializable {
     private Boolean isOnDisplay;
 
     public Container() {
+        this.isOnDisplay = false;
+        
     }
 
-    public Container(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer flowerLimit, Boolean isOnDisplay) {
+    public Container(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer flowerLimit) {
         
         this();
         
@@ -74,7 +76,6 @@ public class Container implements Serializable {
         this.reorderQuantity = reorderQuantity;
         this.unitPrice = unitPrice;
         this.flowerLimit = flowerLimit;
-        this.isOnDisplay = isOnDisplay;
     }
 
     
