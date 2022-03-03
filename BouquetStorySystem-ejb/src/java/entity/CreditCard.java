@@ -24,6 +24,7 @@ public class CreditCard implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long creditCardId;
     // Bean Validation for this!!
+    // also how to encrypt
     private String ccNum;
     private String ccHolderName;
     private String ccExpiryMonth;
