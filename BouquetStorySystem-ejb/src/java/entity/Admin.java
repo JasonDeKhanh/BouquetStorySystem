@@ -46,7 +46,7 @@ public class Admin implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
      
-
+//testing
     public Long getAdminId() {
         return adminId;
     }
