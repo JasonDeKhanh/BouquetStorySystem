@@ -19,25 +19,26 @@ import javax.validation.constraints.Size;
  * @author msipc
  */
 @Entity
-public class GiftCard implements Serializable {
+public class GiftCard extends Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long giftCardId;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long giftCardId;
     @Column(length = 256)
     @Size(max = 256)
     private String message;
-    @Column(nullable = false)
-    @NotNull
-    private String photoImgAddress;
+    private String photoImgAddress; // can be null if user doesn't want to upload a photo
+    // also, drag and drop position of photo???? how to do? Confirm can but might need to save extra attributes
 
     
     
     public GiftCard() {
+        super();
     }
 
     public GiftCard(String message, String photoImgAddress) {
+        super();
         this.message = message;
         this.photoImgAddress = photoImgAddress;
     }
@@ -45,13 +46,13 @@ public class GiftCard implements Serializable {
     
     
     
-    public Long getGiftCardId() {
-        return giftCardId;
-    }
-
-    public void setGiftCardId(Long giftCardId) {
-        this.giftCardId = giftCardId;
-    }
+//    public Long getGiftCardId() {
+//        return giftCardId;
+//    }
+//
+//    public void setGiftCardId(Long giftCardId) {
+//        this.giftCardId = giftCardId;
+//    }
 
     public String getMessage() {
         return message;
@@ -72,7 +73,7 @@ public class GiftCard implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (giftCardId != null ? giftCardId.hashCode() : 0);
+        hash += (productId != null ? productId.hashCode() : 0);
         return hash;
     }
 
@@ -83,7 +84,7 @@ public class GiftCard implements Serializable {
             return false;
         }
         GiftCard other = (GiftCard) object;
-        if ((this.giftCardId == null && other.giftCardId != null) || (this.giftCardId != null && !this.giftCardId.equals(other.giftCardId))) {
+        if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
             return false;
         }
         return true;
@@ -91,7 +92,7 @@ public class GiftCard implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.GiftCard[ id=" + giftCardId + " ]";
+        return "entity.GiftCard[ id=" + productId + " ]";
     }
     
 }

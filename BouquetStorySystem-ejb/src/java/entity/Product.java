@@ -6,62 +6,38 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author msipc
  */
 @Entity
-//@Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Bouquet extends Product implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    protected Long bouquetId;
-    @Column(nullable = false, length = 32)
-    @NotNull
-    @Size(min = 1, max = 32)
-    private String creatorName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long productId;
 
-    public Bouquet() {
-        super();
+    public Long getProductId() {
+        return productId;
     }
 
-    public Bouquet(String creatorName) {
-        
-        super();
-        
-        this.creatorName = creatorName;
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Product() {
     }
     
     
-    
-
-//    public Long getBouquetId() {
-//        return bouquetId;
-//    }
-//
-//    public void setBouquetId(Long bouquetId) {
-//        this.bouquetId = bouquetId;
-//    }
-
-    public String getCreatorName() {
-        return creatorName;
-    }
-
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
-    }
 
     @Override
     public int hashCode() {
@@ -73,10 +49,10 @@ public abstract class Bouquet extends Product implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bouquet)) {
+        if (!(object instanceof Product)) {
             return false;
         }
-        Bouquet other = (Bouquet) object;
+        Product other = (Product) object;
         if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
             return false;
         }
@@ -85,7 +61,7 @@ public abstract class Bouquet extends Product implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Bouquet[ id=" + productId + " ]";
+        return "entity.Product[ id=" + productId + " ]";
     }
     
 }

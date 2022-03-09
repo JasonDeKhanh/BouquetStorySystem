@@ -106,7 +106,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (bouquetId != null ? bouquetId.hashCode() : 0);
+        hash += (productId != null ? productId.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +117,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
             return false;
         }
         PremadeBouquet other = (PremadeBouquet) object;
-        if ((this.bouquetId == null && other.bouquetId != null) || (this.bouquetId != null && !this.bouquetId.equals(other.bouquetId))) {
+        if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
             return false;
         }
         return true;
@@ -125,7 +125,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PremadeBouquet[ id=" + bouquetId + " ]";
+        return "entity.PremadeBouquet[ id=" + productId + " ]";
     }
     
 }

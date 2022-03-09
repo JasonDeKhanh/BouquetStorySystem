@@ -23,12 +23,12 @@ import javax.validation.constraints.Size;
  * @author msipc
  */
 @Entity
-public class AddOn implements Serializable {
+public class AddOn extends Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long addOnId;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long addOnId;
     @Column(nullable = false, length = 64)
     @NotNull
     @Size(max = 64)
@@ -57,12 +57,13 @@ public class AddOn implements Serializable {
     private Boolean isOnDisplay;
 
     public AddOn() {
+        super();
         this.isOnDisplay = false;
     }
 
     public AddOn(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Boolean isOnDisplay) {
         
-        this();
+        super();
         
         this.name = name;
         this.imgAddress = imgAddress;
@@ -75,13 +76,13 @@ public class AddOn implements Serializable {
 
     
     
-    public Long getAddOnId() {
-        return addOnId;
-    }
-
-    public void setAddOnId(Long addOnId) {
-        this.addOnId = addOnId;
-    }
+//    public Long getAddOnId() {
+//        return addOnId;
+//    }
+//
+//    public void setAddOnId(Long addOnId) {
+//        this.addOnId = addOnId;
+//    }
 
     public String getName() {
         return name;
@@ -142,7 +143,7 @@ public class AddOn implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (addOnId != null ? addOnId.hashCode() : 0);
+        hash += (productId != null ? productId.hashCode() : 0);
         return hash;
     }
 
@@ -153,7 +154,7 @@ public class AddOn implements Serializable {
             return false;
         }
         AddOn other = (AddOn) object;
-        if ((this.addOnId == null && other.addOnId != null) || (this.addOnId != null && !this.addOnId.equals(other.addOnId))) {
+        if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
             return false;
         }
         return true;
@@ -161,7 +162,7 @@ public class AddOn implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.AddOn[ id=" + addOnId + " ]";
+        return "entity.AddOn[ id=" + productId + " ]";
     }
     
 }
