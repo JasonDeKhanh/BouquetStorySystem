@@ -48,7 +48,7 @@ public class Flower implements Serializable {
     @Column(nullable = false)
     @NotNull
     private FlowerColorEnum flowerColor;
-    private List<Occasion> occasions; // bean validation?
+//    private List<Occasion> occasions; // bean validation?
     @Column(length = 128)
     @Size(max = 128)
     private String description;
@@ -75,18 +75,18 @@ public class Flower implements Serializable {
     
     
     public Flower() {
-        this.occasions = new ArrayList<Occasion>();
+//        this.occasions = new ArrayList<Occasion>();
         this.isOnDisplay = false;
     }
 
-    public Flower(String name, String imgAddress, FlowerColorEnum flowerColor, List<Occasion> occasions, String description, Integer quantityOnHand, Integer reorderQuantity,BigDecimal unitPrice, Boolean isOnDisplay) {
+    public Flower(String name, String imgAddress, FlowerColorEnum flowerColor, String description, Integer quantityOnHand, Integer reorderQuantity,BigDecimal unitPrice, Boolean isOnDisplay) {
         
         this();
         
         this.name = name;
         this.imgAddress = imgAddress;
         this.flowerColor = flowerColor;
-        this.occasions = occasions;
+//        this.occasions = occasions;
         this.description = description;
         this.quantityOnHand = quantityOnHand;
         this.reorderQuantity = reorderQuantity;
@@ -129,13 +129,13 @@ public class Flower implements Serializable {
         this.flowerColor = flowerColor;
     }
 
-    public List<Occasion> getOccasions() {
-        return occasions;
-    }
-
-    public void setOccasions(List<Occasion> occasions) {
-        this.occasions = occasions;
-    }
+//    public List<Occasion> getOccasions() {
+//        return occasions;
+//    }
+//
+//    public void setOccasions(List<Occasion> occasions) {
+//        this.occasions = occasions;
+//    }
 
     public String getDescription() {
         return description;

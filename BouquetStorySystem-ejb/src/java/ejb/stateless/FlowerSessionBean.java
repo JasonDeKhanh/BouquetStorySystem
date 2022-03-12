@@ -199,7 +199,7 @@ public class FlowerSessionBean implements FlowerSessionBeanLocal {
                 flowerEntityToUpdate.setName(flowerEntity.getName());
                 flowerEntityToUpdate.setImgAddress(flowerEntity.getImgAddress());
                 flowerEntityToUpdate.setFlowerColor(flowerEntity.getFlowerColor());
-                flowerEntityToUpdate.setOccasions(flowerEntity.getOccasions());
+//                flowerEntityToUpdate.setOccasions(flowerEntity.getOccasions());
                 flowerEntityToUpdate.setDescription(flowerEntity.getDescription());
                 flowerEntityToUpdate.setQuantityOnHand(flowerEntity.getQuantityOnHand());
                 flowerEntityToUpdate.setReorderQuantity(flowerEntity.getReorderQuantity());
