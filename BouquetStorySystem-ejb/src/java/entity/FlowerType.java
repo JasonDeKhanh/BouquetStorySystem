@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -34,6 +36,9 @@ public class FlowerType implements Serializable {
     @NotNull
     @Size(max = 128)
     private String description;
+    
+    @OneToMany(mappedBy = "flowerType")
+    private List<Flower> flowerEntities;
 
     public FlowerType() {
     }
@@ -42,8 +47,6 @@ public class FlowerType implements Serializable {
         this.name = name;
         this.description = description;
     }
-
-    
     
     public Long getFlowerTypeId() {
         return flowerTypeId;
@@ -92,6 +95,20 @@ public class FlowerType implements Serializable {
     @Override
     public String toString() {
         return "entity.FlowerType[ id=" + flowerTypeId + " ]";
+    }
+
+    /**
+     * @return the flowerEntities
+     */
+    public List<Flower> getFlowerEntities() {
+        return flowerEntities;
+    }
+
+    /**
+     * @param flowerEntities the flowerEntities to set
+     */
+    public void setFlowerEntities(List<Flower> flowerEntities) {
+        this.flowerEntities = flowerEntities;
     }
     
 }

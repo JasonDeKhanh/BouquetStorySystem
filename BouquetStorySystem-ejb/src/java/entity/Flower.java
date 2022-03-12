@@ -16,6 +16,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -66,7 +68,10 @@ public class Flower implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
-
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private FlowerType flowerType;
     
     
     public Flower() {
@@ -74,7 +79,7 @@ public class Flower implements Serializable {
         this.isOnDisplay = false;
     }
 
-    public Flower(String name, String imgAddress, FlowerColorEnum flowerColor, List<Occasion> occasions, String description, Integer quantityOnHand, Integer reorderQuantity, Boolean isOnDisplay) {
+    public Flower(String name, String imgAddress, FlowerColorEnum flowerColor, List<Occasion> occasions, String description, Integer quantityOnHand, Integer reorderQuantity,BigDecimal unitPrice, Boolean isOnDisplay) {
         
         this();
         
@@ -85,6 +90,7 @@ public class Flower implements Serializable {
         this.description = description;
         this.quantityOnHand = quantityOnHand;
         this.reorderQuantity = reorderQuantity;
+        this.unitPrice = unitPrice;
         this.isOnDisplay = isOnDisplay;
     }
     
@@ -194,6 +200,20 @@ public class Flower implements Serializable {
     @Override
     public String toString() {
         return "entity.Flower[ id=" + flowerId + " ]";
+    }
+
+    /**
+     * @return the flowerType
+     */
+    public FlowerType getFlowerType() {
+        return flowerType;
+    }
+
+    /**
+     * @param flowerType the flowerType to set
+     */
+    public void setFlowerType(FlowerType flowerType) {
+        this.flowerType = flowerType;
     }
     
 }
