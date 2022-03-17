@@ -66,7 +66,7 @@ public abstract class Bouquet extends Product implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (productId != null ? productId.hashCode() : 0);
+        hash += (itemId != null ? itemId.hashCode() : 0);
         return hash;
     }
 
@@ -77,7 +77,7 @@ public abstract class Bouquet extends Product implements Serializable {
             return false;
         }
         Bouquet other = (Bouquet) object;
-        if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
+        if ((this.itemId == null && other.itemId != null) || (this.itemId != null && !this.itemId.equals(other.itemId))) {
             return false;
         }
         return true;
@@ -85,7 +85,7 @@ public abstract class Bouquet extends Product implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Bouquet[ id=" + productId + " ]";
+        return "entity.Bouquet[ id=" + itemId + " ]";
     }
     
 }

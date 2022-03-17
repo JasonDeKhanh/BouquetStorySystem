@@ -52,7 +52,7 @@ public class CustomBouquet extends Bouquet implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (productId != null ? productId.hashCode() : 0);
+        hash += (itemId != null ? itemId.hashCode() : 0);
         return hash;
     }
 
@@ -63,7 +63,7 @@ public class CustomBouquet extends Bouquet implements Serializable {
             return false;
         }
         CustomBouquet other = (CustomBouquet) object;
-        if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
+        if ((this.itemId == null && other.itemId != null) || (this.itemId != null && !this.itemId.equals(other.itemId))) {
             return false;
         }
         return true;
@@ -71,7 +71,7 @@ public class CustomBouquet extends Bouquet implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CustomBouquet[ id=" + productId + " ]";
+        return "entity.CustomBouquet[ id=" + itemId + " ]";
     }
     
 }

@@ -9,7 +9,7 @@ package util.enumeration;
  *
  * @author msipc
  */
-public enum Occasion {
+public enum OccasionEnum {
     BIRTHDAY,
     VALENTINES,
     ANNIVERSARY,

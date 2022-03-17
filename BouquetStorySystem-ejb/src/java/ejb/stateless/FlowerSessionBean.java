@@ -23,7 +23,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.enumeration.Occasion;
+import util.enumeration.OccasionEnum;
 import util.exception.CreateNewFlowerException;
 import util.exception.DeleteFlowerException;
 import util.exception.FlowerInsufficientQuantityOnHandException;

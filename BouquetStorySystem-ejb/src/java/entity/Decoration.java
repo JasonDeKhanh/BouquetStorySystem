@@ -21,7 +21,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.enumeration.FlowerColorEnum;
-import util.enumeration.Occasion;
+import util.enumeration.OccasionEnum;
 
 /**
  *

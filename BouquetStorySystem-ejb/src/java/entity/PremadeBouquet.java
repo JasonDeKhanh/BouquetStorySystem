@@ -7,15 +7,14 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.OccasionEnum;
 
 /**
  *
@@ -40,6 +39,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     @DecimalMin("0.00")
     @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
     private BigDecimal bouquetPrice;   
+    private List<OccasionEnum> occasions; // bean validation?
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
@@ -93,6 +93,14 @@ public class PremadeBouquet extends Bouquet implements Serializable {
         this.bouquetPrice = bouquetPrice;
     }
 
+    public List<OccasionEnum> getOccasions() {
+        return occasions;
+    }
+
+    public void setOccasions(List<OccasionEnum> occasions) {
+        this.occasions = occasions;
+    }
+
     public Boolean getIsOnDisplay() {
         return isOnDisplay;
     }
@@ -106,7 +114,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (productId != null ? productId.hashCode() : 0);
+        hash += (itemId != null ? itemId.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +125,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
             return false;
         }
         PremadeBouquet other = (PremadeBouquet) object;
-        if ((this.productId == null && other.productId != null) || (this.productId != null && !this.productId.equals(other.productId))) {
+        if ((this.itemId == null && other.itemId != null) || (this.itemId != null && !this.itemId.equals(other.itemId))) {
             return false;
         }
         return true;
@@ -125,7 +133,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PremadeBouquet[ id=" + productId + " ]";
+        return "entity.PremadeBouquet[ id=" + itemId + " ]";
     }
     
 }

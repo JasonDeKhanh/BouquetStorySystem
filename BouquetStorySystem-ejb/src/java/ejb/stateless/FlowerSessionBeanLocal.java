@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 import util.enumeration.FlowerColorEnum;
-import util.enumeration.Occasion;
+import util.enumeration.OccasionEnum;
 import util.exception.CreateNewFlowerException;
 import util.exception.DeleteFlowerException;
 import util.exception.FlowerInsufficientQuantityOnHandException;

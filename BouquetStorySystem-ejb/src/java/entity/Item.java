@@ -18,27 +18,21 @@ import javax.persistence.InheritanceType;
  * @author msipc
  */
 @Entity
-
-public abstract class Product extends Item implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    protected Long productId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long itemId;
 
-//    public Long getProductId() {
-//        return productId;
-//    }
-//
-//    public void setProductId(Long productId) {
-//        this.productId = productId;
-//    }
-
-    public Product() {
-        super();
+    public Long getItemId() {
+        return itemId;
     }
-    
-    
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
 
     @Override
     public int hashCode() {
@@ -50,10 +44,10 @@ public abstract class Product extends Item implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Product)) {
+        if (!(object instanceof Item)) {
             return false;
         }
-        Product other = (Product) object;
+        Item other = (Item) object;
         if ((this.itemId == null && other.itemId != null) || (this.itemId != null && !this.itemId.equals(other.itemId))) {
             return false;
         }
@@ -62,7 +56,7 @@ public abstract class Product extends Item implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Product[ id=" + itemId + " ]";
+        return "entity.Item[ id=" + itemId + " ]";
     }
     
 }
