@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,6 +47,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
 
     public PremadeBouquet() {
         super();
+        this.occasions = new ArrayList<>();
         this.isOnDisplay = false;
     }
 
