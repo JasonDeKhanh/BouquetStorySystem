@@ -87,19 +87,19 @@ public class DecorationSessionBean implements DecorationSessionBeanLocal {
     public List<Decoration> retrieveAllDecorations()
     {
         Query query = em.createQuery("SELECT f FROM Flower f ORDER BY f.name ASC");
-        List<Decoration> decorarionEntities = query.getResultList();
+        List<Decoration> decorationEntities = query.getResultList();
         
-        return decorarionEntities;
+        return decorationEntities;
     }
     
     @Override
     public Decoration retrieveDecorationByDecorationId(Long decorationId) throws DecorationNotFoundException
     {
-        Decoration decorarionEntity = em.find(Decoration.class, decorationId);
+        Decoration decorationEntity = em.find(Decoration.class, decorationId);
         
-        if(decorarionEntity != null)
+        if(decorationEntity != null)
         {
-            return decorarionEntity;
+            return decorationEntity;
         }
         else
         {
@@ -108,24 +108,24 @@ public class DecorationSessionBean implements DecorationSessionBeanLocal {
     }
     
     @Override
-    public void updateDecoration(Decoration decorarionEntity) throws DecorationNotFoundException, UpdateDecorationException, InputDataValidationException
+    public void updateDecoration(Decoration decorationEntity) throws DecorationNotFoundException, UpdateDecorationException, InputDataValidationException
     {
-        if(decorarionEntity != null && decorarionEntity.getDecorationId()!= null)
+        if(decorationEntity != null && decorationEntity.getDecorationId()!= null)
         {
-            Set<ConstraintViolation<Decoration>>constraintViolations = validator.validate(decorarionEntity);
+            Set<ConstraintViolation<Decoration>>constraintViolations = validator.validate(decorationEntity);
         
             if(constraintViolations.isEmpty())
             {
-                Decoration decorationEntityToUpdate = retrieveDecorationByDecorationId(decorarionEntity.getDecorationId());
+                Decoration decorationEntityToUpdate = retrieveDecorationByDecorationId(decorationEntity.getDecorationId());
 
 
-                decorationEntityToUpdate.setName(decorarionEntity.getName());
-                decorationEntityToUpdate.setImgAddress(decorarionEntity.getImgAddress());
-                decorationEntityToUpdate.setDescription(decorarionEntity.getDescription());
-                decorationEntityToUpdate.setQuantityOnHand(decorarionEntity.getQuantityOnHand());
-                decorationEntityToUpdate.setReorderQuantity(decorarionEntity.getReorderQuantity());
-                decorationEntityToUpdate.setUnitPrice(decorarionEntity.getUnitPrice());
-                decorationEntityToUpdate.setIsOnDisplay(decorarionEntity.getIsOnDisplay());
+                decorationEntityToUpdate.setName(decorationEntity.getName());
+                decorationEntityToUpdate.setImgAddress(decorationEntity.getImgAddress());
+                decorationEntityToUpdate.setDescription(decorationEntity.getDescription());
+                decorationEntityToUpdate.setQuantityOnHand(decorationEntity.getQuantityOnHand());
+                decorationEntityToUpdate.setReorderQuantity(decorationEntity.getReorderQuantity());
+                decorationEntityToUpdate.setUnitPrice(decorationEntity.getUnitPrice());
+                decorationEntityToUpdate.setIsOnDisplay(decorationEntity.getIsOnDisplay());
             }
             else
             {

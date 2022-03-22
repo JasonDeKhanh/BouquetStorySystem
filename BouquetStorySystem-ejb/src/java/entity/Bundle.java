@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -20,6 +21,8 @@ public class Bundle extends Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String bundleName;
+    @OneToOne(optional = true)
+    private Promotion promotion;
 
     public Bundle() {
         super();
@@ -39,6 +42,14 @@ public class Bundle extends Item implements Serializable {
 
     public void setBundleName(String bundleName) {
         this.bundleName = bundleName;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
     
     @Override
