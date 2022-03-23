@@ -32,7 +32,7 @@ public class Container implements Serializable {
     @Column(nullable = false, length = 64)
     @NotNull
     @Size(max = 64)
-    private String name;
+    private String color;
     @Column(nullable = false)
     @NotNull
     private String imgAddress;
@@ -65,11 +65,11 @@ public class Container implements Serializable {
         
     }
 
-    public Container(String name, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer flowerLimit) {
+    public Container(String color, String imgAddress, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer flowerLimit) {
         
         this();
         
-        this.name = name;
+        this.color = color;
         this.imgAddress = imgAddress;
         this.description = description;
         this.quantityOnHand = quantityOnHand;
@@ -90,12 +90,12 @@ public class Container implements Serializable {
         this.containerId = containerId;
     }
 
-    public String getName() {
-        return name;
+    public String getColor() {
+        return color;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getImgAddress() {
