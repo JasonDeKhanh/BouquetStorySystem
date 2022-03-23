@@ -51,14 +51,18 @@ public class SaleTransaction implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean voidRefund;
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isPreorder;
 
     
     public SaleTransaction() {
         this.voidRefund = false;
+        this.isPreorder = false;
         
     }
 
-    public SaleTransaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, Boolean voidRefund) {
+    public SaleTransaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, Boolean voidRefund, Boolean isPreorder) {
         
         this();
         
@@ -67,6 +71,7 @@ public class SaleTransaction implements Serializable {
         this.totalAmount = totalAmount;
         this.transactionDateTime = transactionDateTime;
         this.voidRefund = voidRefund;
+        this.isPreorder = isPreorder;
     }
     
     
