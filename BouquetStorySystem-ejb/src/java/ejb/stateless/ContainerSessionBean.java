@@ -19,6 +19,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.ContainerNotFoundException;
 import util.exception.CreateNewContainerException;
+import util.exception.DeleteContainerException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 
@@ -135,7 +136,7 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
     }
             
     
-    public void deleteContainer(Long containerId) throws ContainerNotFoundException
+    public void deleteContainer(Long containerId) throws ContainerNotFoundException, DeleteContainerException
     {
         Container containerEntityToDelete = retrieveContainerByContainerId(containerId);
     
