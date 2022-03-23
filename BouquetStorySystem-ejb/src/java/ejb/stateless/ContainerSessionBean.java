@@ -93,6 +93,7 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         
         if(containerEntity != null)
         {
+            // Lazy Loading here
             return containerEntity;
         }
         else
