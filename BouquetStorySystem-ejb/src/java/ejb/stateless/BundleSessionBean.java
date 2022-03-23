@@ -42,6 +42,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
        validator = validatorFactory.getValidator();
     }
     
+    @Override
     public Bundle createNewBundle(Bundle newBundleEntity) throws CreateNewBundleException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<Bundle>>constraintViolations = validator.validate(newBundleEntity);
@@ -80,6 +81,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
         }
     }
     
+    @Override
     public List<Bundle> retrieveAllBundles()
     {
         Query query = em.createQuery("SELECT b FROM Bundle b ORDER BY b.bundleName ASC");
@@ -88,6 +90,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
         return bundleEntities;
     }
     
+    @Override
     public Bundle retrieveBundleByItemId(Long itemId) throws BundleNotFoundException
     {
         Bundle bundleEntity = em.find(Bundle.class, itemId);
@@ -102,6 +105,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
         }  
     }
     
+    @Override
     public void updateBundle(Bundle bundleEntity) throws BundleNotFoundException, UpdateBundleException, InputDataValidationException
     {
         if(bundleEntity != null && bundleEntity.getItemId()!= null)
@@ -127,6 +131,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
         }
     }
     
+    @Override
     public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException
     {
         Bundle bundleEntityToRemove = retrieveBundleByItemId(itemId);

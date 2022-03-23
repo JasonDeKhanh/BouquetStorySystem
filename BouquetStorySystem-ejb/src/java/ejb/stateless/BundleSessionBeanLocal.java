@@ -5,7 +5,15 @@
  */
 package ejb.stateless;
 
+import entity.Bundle;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.BundleNotFoundException;
+import util.exception.CreateNewBundleException;
+import util.exception.DeleteBundleException;
+import util.exception.InputDataValidationException;
+import util.exception.UnknownPersistenceException;
+import util.exception.UpdateBundleException;
 
 /**
  *
@@ -13,5 +21,9 @@ import javax.ejb.Local;
  */
 @Local
 public interface BundleSessionBeanLocal {
-    
+    public Bundle createNewBundle(Bundle newBundleEntity) throws CreateNewBundleException, UnknownPersistenceException, InputDataValidationException;
+    public List<Bundle> retrieveAllBundles();
+    public Bundle retrieveBundleByItemId(Long itemId) throws BundleNotFoundException;
+    public void updateBundle(Bundle bundleEntity) throws BundleNotFoundException, UpdateBundleException, InputDataValidationException;
+    public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException;
 }

@@ -94,7 +94,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         else
         {
             throw new PromotionNotFoundException("Promotion ID " + promotionId + " does not exist!");
-        }  
+        }
     }
     
     @Override
