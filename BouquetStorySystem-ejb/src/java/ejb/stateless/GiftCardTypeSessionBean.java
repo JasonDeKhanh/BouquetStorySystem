@@ -89,7 +89,7 @@ public class GiftCardTypeSessionBean implements GiftCardTypeSessionBeanLocal {
     @Override
     public List<GiftCardType> retrieveAllGiftCardTypes()
     {
-        Query query = em.createQuery("SELECT p FROM GiftCardType p ORDER BY p.name ASC");
+        Query query = em.createQuery("SELECT g FROM GiftCardType g ORDER BY g.name ASC");
         List<GiftCardType> giftCardTypeEntities = query.getResultList();
         
         return giftCardTypeEntities;
