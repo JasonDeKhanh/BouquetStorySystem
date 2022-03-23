@@ -132,7 +132,7 @@ public class AddOn extends Product implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public boolean isIsOnDisplay() {
+    public boolean getIsOnDisplay() {
         return isOnDisplay;
     }
 
