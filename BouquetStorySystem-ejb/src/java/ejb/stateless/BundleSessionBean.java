@@ -1,6 +1,6 @@
 package ejb.stateless;
 
-import entity.Promotion;
+import entity.Bundle;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -12,41 +12,48 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.CreateNewPromotionException;
-import util.exception.DeletePromotionException;
+import util.exception.BundleNotFoundException;
+import util.exception.CreateNewBundleException;
+import util.exception.DeleteBundleException;
 import util.exception.InputDataValidationException;
-import util.exception.PromotionNotFoundException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UpdatePromotionException;
+import util.exception.UpdateBundleException;
 
+/**
+ *
+ * @author JORD-SSD
+ */
 @Stateless
-public class PromotionSessionBean implements PromotionSessionBeanLocal {
+public class BundleSessionBean implements BundleSessionBeanLocal {
 
     @PersistenceContext(unitName = "BouquetStorySystem-ejbPU")
     private EntityManager em;
-    
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
-    public PromotionSessionBean()
+    public BundleSessionBean()
     {
        validatorFactory = Validation.buildDefaultValidatorFactory();
        validator = validatorFactory.getValidator();
     }
     
-    @Override
-    public Promotion createNewPromotion(Promotion newPromotionEntity) throws CreateNewPromotionException, UnknownPersistenceException, InputDataValidationException
+    public Bundle createNewBundle(Bundle newBundleEntity) throws CreateNewBundleException, UnknownPersistenceException, InputDataValidationException
     {
-        Set<ConstraintViolation<Promotion>>constraintViolations = validator.validate(newPromotionEntity);
+        Set<ConstraintViolation<Bundle>>constraintViolations = validator.validate(newBundleEntity);
         
         if(constraintViolations.isEmpty())
         {
             try
             {
-                em.persist(newPromotionEntity);
+                em.persist(newBundleEntity);
                 em.flush();
                 
-                return newPromotionEntity;
+                return newBundleEntity;
             }
             catch(PersistenceException ex)
             {
@@ -54,7 +61,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new CreateNewPromotionException();
+                        throw new CreateNewBundleException();
                     }
                     else
                     {
@@ -73,44 +80,41 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         }
     }
     
-    @Override
-    public List<Promotion> retrieveAllPromotions()
+    public List<Bundle> retrieveAllBundles()
     {
-        Query query = em.createQuery("SELECT p FROM Promotion p ORDER BY p.name ASC");
-        List<Promotion> promotionEntities = query.getResultList();
+        Query query = em.createQuery("SELECT b FROM Bundle b ORDER BY b.bundleName ASC");
+        List<Bundle> bundleEntities = query.getResultList();
         
-        return promotionEntities;
+        return bundleEntities;
     }
     
-    @Override
-    public Promotion retrievePromotionByPromotionId(Long promotionId) throws PromotionNotFoundException
+    public Bundle retrieveBundleByItemId(Long itemId) throws BundleNotFoundException
     {
-        Promotion promotionEntity = em.find(Promotion.class, promotionId);
+        Bundle bundleEntity = em.find(Bundle.class, itemId);
         
-        if(promotionEntity != null)
+        if(bundleEntity != null)
         {
-            return promotionEntity;
+            return bundleEntity;
         }
         else
         {
-            throw new PromotionNotFoundException("Promotion ID " + promotionId + " does not exist!");
+            throw new BundleNotFoundException("Bundle ID " + itemId + " does not exist!");
         }  
     }
     
-    @Override
-    public void updatePromotion(Promotion promotionEntity) throws PromotionNotFoundException, UpdatePromotionException, InputDataValidationException
+    public void updateBundle(Bundle bundleEntity) throws BundleNotFoundException, UpdateBundleException, InputDataValidationException
     {
-        if(promotionEntity != null && promotionEntity.getPromotionId()!= null)
+        if(bundleEntity != null && bundleEntity.getItemId()!= null)
         {
-            Set<ConstraintViolation<Promotion>>constraintViolations = validator.validate(promotionEntity);
+            Set<ConstraintViolation<Bundle>>constraintViolations = validator.validate(bundleEntity);
         
             if(constraintViolations.isEmpty())
             {
-                Promotion promotionEntityToUpdate = retrievePromotionByPromotionId(promotionEntity.getPromotionId());
+                Bundle bundleEntityToUpdate = retrieveBundleByItemId(bundleEntity.getItemId());
 
-
-                promotionEntityToUpdate.setName(promotionEntity.getName());
-                promotionEntityToUpdate.setDiscountPercent(promotionEntity.getDiscountPercent());
+                bundleEntityToUpdate.setBundleName(bundleEntity.getBundleName());
+                bundleEntityToUpdate.setPromotion(bundleEntity.getPromotion());
+                bundleEntityToUpdate.setProducts(bundleEntity.getProducts());
             }
             else
             {
@@ -119,19 +123,17 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         }
         else
         {
-            throw new PromotionNotFoundException("Promotion ID not provided for promotion to be updated");
+            throw new BundleNotFoundException("Item ID not provided for bundle to be updated");
         }
     }
     
-    @Override
-    public void deletePromotionDecoration(Long promotionId) throws PromotionNotFoundException, DeletePromotionException
+    public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException
     {
-        Promotion promotionEntityToRemove = retrievePromotionByPromotionId(promotionId);
-        
-//        List<Bundle> bundleEntities = bundleEntitySessionBeanLocal.retrieveBundlesByPromotionId(promotionId);
+        Bundle bundleEntityToRemove = retrieveBundleByItemId(itemId);
+
     }
 
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Promotion>>constraintViolations)
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Bundle>>constraintViolations)
     {
         String msg = "Input data validation error!:";
             
@@ -142,6 +144,4 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         
         return msg;
     }
-
-    
 }
