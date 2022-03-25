@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -59,6 +61,11 @@ public class Container implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
+    
+    // Relationship
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private ContainerType containerType;
 
     public Container() {
         this.isOnDisplay = false;
@@ -120,6 +127,14 @@ public class Container implements Serializable {
 
     public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    public ContainerType getContainerType() {
+        return containerType;
+    }
+
+    public void setContainerType(ContainerType containerType) {
+        this.containerType = containerType;
     }
 
     public Integer getReorderQuantity() {

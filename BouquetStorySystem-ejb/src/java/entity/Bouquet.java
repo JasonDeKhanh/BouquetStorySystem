@@ -6,13 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -32,9 +32,22 @@ public abstract class Bouquet extends Product implements Serializable {
     @NotNull
     @Size(min = 1, max = 32)
     private String creatorName;
+    
+    // Relationships
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private Container container;
+    
+    @ManyToMany
+    private List<Decoration> decorations;
+    
+    @ManyToMany
+    private List<Flower> flowers;
 
     public Bouquet() {
         super();
+        this.decorations = new ArrayList<>();
+        this.flowers = new ArrayList<>();
     }
 
     public Bouquet(String creatorName) {
@@ -61,6 +74,30 @@ public abstract class Bouquet extends Product implements Serializable {
 
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
+    }
+
+    public Container getContainer() {
+        return container;
+    }
+
+    public void setContainer(Container container) {
+        this.container = container;
+    }
+
+    public List<Decoration> getDecorations() {
+        return decorations;
+    }
+
+    public void setDecorations(List<Decoration> decorations) {
+        this.decorations = decorations;
+    }
+
+    public List<Flower> getFlowers() {
+        return flowers;
+    }
+
+    public void setFlowers(List<Flower> flowers) {
+        this.flowers = flowers;
     }
 
     @Override
