@@ -72,6 +72,9 @@ public class SaleTransaction implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean isPreorder;
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isCompleted;
     
     @OneToMany
     private List<SaleTransactionLineItem> saleTransactionLineItems;
@@ -85,22 +88,11 @@ public class SaleTransaction implements Serializable {
         this.voidRefund = false;
         this.isPreorder = false;
         this.isSelfPickup = false;
+        this.isCompleted = false;
         saleTransactionLineItems = new ArrayList<>();
         
     }
 
-    public SaleTransaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, Boolean voidRefund, Boolean isPreorder) {
-        
-        this();
-        
-        this.totalLineItem = totalLineItem;
-        this.totalQuantity = totalQuantity;
-        this.totalAmount = totalAmount;
-        this.transactionDateTime = transactionDateTime;
-        this.voidRefund = voidRefund;
-        this.isPreorder = isPreorder;
-    }
-    
     public SaleTransaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, List<SaleTransactionLineItem> saleTransactionLineItems, Boolean voidRefund, Boolean isPreorder)
     {
         this.totalLineItem = totalLineItem;
@@ -110,6 +102,19 @@ public class SaleTransaction implements Serializable {
         this.saleTransactionLineItems = saleTransactionLineItems;        
         this.voidRefund = voidRefund;
         this.isPreorder = isPreorder;        
+    }
+
+    public SaleTransaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, Date collectionDateTime, Boolean isSelfPickup, String deliveryAddress, Boolean voidRefund, Boolean isPreorder, Boolean isCompleted) {
+        this.totalLineItem = totalLineItem;
+        this.totalQuantity = totalQuantity;
+        this.totalAmount = totalAmount;
+        this.transactionDateTime = transactionDateTime;
+        this.collectionDateTime = collectionDateTime;
+        this.isSelfPickup = isSelfPickup;
+        this.deliveryAddress = deliveryAddress;
+        this.voidRefund = voidRefund;
+        this.isPreorder = isPreorder;
+        this.isCompleted = isCompleted;
     }
     
     
@@ -193,6 +198,14 @@ public class SaleTransaction implements Serializable {
 
     public void setVoidRefund(Boolean voidRefund) {
         this.voidRefund = voidRefund;
+    }
+
+    public Boolean getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     @Override
