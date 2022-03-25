@@ -106,22 +106,22 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
     }
 
-    @Override
-    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException {
-        try {
-            Customer customer = retrieveCustomerByEmail(email);
-            String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + customer.getSalt()));
-
-            if (customer.getPassword().equals(passwordHash)) {
-                return customer;
-            } else {
-                throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
-            }
-
-        } catch (CustomerNotFoundException ex) {
-            throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
-        }
-    }
+//    @Override
+//    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException {
+//        try {
+//            Customer customer = retrieveCustomerByEmail(email);
+//            String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + customer.getSalt()));
+//
+//            if (customer.getPassword().equals(passwordHash)) {
+//                return customer;
+//            } else {
+//                throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+//            }
+//
+//        } catch (CustomerNotFoundException ex) {
+//            throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+//        }
+//    }
 
     // update
     @Override

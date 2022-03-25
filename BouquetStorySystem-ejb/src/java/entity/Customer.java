@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -24,12 +26,13 @@ import util.security.CryptographicHelper;
  * @author msipc
  */
 @Entity
-public class Customer implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    protected Long customerId;
     @Column(nullable = false, length = 32)
     @NotNull
     @Size(max = 32)
@@ -43,12 +46,7 @@ public class Customer implements Serializable {
     @Size(max = 64)
     @Email
     private String email;
-    @Column(columnDefinition = "CHAR(32) NOT NULL")
-    @NotNull
-    private String password;
-    // ask prof if we need to include this in UML diagram
-    @Column(columnDefinition = "CHAR(32) NOT NULL")
-    private String salt; 
+    
     
     @OneToMany(mappedBy = "customer")
     private List<SaleTransaction> saleTransactions;
@@ -57,18 +55,14 @@ public class Customer implements Serializable {
         saleTransactions = new ArrayList<>();
     }
 
-    public Customer(String firstName, String lastName, String email, String password) {
+    public Customer(String firstName, String lastName, String email) {
         
         this();
         
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        
-        setPassword(password);
     }
-
-    
     
     
     public Long getCustomerId() {
@@ -103,21 +97,6 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        if(password != null) 
-        {
-            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.getSalt()));
-        }
-        else
-        {
-            this.password = null;
-        }
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -143,19 +122,6 @@ public class Customer implements Serializable {
         return "entity.Customer[ id=" + customerId + " ]";
     }
 
-    /**
-     * @return the salt
-     */
-    public String getSalt() {
-        return salt;
-    }
-
-    /**
-     * @param salt the salt to set
-     */
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     /**
      * @return the saleTransactions
