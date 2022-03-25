@@ -15,7 +15,7 @@
 
     <h:body>
 
-        <div id="top">
+<!--        <div id="top">
             <ui:insert name="top">Top</ui:insert>
         </div>
         <div>
@@ -28,7 +28,56 @@
         </div>
         <div id="bottom">
             <ui:insert name="bottom">Bottom</ui:insert>
-        </div>
+        </div>-->
+
+        <p:layout fullPage="true">
+            
+            <p:layoutUnit position="north" size="120">
+            
+                <h1>Bouquet Story Admin System</h1>
+                Also, I don't know why h1 text keeps becoming small and red
+                <p/>
+                Oh, okay, it's the default css h1
+                <ui:insert name="header">
+                    <ui:include src="/header.xhtml" />
+                </ui:insert>
+                
+            </p:layoutUnit>
+            
+            <p:layoutUnit size="240" position="west">
+                
+                <ui:insert name="mainmenu">
+<!--                    <ui:include src="/mainmenu.xhtml" />-->
+                    hElLo, pLeAsE aDd MaInMeNu lAtEr
+                </ui:insert>        
+                
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="center" >
+                
+                <ui:insert name="content">Content</ui:insert>
+                
+            </p:layoutUnit>
+            
+            <p:layoutUnit minSize="200" position="east" header="Advertisements" collapsible="true" collapsed="true">
+                
+                <ui:insert name="sidebar">
+<!--                    <ui:include src="/sidebar.xhtml" />-->
+                    What's up lol
+                </ui:insert>        
+                
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="south" size="70" >
+                
+                <ui:insert name="footer">
+<!--                    <ui:include src="/footer.xhtml" />-->
+                    hello, please add footer later!!
+                </ui:insert>
+                
+            </p:layoutUnit>                
+            
+        </p:layout>
 
     </h:body>
 

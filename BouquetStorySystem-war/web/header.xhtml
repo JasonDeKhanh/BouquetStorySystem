@@ -9,8 +9,8 @@
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <h:form id="loginForm">
 
-                <p:outputLabel for="username" value="username" />&nbsp;
-                <p:inputText id="email" value="#{adminLoginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
+                <p:outputLabel for="username" value="Username" />&nbsp;
+                <p:inputText id="username" value="#{adminLoginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
                     <f:validateLength minimum="4" />
                 </p:inputText>
                 &nbsp;
