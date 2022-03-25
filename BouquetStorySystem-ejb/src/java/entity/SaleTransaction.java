@@ -81,7 +81,7 @@ public class SaleTransaction implements Serializable {
     
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
-    private Customer customerEntity;
+    private Customer customer;
 
     
     public SaleTransaction() {
@@ -276,15 +276,15 @@ public class SaleTransaction implements Serializable {
     /**
      * @return the customerEntity
      */
-    public Customer getCustomerEntity() {
-        return customerEntity;
+    public Customer getCustomer() {
+        return customer;
     }
 
     /**
-     * @param customerEntity the customerEntity to set
+     * @param customer the customerEntity to set
      */
-    public void setCustomerEntity(Customer customerEntity) {
-        this.customerEntity = customerEntity;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
     
 }
