@@ -7,18 +7,25 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import util.exception.EntityInstanceExistsInCollectionException;
+import util.exception.EntityInstanceMissingInCollectionException;
 
 /**
  *
@@ -54,11 +61,19 @@ public class SaleTransaction implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean isPreorder;
+    
+    @OneToMany
+    private List<SaleTransactionLineItem> saleTransactionLineItems;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
+    private Customer customerEntity;
 
     
     public SaleTransaction() {
         this.voidRefund = false;
         this.isPreorder = false;
+        saleTransactionLineItems = new ArrayList<>();
         
     }
 
@@ -72,6 +87,17 @@ public class SaleTransaction implements Serializable {
         this.transactionDateTime = transactionDateTime;
         this.voidRefund = voidRefund;
         this.isPreorder = isPreorder;
+    }
+    
+    public SaleTransaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, List<SaleTransactionLineItem> saleTransactionLineItems, Boolean voidRefund, Boolean isPreorder)
+    {
+        this.totalLineItem = totalLineItem;
+        this.totalQuantity = totalQuantity;
+        this.totalAmount = totalAmount;
+        this.transactionDateTime = transactionDateTime;
+        this.saleTransactionLineItems = saleTransactionLineItems;        
+        this.voidRefund = voidRefund;
+        this.isPreorder = isPreorder;        
     }
     
     
@@ -148,6 +174,60 @@ public class SaleTransaction implements Serializable {
     @Override
     public String toString() {
         return "entity.SaleTransaction[ id=" + saleTransactionId + " ]";
+    }
+    
+    public void addSaleTransactionLineItem(SaleTransactionLineItem saleTransactionLineItemEntity) throws EntityInstanceExistsInCollectionException
+    {
+        if(!this.saleTransactionLineItems.contains(saleTransactionLineItemEntity))
+        {
+            this.saleTransactionLineItems.add(saleTransactionLineItemEntity);
+        }
+        else
+        {
+            throw new EntityInstanceExistsInCollectionException("Sale Transaction Line Item already exist");
+        }
+    }
+    
+    
+    
+    public void removeSaleTransactionLineItemEntity(SaleTransactionLineItem saleTransactionLineItemEntity) throws EntityInstanceMissingInCollectionException
+    {
+        if(this.saleTransactionLineItems.contains(saleTransactionLineItemEntity))
+        {
+            this.saleTransactionLineItems.remove(saleTransactionLineItemEntity);
+        }
+        else
+        {
+            throw new EntityInstanceMissingInCollectionException("Sale Transaction Line Item missing");
+        }
+    }
+
+    /**
+     * @return the saleTransactionLineItems
+     */
+    public List<SaleTransactionLineItem> getSaleTransactionLineItems() {
+        return saleTransactionLineItems;
+    }
+
+    /**
+     * @param saleTransactionLineItems the saleTransactionLineItems to set
+     */
+    public void setSaleTransactionLineItems(List<SaleTransactionLineItem> saleTransactionLineItems) {
+        this.saleTransactionLineItems = saleTransactionLineItems;
+    }
+
+    /**
+     * @return the customerEntity
+     */
+    public Customer getCustomerEntity() {
+        return customerEntity;
+    }
+
+    /**
+     * @param customerEntity the customerEntity to set
+     */
+    public void setCustomerEntity(Customer customerEntity) {
+        this.customerEntity = customerEntity;
     }
     
 }

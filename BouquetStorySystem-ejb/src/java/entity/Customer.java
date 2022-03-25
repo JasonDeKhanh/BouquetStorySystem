@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,8 +49,12 @@ public class Customer implements Serializable {
     // ask prof if we need to include this in UML diagram
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
+    
+    @OneToMany(mappedBy = "customer")
+    private List<SaleTransaction> saleTransactions;
 
     public Customer() {
+        saleTransactions = new ArrayList<>();
     }
 
     public Customer(String firstName, String lastName, String email, String password) {
@@ -103,7 +110,7 @@ public class Customer implements Serializable {
     public void setPassword(String password) {
         if(password != null) 
         {
-            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.getSalt()));
         }
         else
         {
@@ -134,6 +141,34 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "entity.Customer[ id=" + customerId + " ]";
+    }
+
+    /**
+     * @return the salt
+     */
+    public String getSalt() {
+        return salt;
+    }
+
+    /**
+     * @param salt the salt to set
+     */
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * @return the saleTransactions
+     */
+    public List<SaleTransaction> getSaleTransactions() {
+        return saleTransactions;
+    }
+
+    /**
+     * @param saleTransactions the saleTransactions to set
+     */
+    public void setSaleTransactions(List<SaleTransaction> saleTransactions) {
+        this.saleTransactions = saleTransactions;
     }
     
 }
