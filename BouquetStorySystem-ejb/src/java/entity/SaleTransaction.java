@@ -24,6 +24,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import util.exception.EntityInstanceExistsInCollectionException;
 import util.exception.EntityInstanceMissingInCollectionException;
 
@@ -55,6 +56,16 @@ public class SaleTransaction implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Date transactionDateTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    @NotNull
+    private Date collectionDateTime;
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isSelfPickup;
+    @Column(length = 128)
+    @Size(max = 128)
+    private String deliveryAddress; // nullable
     @Column(nullable = false)
     @NotNull
     private Boolean voidRefund;
@@ -73,6 +84,7 @@ public class SaleTransaction implements Serializable {
     public SaleTransaction() {
         this.voidRefund = false;
         this.isPreorder = false;
+        this.isSelfPickup = false;
         saleTransactionLineItems = new ArrayList<>();
         
     }
@@ -139,8 +151,40 @@ public class SaleTransaction implements Serializable {
         return transactionDateTime;
     }
 
+    public Date getCollectionDateTime() {
+        return collectionDateTime;
+    }
+
+    public void setCollectionDateTime(Date collectionDateTime) {
+        this.collectionDateTime = collectionDateTime;
+    }
+
+    public Boolean getIsSelfPickup() {
+        return isSelfPickup;
+    }
+
+    public void setIsSelfPickup(Boolean isSelfPickup) {
+        this.isSelfPickup = isSelfPickup;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
     public void setTransactionDateTime(Date transactionDateTime) {
         this.transactionDateTime = transactionDateTime;
+    }
+
+    public Boolean getIsPreorder() {
+        return isPreorder;
+    }
+
+    public void setIsPreorder(Boolean isPreorder) {
+        this.isPreorder = isPreorder;
     }
 
     public Boolean getVoidRefund() {
