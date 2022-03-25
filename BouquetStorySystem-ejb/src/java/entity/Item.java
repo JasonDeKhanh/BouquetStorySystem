@@ -26,6 +26,9 @@ public abstract class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long itemId;
 
+    public Item() {
+    }
+    
     public Long getItemId() {
         return itemId;
     }
