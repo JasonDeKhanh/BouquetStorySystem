@@ -17,6 +17,10 @@
                         <p:menuitem value="Logout" actionListener="#{adminLoginManagedBean.logout}" icon="pi pi-sign-out" rendered="#{sessionScope.isLogin == true}" />
                     </p:submenu>
                     
+                    <p:submenu label="Product Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Manage Decoration" outcome="/productManagement/decorationManagement.xhtml" icon="pi pi-home" />
+                    </p:submenu>
+                    
                     <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Create New Admin" outcome="/adminManagement/createNewAdmin.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Manage Admin"  outcome="/adminManagement/manageAdmin.xhtml"  icon="pi pi-sign-out"/>

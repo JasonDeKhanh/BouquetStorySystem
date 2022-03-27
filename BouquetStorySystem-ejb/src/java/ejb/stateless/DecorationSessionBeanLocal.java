@@ -31,7 +31,7 @@ public interface DecorationSessionBeanLocal {
 
     public void updateDecoration(Decoration decorarionEntity) throws DecorationNotFoundException, UpdateDecorationException, InputDataValidationException;
 
-    public void deleteupdateDecoration(Long decorationId) throws DecorationNotFoundException, DeleteDecorationException;
+    public void deleteDecoration(Long decorationId) throws DecorationNotFoundException, DeleteDecorationException;
 
     public void debitQuantityOnHand(Long decorationId, Integer quantityToDebit) throws DecorationNotFoundException, DecorationInsufficientQuantityOnHandException;
 

@@ -86,7 +86,7 @@ public class DecorationSessionBean implements DecorationSessionBeanLocal {
     @Override
     public List<Decoration> retrieveAllDecorations()
     {
-        Query query = em.createQuery("SELECT f FROM Flower f ORDER BY f.name ASC");
+        Query query = em.createQuery("SELECT f FROM Decoration f");
         List<Decoration> decorationEntities = query.getResultList();
         
         return decorationEntities;
@@ -139,7 +139,7 @@ public class DecorationSessionBean implements DecorationSessionBeanLocal {
     }
     
     @Override
-    public void deleteupdateDecoration(Long decorationId) throws DecorationNotFoundException, DeleteDecorationException
+    public void deleteDecoration(Long decorationId) throws DecorationNotFoundException, DeleteDecorationException
     {
         Decoration decorationEntityToRemove = retrieveDecorationByDecorationId(decorationId);
         
