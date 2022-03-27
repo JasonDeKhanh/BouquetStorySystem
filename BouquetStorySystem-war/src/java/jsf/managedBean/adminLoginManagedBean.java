@@ -7,14 +7,14 @@ package jsf.managedBean;
 
 import ejb.stateless.AdminSessionBeanLocal;
 import entity.Admin;
-import java.awt.event.ActionEvent;
+import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
-import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import util.exception.InvalidLoginCredentialException;
 
 /**
@@ -22,8 +22,9 @@ import util.exception.InvalidLoginCredentialException;
  * @author msipc
  */
 @Named(value = "adminLoginManagedBean")
-@ViewScoped
-public class adminLoginManagedBean implements Serializable {
+@RequestScoped
+
+public class adminLoginManagedBean {
 
     @EJB(name = "AdminSessionBeanLocal")
     private AdminSessionBeanLocal adminSessionBeanLocal;
@@ -52,9 +53,10 @@ public class adminLoginManagedBean implements Serializable {
     }
     
     
-    public void logout(ActionEvent event)
+    public void logout(ActionEvent event) throws IOException
     {
-        
+       ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
     
     public String getUsername() {

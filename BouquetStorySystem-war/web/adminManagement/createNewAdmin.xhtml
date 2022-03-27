@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+            <div>
+                <h1>Create new admin: </h1>
+                <h:form id="formCreateNewAdmin">
+                    <p:messages id="messagesCreateNewAdmin" redisplay="false" />
+                    
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="firstName" value="First Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="firstName" value="#{adminManagementManagedBean.newAdmin.firstName}" placeholder="First Name" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="firstName" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lastName" value="Last Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lastName" value="#{adminManagementManagedBean.newAdmin.lastName}" placeholder="Last Name" required="true" requiredMessage="Last Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lastName" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="username" value="Username " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="username" value="#{adminManagementManagedBean.newAdmin.username}" placeholder="Username" required="true" requiredMessage="Username is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="username" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="password" value="Password: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:password id="password" value="#{adminManagementManagedBean.newAdmin.password}" placeholder="Password" required="true" requiredMessage="Password is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="password" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Admin" actionListener="#{adminManagementManagedBean.createNewAdmin}"  update="@form formCreateNewAdmin:messagesCreateNewAdmin" />
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    
+                    
+                </h:form>
+            </div>
+        </h:panelGroup>
+
+        
+    </ui:define>
+
+    
+
+</ui:composition>
