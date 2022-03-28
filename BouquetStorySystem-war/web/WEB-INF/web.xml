@@ -4,6 +4,18 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>smoothness</param-value>
     </context-param>
+    <context-param>
+        <param-name>facelets.SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>alternatedocroot_2</param-name>
+        <param-value>C:/bouquetstorysystem-uploadedfiles/uploadedFiles</param-value>
+    </context-param>
+    <context-param>
+        <param-name>uploadedFilesPath</param-name>
+        <param-value>/uploadedFiles</param-value>
+    </context-param>
     <listener>
         <description>ServletContextListener</description>
         <listener-class>web.listener.ContextListener</listener-class>

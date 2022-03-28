@@ -133,6 +133,19 @@
                                 <p:message for="imgAddress" />
                             </p:column>
                         </p:row>
+                        
+                        <p:row>
+                            <p:messages  redisplay="false">
+                                <p:autoUpdate />
+                            </p:messages>
+                            
+                            <p:column>
+                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUpload}" multiple="true" update="formCreateNewDecoration"/>
+                                <p:panel header="Uploaded File" visible="#{decorationManagementManagedBean.showUploadedFile}">
+                                    <p:graphicImage value="#{decorationManagementManagedBean.uploadedFilePath}" height="20px" />
+                                </p:panel>
+                            </p:column>
+                        </p:row>
 
                         <p:row>
                             <p:column>
