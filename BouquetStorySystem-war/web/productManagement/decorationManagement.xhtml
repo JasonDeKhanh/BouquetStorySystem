@@ -28,8 +28,8 @@
             
                 <p:messages id="messages" redisplay="false" closable="true" />
 
-                <p:dataTable id="dataTableAllDecorations" widgetVar="dataTableAllDecorations" value="#{decorationManagedBean.decorationEntities}" var="decorationEntity" rowKey="#{decorationEntity.decorationId}" rowIndexVar="row"
-                             filteredValue="#{decorationManagedBean.filteredDecorationEntities}"
+                <p:dataTable id="dataTableAllDecorations" widgetVar="dataTableAllDecorations" value="#{decorationManagementManagedBean.decorationEntities}" var="decorationEntity" rowKey="#{decorationEntity.decorationId}" rowIndexVar="row"
+                             filteredValue="#{decorationManagementManagedBean.filteredDecorationEntities}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
                     <f:facet name="header">
@@ -69,10 +69,10 @@
                         <p:commandButton update="formViewDecoration" oncomplete="PF('dialogViewDecoration').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{decorationEntity}" target="#{viewDecorationtManagedBean.decorationEntityToView}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{decorationManagedBean.doUpdateDecoration}" update="formUpdateDecoration" oncomplete="PF('dialogUpdateDecoration').show()" icon="ui-icon-pencil" title="Update">
+                        <p:commandButton actionListener="#{decorationManagementManagedBean.doUpdateDecoration}" update="formUpdateDecoration" oncomplete="PF('dialogUpdateDecoration').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="decorationEntityToUpdate" value="#{decorationEntity}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{decorationManagedBean.deleteDecoration}" update="formAllDecorations:dataTableAllDecorations formAllDecorations:messages">
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{decorationManagementManagedBean.deleteDecoration}" update="formAllDecorations:dataTableAllDecorations formAllDecorations:messages">
                             <f:attribute name="decorationEntityToDelete" value="#{decorationEntity}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{decorationEntity.name}?" icon="ui-icon-alert" />
                         </p:commandButton>
@@ -175,7 +175,7 @@
                                 <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="name" value="#{decorationManagedBean.newDecorationEntity.name}" placeholder="Decoration 1" required="true" requiredMessage="Name is required" />
+                                <p:inputText id="name" value="#{decorationManagementManagedBean.newDecorationEntity.name}" placeholder="Decoration 1" required="true" requiredMessage="Name is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="name" />
@@ -187,7 +187,7 @@
                                 <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="description" value="#{decorationManagedBean.newDecorationEntity.description}" placeholder="Decoration 1" required="true" requiredMessage="Description is required" />
+                                <p:inputText id="description" value="#{decorationManagementManagedBean.newDecorationEntity.description}" placeholder="Decoration 1" required="true" requiredMessage="Description is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="description" />
@@ -199,7 +199,7 @@
                                 <p:outputLabel for="imgAddress" value="Img Address: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="imgAddress" value="#{decorationManagedBean.newDecorationEntity.imgAddress}" placeholder="Decoration 1" required="true" requiredMessage="Image is required" />
+                                <p:inputText id="imgAddress" value="#{decorationManagementManagedBean.newDecorationEntity.imgAddress}" placeholder="Decoration 1" required="true" requiredMessage="Image is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="imgAddress" />
@@ -211,7 +211,7 @@
                                 <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityOnHand" value="#{decorationManagedBean.newDecorationEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="quantityOnHand" value="#{decorationManagementManagedBean.newDecorationEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="quantityOnHand" />
@@ -223,7 +223,7 @@
                                 <p:outputLabel for="reorderQuantity" value="Reorder Quantity " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:spinner id="reorderQuantity" value="#{decorationManagedBean.newDecorationEntity.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                                <p:spinner id="reorderQuantity" value="#{decorationManagementManagedBean.newDecorationEntity.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
                             </p:column>
                             <p:column>
                                 <p:message for="reorderQuantity" />
@@ -235,7 +235,7 @@
                                 <p:outputLabel for="unitPrice" value="Unit Price " style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
-                                <p:spinner id="unitPrice" value="#{decorationManagedBean.newDecorationEntity.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                                <p:spinner id="unitPrice" value="#{decorationManagementManagedBean.newDecorationEntity.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="unitPrice" />
@@ -247,7 +247,7 @@
                                 <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{decorationManagedBean.newDecorationEntity.isOnDisplay}" itemLabel="Basic"/>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{decorationManagementManagedBean.newDecorationEntity.isOnDisplay}" itemLabel="Basic"/>
                             </p:column>
                             <p:column>
                                 <p:message for="isOnDisplay" />
@@ -257,7 +257,7 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton  value="Create New Decoration" update="@this @form formAllDecorations:dataTableAllDecorations" actionListener="#{decorationManagedBean.createNewDecoration}" oncomplete="PF('dialogCreateNewDecoration').show();" />
+                                <p:commandButton  value="Create New Decoration" update="@this @form formAllDecorations:dataTableAllDecorations" actionListener="#{decorationManagementManagedBean.createNewDecoration}" oncomplete="PF('dialogCreateNewDecoration').show();" />
                             </p:column>
                         </p:row>
 
@@ -281,7 +281,7 @@
                                 <h:outputLabel value="Decoration ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{decorationManagedBean.selectedDecorationEntityToUpdate.decorationId}" />
+                                <h:outputText value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.decorationId}" />
                             </p:column>
                             <p:column>
                                 &nbsp;
@@ -293,7 +293,7 @@
                                 <p:outputLabel for="name" value="Name: " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="name" value="#{decorationManagedBean.selectedDecorationEntityToUpdate.name}" placeholder="Decoration 1" required="true" requiredMessage="Name is required" />
+                                <p:inputText id="name" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.name}" placeholder="Decoration 1" required="true" requiredMessage="Name is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="name" />
@@ -305,7 +305,7 @@
                                 <p:outputLabel for="description" value="Description " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="description" value="#{decorationManagedBean.selectedDecorationEntityToUpdate.description}" placeholder="Decoration 1" required="true" requiredMessage="Description is required" />
+                                <p:inputText id="description" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.description}" placeholder="Decoration 1" required="true" requiredMessage="Description is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="description" />
@@ -317,7 +317,7 @@
                                 <p:outputLabel for="imgAddress" value="Image  " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="imgAddress" value="#{decorationManagedBean.selectedDecorationEntityToUpdate.imgAddress}" placeholder="Decoration 1" required="true" requiredMessage="imgAddress is required" />
+                                <p:inputText id="imgAddress" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.imgAddress}" placeholder="Decoration 1" required="true" requiredMessage="imgAddress is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="imgAddress" />
@@ -329,7 +329,7 @@
                                 <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityOnHand" value="#{decorationManagedBean.selectedDecorationEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="quantityOnHand" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="quantityOnHand" />
@@ -341,7 +341,7 @@
                                 <p:outputLabel for="reorderQuantity" value="Reorder Quantity " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="reorderQuantity" value="#{decorationManagedBean.selectedDecorationEntityToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                                <p:spinner id="reorderQuantity" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
                             </p:column>
                             <p:column>
                                 <p:message for="reorderQuantity" />
@@ -353,7 +353,7 @@
                                 <p:outputLabel for="unitPrice" value="Unit Price " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="unitPrice" value="#{decorationManagedBean.selectedDecorationEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                                <p:spinner id="unitPrice" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="unitPrice" />
@@ -365,7 +365,7 @@
                                 <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{decorationManagedBean.newDecorationEntity.isOnDisplay}" itemLabel="Basic"/>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{decorationManagementManagedBean.newDecorationEntity.isOnDisplay}" itemLabel="Basic"/>
                             </p:column>
                             <p:column>
                                 <p:message for="isOnDisplay" />
@@ -374,7 +374,7 @@
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Decoration" update="@form formAllDecorations:dataTableAllDecorations" actionListener="#{decorationManagedBean.updateDecoration}" oncomplete="PF('dialogUpdateDecoration').show();" />
+                                <p:commandButton value="Update Decoration" update="@form formAllDecorations:dataTableAllDecorations" actionListener="#{decorationManagementManagedBean.updateDecoration}" oncomplete="PF('dialogUpdateDecoration').show();" />
                             </p:column>
                         </p:row>
 

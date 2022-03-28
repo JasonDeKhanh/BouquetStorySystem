@@ -28,9 +28,9 @@ import util.exception.UpdateDecorationException;
  *
  * @author xqy11
  */
-@Named(value = "decorationManagedBean")
+@Named(value = "decorationManagementManagedBean")
 @RequestScoped
-public class DecorationManagedBean {
+public class DecorationManagementManagedBean {
 
     @EJB(name = "DecorationSessionBeanLocal")
     private DecorationSessionBeanLocal decorationSessionBeanLocal;
@@ -42,7 +42,7 @@ public class DecorationManagedBean {
     
     private Decoration selectedDecorationEntityToUpdate;
     
-    public DecorationManagedBean() {
+    public DecorationManagementManagedBean() {
         newDecorationEntity = new Decoration();
     }
     
