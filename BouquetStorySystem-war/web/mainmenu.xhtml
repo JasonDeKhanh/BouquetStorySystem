@@ -10,15 +10,11 @@
         <nav>
             <h:form>
                     
-                <p:menu style="width:200px;">
+                <p:menu toggleable="true" style="width:200px;">
 
                     <p:submenu label="System">
                         <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
                         <p:menuitem value="Logout" actionListener="#{adminLoginManagedBean.logout}" icon="pi pi-sign-out" rendered="#{sessionScope.isLogin == true}" />
-                    </p:submenu>
-                    
-                    <p:submenu label="Product Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Manage Decoration" outcome="/productManagement/decorationManagement.xhtml" icon="pi pi-home" />
                     </p:submenu>
                     
                     <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
@@ -26,8 +22,19 @@
                         <p:menuitem value="Manage Admin"  outcome="/adminManagement/manageAdmin.xhtml"  icon="pi pi-sign-out"/>
                     </p:submenu>
                     
-  
-
+                    <p:submenu label="Decoration Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Decoration Management" outcome="/productManagement/decorationManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Search Decoration"  icon="pi pi-search" />
+                    </p:submenu>
+                    
+                    <!-- ugly, fix css later somehow idk lol -->
+                    <p:submenu label="Container Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Container Type Management" icon="pi pi-home" />
+                        <p:menuitem value="Container Management" icon="pi pi-home" />
+                    </p:submenu>
+                    
+                    
+                    
                 </p:menu>
 
             </h:form>
