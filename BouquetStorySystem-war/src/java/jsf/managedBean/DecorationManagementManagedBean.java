@@ -178,6 +178,8 @@ public class DecorationManagementManagedBean implements Serializable {
             setUploadedFilePath(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("uploadedFilesPath") + "/" + event.getFile().getFileName());
             setShowUploadedFile((Boolean) true);
             
+            // Would it be correct to put setImgAddress(uploadedFilePath) here??
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }
         catch(IOException ex)

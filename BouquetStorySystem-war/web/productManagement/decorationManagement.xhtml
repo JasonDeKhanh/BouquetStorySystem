@@ -138,11 +138,14 @@
                             <p:messages  redisplay="false">
                                 <p:autoUpdate />
                             </p:messages>
+                            <p:column>
+                                <p:outputLabel value="Upload Image: " style="font-weight: bold;" />
+                            </p:column>
                             
                             <p:column>
-                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUpload}" multiple="true" update="formCreateNewDecoration"/>
+                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUpload}" multiple="true" update="@form" oncomplete="PF('dialogCreateNewDecoration').show()"/>
                                 <p:panel header="Uploaded File" visible="#{decorationManagementManagedBean.showUploadedFile}">
-                                    <p:graphicImage value="#{decorationManagementManagedBean.uploadedFilePath}" height="20px" />
+                                    <p:graphicImage value="#{decorationManagementManagedBean.uploadedFilePath}" height="100px" />
                                 </p:panel>
                             </p:column>
                         </p:row>
