@@ -127,18 +127,17 @@
                         </p:row>
                         
                         <p:row>
-                            <p:messages  redisplay="false">
-                                <p:autoUpdate />
-                            </p:messages>
                             <p:column>
-                                <p:outputLabel value="Upload Image: " style="font-weight: bold;" />
+                                <p:outputLabel for="imgAddress" value="Upload Image: " style="font-weight: bold;" />
                             </p:column>
-                            
                             <p:column>
-                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUploadNew}" multiple="true" update="formCreateNewDecoration" oncomplete="PF('dialogCreateNewDecoration').show()"/>
-                                <p:panel header="Uploaded File" visible="#{decorationManagementManagedBean.showUploadedFile}">
+                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUploadNew}" multiple="true" update="imgAddress" oncomplete="PF('dialogCreateNewDecoration').show()"/>
+                                <p:panel id="imgAddress" header="Uploaded File" visible="#{decorationManagementManagedBean.showUploadedFile}">
                                     <p:graphicImage value="#{decorationManagementManagedBean.uploadedFilePath}" height="100px" />
                                 </p:panel>
+                            </p:column>
+                            <p:column>
+                                <p:message for="imgAddress" />
                             </p:column>
                         </p:row>
 
@@ -253,7 +252,7 @@
                                 <p:outputLabel for="imgAddress" value="Image  " />
                             </p:column>
                             <p:column>
-                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUploadUpdate}" multiple="true" update="formUpdateDecoration" oncomplete="PF('dialogUpdateDecoration').show()"/>
+                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUploadUpdate}" multiple="true" update="imgAddress" oncomplete="PF('dialogUpdateDecoration').show()"/>
                                 <p:panel id="imgAddress" header="Current Image">
                                     <p:graphicImage value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.imgAddress}" height="100px" />
                                 </p:panel>
@@ -304,7 +303,7 @@
                                 <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{decorationManagementManagedBean.newDecorationEntity.isOnDisplay}" itemLabel="Basic"/>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.isOnDisplay}" itemLabel="Basic"/>
                             </p:column>
                             <p:column>
                                 <p:message for="isOnDisplay" />
