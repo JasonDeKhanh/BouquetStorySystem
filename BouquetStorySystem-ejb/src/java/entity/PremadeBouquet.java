@@ -110,6 +110,11 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     public void setIsOnDisplay(Boolean isOnDisplay) {
         this.isOnDisplay = isOnDisplay;
     }
+    
+    @Override
+    public BigDecimal getUnitPrice() {
+        return getBouquetPrice();
+    }
 
     
 

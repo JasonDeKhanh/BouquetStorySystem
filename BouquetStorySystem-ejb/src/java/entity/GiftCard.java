@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -79,6 +80,11 @@ public class GiftCard extends Product implements Serializable {
 
     public void setGiftCardType(GiftCardType giftCardType) {
         this.giftCardType = giftCardType;
+    }
+    
+    @Override
+    public BigDecimal getUnitPrice() {
+        return giftCardType.getUnitPrice();
     }
 
     @Override

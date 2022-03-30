@@ -48,6 +48,11 @@ public class CustomBouquet extends Bouquet implements Serializable {
     public void setTotalPriceAmount(BigDecimal totalPriceAmount) {
         this.totalPriceAmount = totalPriceAmount;
     }
+    
+    @Override
+    public BigDecimal getUnitPrice() {
+        return getTotalPriceAmount();
+    }
 
     @Override
     public int hashCode() {
