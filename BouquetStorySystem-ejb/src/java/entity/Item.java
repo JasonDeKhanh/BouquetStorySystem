@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +37,8 @@ public abstract class Item implements Serializable {
     public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
+    
+    public abstract BigDecimal getUnitPrice();
 
     @Override
     public int hashCode() {

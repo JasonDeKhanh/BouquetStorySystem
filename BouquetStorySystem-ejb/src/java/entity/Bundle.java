@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,6 +63,15 @@ public class Bundle extends Item implements Serializable {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+    
+    @Override
+    public BigDecimal getUnitPrice() {
+        BigDecimal totalPrice = new BigDecimal(0);
+        for (int i = 0; i < products.size(); i++) {
+            totalPrice = totalPrice.add(products.get(i).getUnitPrice());
+        }
+        return totalPrice;
     }
     
     @Override
