@@ -44,6 +44,10 @@
                         <h:outputText value="#{decorationEntity.decorationId}" />
                     </p:column>                            
 
+                    <p:column headerText="Image">
+                        <p:graphicImage value="#{decorationEntity.imgAddress}" height="100px"/>
+                    </p:column>
+                    
                     <p:column headerText="Name" sortBy="#{decorationEntity.name}" filterBy="#{decorationEntity.name}" filterMatchMode="contains">
                         <h:outputText value="#{decorationEntity.name}" />
                     </p:column>
@@ -123,18 +127,6 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column>
-                                <p:outputLabel for="imgAddress" value="Img Address: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText id="imgAddress" value="#{decorationManagementManagedBean.newDecorationEntity.imgAddress}" placeholder="Decoration 1" required="true" requiredMessage="Image is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="imgAddress" />
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
                             <p:messages  redisplay="false">
                                 <p:autoUpdate />
                             </p:messages>
@@ -143,7 +135,7 @@
                             </p:column>
                             
                             <p:column>
-                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUpload}" multiple="true" update="@form" oncomplete="PF('dialogCreateNewDecoration').show()"/>
+                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUploadNew}" multiple="true" update="formCreateNewDecoration" oncomplete="PF('dialogCreateNewDecoration').show()"/>
                                 <p:panel header="Uploaded File" visible="#{decorationManagementManagedBean.showUploadedFile}">
                                     <p:graphicImage value="#{decorationManagementManagedBean.uploadedFilePath}" height="100px" />
                                 </p:panel>
@@ -261,7 +253,10 @@
                                 <p:outputLabel for="imgAddress" value="Image  " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="imgAddress" value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.imgAddress}" placeholder="Decoration 1" required="true" requiredMessage="imgAddress is required" />
+                                <p:fileUpload listener="#{decorationManagementManagedBean.handleImageUploadUpdate}" multiple="true" update="formUpdateDecoration" oncomplete="PF('dialogUpdateDecoration').show()"/>
+                                <p:panel id="imgAddress" header="Current Image">
+                                    <p:graphicImage value="#{decorationManagementManagedBean.selectedDecorationEntityToUpdate.imgAddress}" height="100px" />
+                                </p:panel>
                             </p:column>
                             <p:column>
                                 <p:message for="imgAddress" />

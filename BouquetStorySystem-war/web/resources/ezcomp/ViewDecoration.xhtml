@@ -29,7 +29,15 @@
                             </p:column>
                         </p:row>
 
-
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Image: " />
+                            </p:column>
+                            <p:column>
+                                <p:graphicImage value="#{viewDecorationtManagedBean.decorationEntityToView.imgAddress}" height="100px"/>
+                            </p:column>
+                        </p:row>
+                        
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Name: " />
@@ -78,9 +86,14 @@
                             </p:column>
                         </p:row>
                         
-                        <p:column headerText="Display" >
-                            <h:outputText value="#{decorationEntity.isOnDisplay}" />
-                        </p:column>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Is On Display: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.isOnDisplay}" />
+                            </p:column>
+                        </p:row>
 
   
                     </p:panelGrid>
