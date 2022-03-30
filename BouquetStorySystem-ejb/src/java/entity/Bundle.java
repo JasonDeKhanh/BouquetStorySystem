@@ -9,9 +9,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -26,7 +28,7 @@ public class Bundle extends Item implements Serializable {
     private String bundleName;
     @OneToOne(optional = true)
     private Promotion promotion;
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;
 
     public Bundle() {
@@ -68,8 +70,8 @@ public class Bundle extends Item implements Serializable {
     @Override
     public BigDecimal getUnitPrice() {
         BigDecimal totalPrice = new BigDecimal(0);
-        for (int i = 0; i < products.size(); i++) {
-            totalPrice = totalPrice.add(products.get(i).getUnitPrice());
+        for (Product product:products) {
+            totalPrice = totalPrice.add(product.getUnitPrice());
         }
         return totalPrice;
     }

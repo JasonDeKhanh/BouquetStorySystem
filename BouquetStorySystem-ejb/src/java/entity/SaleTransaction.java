@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -76,7 +77,7 @@ public class SaleTransaction implements Serializable {
     @NotNull
     private Boolean isCompleted;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<SaleTransactionLineItem> saleTransactionLineItems;
     
     @ManyToOne(optional = true)

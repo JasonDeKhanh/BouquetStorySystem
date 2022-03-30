@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -38,7 +39,7 @@ public abstract class Bouquet extends Product implements Serializable {
     @JoinColumn
     private Container container;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Decoration> decorations;
     
     @ManyToMany
