@@ -6,8 +6,10 @@
 package ejb.stateless;
 
 import entity.Container;
+import entity.ContainerType;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +20,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.ContainerNotFoundException;
+import util.exception.ContainerTypeNotFoundException;
 import util.exception.CreateNewContainerException;
 import util.exception.DeleteContainerException;
 import util.exception.InputDataValidationException;
@@ -30,6 +33,9 @@ import util.exception.UnknownPersistenceException;
 @Stateless
 public class ContainerSessionBean implements ContainerSessionBeanLocal {
 
+    @EJB
+    private ContainerTypeSessionBeanLocal containerTypeSessionBeanLocal;
+    
     @PersistenceContext(unitName = "BouquetStorySystem-ejbPU")
     private EntityManager em;
     
@@ -43,7 +49,8 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
     
     
     // Create
-    public Container createNewContainer(Container newContainerEntity) throws CreateNewContainerException, UnknownPersistenceException, InputDataValidationException
+    @Override
+    public Container createNewContainer(Container newContainerEntity, Long containerTypeId) throws CreateNewContainerException, UnknownPersistenceException, InputDataValidationException, ContainerTypeNotFoundException
     {
         Set<ConstraintViolation<Container>>constraintViolations = validator.validate(newContainerEntity);
         
@@ -51,7 +58,16 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         {
             try 
             {
+                if(containerTypeId == null)
+                {
+                    throw new CreateNewContainerException("The new container must be associated with a container type!");
+                }
+                
+                ContainerType containerType = containerTypeSessionBeanLocal.retrieveContainerTypeByContainerTypeId(containerTypeId);
+                
                 em.persist(newContainerEntity);
+                newContainerEntity.setContainerType(containerType);
+                
                 em.flush();
                 
                 return newContainerEntity;
@@ -76,18 +92,24 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
     
     
     // Retrieve All Containers
+    @Override
     public List<Container> retrieveAllContainers()
     {
         Query query = em.createQuery("SELECT c FROM Container c ORDER BY c.containerId ASC");
         List<Container> containers = query.getResultList();
         
         // Lazy loading here!!
+        for(Container container : containers)
+        {
+            container.getContainerType();
+        }
         
         return containers;
     }
 
     
     // Retrieve Container By Id
+    @Override
     public Container retrieveContainerByContainerId(Long containerId) throws ContainerNotFoundException
     {
         Container containerEntity = em.find(Container.class, containerId);
@@ -95,6 +117,8 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         if(containerEntity != null)
         {
             // Lazy Loading here
+            containerEntity.getContainerType();
+            
             return containerEntity;
         }
         else
@@ -103,8 +127,8 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         }
     }
     
-    
-    public void updateContainer(Container containerEntity) throws ContainerNotFoundException,InputDataValidationException
+    @Override
+    public void updateContainer(Container containerEntity, Long containerTypeId) throws ContainerNotFoundException,InputDataValidationException, ContainerTypeNotFoundException
     {
         if(containerEntity != null && containerEntity.getContainerId()!= null)
         {
@@ -114,6 +138,13 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
             {
                 // Do Update
                 Container containerEntityToUpdate = retrieveContainerByContainerId(containerEntity.getContainerId());
+                
+                if(containerTypeId != null && (containerEntityToUpdate.getContainerType().getContainerTypeId().equals(containerTypeId)))
+                {
+                    ContainerType containerTypeToUpdate = containerTypeSessionBeanLocal.retrieveContainerTypeByContainerTypeId(containerTypeId);
+                    
+                    containerEntityToUpdate.setContainerType(containerTypeToUpdate);
+                }
                 
                 containerEntityToUpdate.setColor(containerEntity.getColor());
                 containerEntityToUpdate.setImgAddress(containerEntity.getImgAddress());
@@ -135,7 +166,7 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         }
     }
             
-    
+    @Override
     public void deleteContainer(Long containerId) throws ContainerNotFoundException, DeleteContainerException
     {
         Container containerEntityToDelete = retrieveContainerByContainerId(containerId);
