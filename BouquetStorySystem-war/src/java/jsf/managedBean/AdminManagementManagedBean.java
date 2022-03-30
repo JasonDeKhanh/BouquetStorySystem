@@ -49,9 +49,12 @@ public class AdminManagementManagedBean {
     public void createNewAdmin(ActionEvent event) {
         
         try {
-            Long id = adminSessionBeanLocal.createNewAdmin(getNewAdmin());
+            Admin admin = adminSessionBeanLocal.createNewAdmin(getNewAdmin());
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New admin created successfully (Admin ID: " + id + ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New admin created successfully (Admin ID: " + admin.getAdminId() + ")", null));
+           
+            getAdminEntities().add(admin);
+
             
         } catch (AdminUsernameExistException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "An error has occurred while creating the new admin: The Admin Username already exist", null));

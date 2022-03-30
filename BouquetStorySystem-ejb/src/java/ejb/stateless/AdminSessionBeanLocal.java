@@ -22,7 +22,7 @@ import util.exception.UpdateAdminException;
 @Local
 public interface AdminSessionBeanLocal {
 
-    public Long createNewAdmin(Admin newAdmin) throws AdminUsernameExistException, UnknownPersistenceException, InputDataValidationException;
+    public Admin createNewAdmin(Admin newAdmin) throws AdminUsernameExistException, UnknownPersistenceException, InputDataValidationException;
 
     public List<Admin> retrieveAllAdmins();
 
