@@ -25,5 +25,5 @@ public interface GiftCardTypeSessionBeanLocal {
     public List<GiftCardType> retrieveAllGiftCardTypes();
     public GiftCardType retrieveGiftCardTypeByGiftCardTypeId(Long giftCardTypeId) throws GiftCardTypeNotFoundException;
     public void updateGiftCardType(GiftCardType giftCardTypeEntity) throws GiftCardTypeNotFoundException, UpdateGiftCardTypeException, InputDataValidationException;
-    public void deleteGiftCardTypeDecoration(Long giftCardTypeId) throws GiftCardTypeNotFoundException, DeleteGiftCardTypeException;
+    public void deleteGiftCardType(Long giftCardTypeId) throws GiftCardTypeNotFoundException, DeleteGiftCardTypeException;
 }

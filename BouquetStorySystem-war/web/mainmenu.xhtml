@@ -27,6 +27,11 @@
                         <p:menuitem value="Search Decoration"  icon="pi pi-search" />
                     </p:submenu>
                     
+                    <p:submenu label="Gift Card Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Gift Card Type Management" outcome="/productManagement/giftCardTypeManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Search Decoration"  icon="pi pi-search" />
+                    </p:submenu>
+                    
                     <!-- ugly, fix css later somehow idk lol -->
                     <p:submenu label="Container Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Container Type Management" icon="pi pi-home" />

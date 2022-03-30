@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                template="./../templates/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <div>
+            <h3>Gift Card Type Management</h3>
+            
+            <h:form>
+            
+                <p:menubar>
+
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Gift Card Type" onclick="PF('dialogCreateNewGiftCardType').show()" icon="pi pi-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>
+            
+            <h:form id="formAllGiftCardTypes">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllGiftCardTypes" widgetVar="dataTableAllGiftCardTypes" value="#{giftCardTypeManagementManagedBean.giftCardTypeEntities}" var="giftCardTypeEntity" rowKey="#{giftCardTypeEntity.giftCardTypeId}" rowIndexVar="row"
+                             filteredValue="#{giftCardTypeManagementManagedBean.filteredGiftCardTypeEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllGiftCardTypes').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Gift Card Type ID" sortBy="#{giftCardTypeEntity.giftCardTypeId}" filterBy="#{giftCardTypeEntity.giftCardTypeId}" filterMatchMode="contains">
+                        <h:outputText value="#{giftCardTypeEntity.giftCardTypeId}" />
+                    </p:column>                            
+
+                    <p:column headerText="Image">
+                        <p:graphicImage value="#{giftCardTypeEntity.imgAddress}" height="100px"/>
+                    </p:column>
+                    
+                    <p:column headerText="Name" sortBy="#{giftCardTypeEntity.name}" filterBy="#{giftCardTypeEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{giftCardTypeEntity.name}" />
+                    </p:column>
+                    
+                    <p:column headerText="Size Dimensions" sortBy="#{giftCardTypeEntity.sizeDimensions}" filterBy="#{giftCardTypeEntity.sizeDimensions}" filterMatchMode="contains">
+                        <h:outputText value="#{giftCardTypeEntity.sizeDimensions}" />
+                    </p:column>
+                    
+                    <p:column headerText="Quantity on Hand" sortBy="#{giftCardTypeEntity.quantityOnHand}" filterBy="#{giftCardTypeEntity.quantityOnHand}" filterMatchMode="contains">
+                        <h:outputText value="#{giftCardTypeEntity.quantityOnHand}" />
+                    </p:column>
+                    
+                    <p:column headerText="SKU Code" sortBy="#{giftCardTypeEntity.reorderQuantity}" filterBy="#{giftCardTypeEntity.reorderQuantity}" filterMatchMode="contains">
+                        <h:outputText value="#{giftCardTypeEntity.reorderQuantity}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{giftCardTypeEntity.unitPrice}" filterBy="#{giftCardTypeEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{giftCardTypeEntity.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="Display" sortBy="#{giftCardTypeEntity.isOnDisplay}" filterBy="#{giftCardTypeEntity.isOnDisplay}" filterMatchMode="contains">
+                        <h:outputText value="#{giftCardTypeEntity.isOnDisplay}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{giftCardTypeEntity}" target="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{giftCardTypeManagementManagedBean.doUpdateGiftCardType}" update="formUpdateGiftCardType" oncomplete="PF('dialogUpdateGiftCardType').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="decorationEntityToUpdate" value="#{decorationEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{giftCardTypeManagementManagedBean.deleteGiftCardType}" update="formAllGiftCardTypes:dataTableAllGiftCardTypes formAllGiftCardTypes:messages">
+                            <f:attribute name="giftCardTypeEntityToDelete" value="#{giftCardTypeEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{giftCardTypeEntity.name}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <ez:ViewDecoration id="ccViewGiftCardType"/>
+            
+            <h:form id="formCreateNewGiftCardType">
+
+                <p:dialog id="dialogCreateNewGiftCardType" widgetVar="dialogCreateNewGiftCardType" header="Create New Gift Card Type" closable="true">
+
+                    <p:messages id="messagesCreateNewGiftCardType" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.name}" placeholder="Gift Card Type 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="imgAddress" value="Upload Image: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload listener="#{giftCardTypeManagementManagedBean.handleImageUploadNew}" multiple="true" update="imgAddress" oncomplete="PF('dialogCreateNewGiftCardType').show()"/>
+                                <p:panel id="imgAddress" header="Uploaded File" visible="#{giftCardTypeManagementManagedBean.showUploadedFile}">
+                                    <p:graphicImage value="#{giftCardTypeManagementManagedBean.uploadedFilePath}" height="100px" />
+                                </p:panel>
+                            </p:column>
+                            <p:column>
+                                <p:message for="imgAddress" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sizeDimensions" value="Size Dimensions: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="sizeDimensions" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.sizeDimensions}" placeholder="1 x 1" required="true" requiredMessage="Size Dimensions are required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="sizeDimensions" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.description}" placeholder="Gift Card Type 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Unit Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <p:spinner id="unitPrice" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{giftCardTypeManagementManagedBean.newGiftCardTypeEntity.isOnDisplay}" itemLabel="Display on shop"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Gift Card Type" update="@this @form formAllGiftCardTypes:dataTableAllGiftCardTypes" actionListener="#{giftCardTypeManagementManagedBean.createNewGiftCardType}" oncomplete="PF('dialogCreateNewGiftCardType').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+
+            <h:form id="formUpdateGiftCardType">
+
+                <p:dialog id="dialogUpdateGiftCardType" widgetVar="dialogUpdateGiftCardType" header="Update Gift Card Type" closable="true">
+
+                    <p:messages id="messagesUpdateGiftCardType" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Gift Card Type ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.giftCardTypeId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.name}" placeholder="Gift Card Type 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="imgAddress" value="Image  " />
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload listener="#{giftCardTypeManagementManagedBean.handleImageUploadUpdate}" multiple="true" update="imgAddress" oncomplete="PF('dialogUpdateGiftCardType').show()"/>
+                                <p:panel id="imgAddress" header="Current Image">
+                                    <p:graphicImage value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.imgAddress}" height="100px" />
+                                </p:panel>
+                            </p:column>
+                            <p:column>
+                                <p:message for="imgAddress" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sizeDimensions" value="Size Dimensions: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.sizeDimensions}" placeholder="1 x 1" required="true" requiredMessage="Size Dimensions are required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="sizeDimensions" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.description}" placeholder="Gift Card Type 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Unit Price " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="unitPrice" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{giftCardTypeManagementManagedBean.selectedGiftCardTypeEntityToUpdate.isOnDisplay}" itemLabel="Basic"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>                 
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Decoration" update="@form formAllGiftCardTypes:dataTableAllGiftCardTypes" actionListener="#{giftCardTypeManagementManagedBean.updateGiftCardType}" oncomplete="PF('dialogUpdateGiftCardType').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+    </ui:define>
+
+</ui:composition>

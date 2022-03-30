@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import util.security.CryptographicHelper;
 
@@ -28,6 +31,10 @@ public class RegisteredGuest extends Customer implements Serializable {
     // ask prof if we need to include this in UML diagram
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Address> addresses;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<CreditCard> creditCards;
 
     public RegisteredGuest() {
         super();
@@ -61,6 +68,22 @@ public class RegisteredGuest extends Customer implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public List<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(List<CreditCard> creditCards) {
+        this.creditCards = creditCards;
     }
 
     @Override

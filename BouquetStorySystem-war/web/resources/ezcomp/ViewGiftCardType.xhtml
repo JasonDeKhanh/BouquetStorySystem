@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formViewGiftCardType">
+            
+                <p:dialog id="dialogViewGiftCardType" widgetVar="dialogViewGiftCardType" header="View Gift Card Type" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Gift Card Type ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.giftCardTypeId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.name}" />
+                            </p:column>
+                        </p:row>
+                        
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Image: " />
+                            </p:column>
+                            <p:column>
+                                <p:graphicImage value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.imgAddress}" height="100px"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Size Dimensions " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.sizeDimensions}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Description: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.description}" />
+                            </p:column>
+                        </p:row>
+                      
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Quantity On Hand: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.quantityOnHand}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Reorder Quantity: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.reorderQuantity}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Unit Price: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.unitPrice}">
+                                    <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Is On Display: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.isOnDisplay}" />
+                            </p:column>
+                        </p:row>
+
+  
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+    </cc:implementation>
+</html>
