@@ -38,6 +38,10 @@
                         <p:menuitem value="Container Management" icon="pi pi-home" />
                     </p:submenu>
                     
+                    <p:submenu label="Sale Transaction Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Sale Transactions" outcome="/viewSaleTransactions.xhtml" icon="pi pi-home" />
+                    </p:submenu>
+                    
                     
                     
                 </p:menu>
