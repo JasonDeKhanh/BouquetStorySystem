@@ -76,6 +76,8 @@ public class ContainerTypeManagementManagedBean implements Serializable {
             ContainerType ct = containerTypeSessionBeanLocal.createNewContainerType(newContainerTypeEntity);
             getContainerTypes().add(ct);
             
+            newContainerTypeEntity = new ContainerType();
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Container Type created successfully (Container Type ID: " + ct.getContainerTypeId()+ ")", null));
         }
         catch(InputDataValidationException | UnknownPersistenceException | CreateNewContainerTypeException ex)
