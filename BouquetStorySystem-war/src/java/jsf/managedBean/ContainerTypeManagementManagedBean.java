@@ -7,12 +7,26 @@ package jsf.managedBean;
 
 import ejb.stateless.ContainerTypeSessionBeanLocal;
 import entity.ContainerType;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.event.FileUploadEvent;
+import util.exception.ContainerTypeNotFoundException;
+import util.exception.CreateNewContainerTypeException;
+import util.exception.DeleteContainerTypeException;
+import util.exception.InputDataValidationException;
+import util.exception.UnknownPersistenceException;
+import util.exception.UpdateContainerTypeException;
+import util.exception.UpdateDecorationException;
 
 /**
  *
@@ -41,9 +55,82 @@ public class ContainerTypeManagementManagedBean implements Serializable {
     }
 
     
+    public void postConstruct()
+    {
+        setContainerTypes(containerTypeSessionBeanLocal.retrieveAllContainerTypes());
+    }
+    
+    
+//    public void viewContainerTypeDetails(ActionEvent event) throws IOException
+//    {
+//        Long containerTypeToView = (Long)event.getComponent().getAttributes().get("containerTypeId");
+//        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("containerTypeId", containerTypeToView);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("ViewContainerType.xhtml");
+//    }
+    
+    public void createNewContainerType(ActionEvent event)
+    {
+        try
+        {
+            ContainerType ct = containerTypeSessionBeanLocal.createNewContainerType(newContainerTypeEntity);
+            getContainerTypes().add(ct);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Container Type created successfully (Container Type ID: " + ct.getContainerTypeId()+ ")", null));
+        }
+        catch(InputDataValidationException | UnknownPersistenceException | CreateNewContainerTypeException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new container type: " + ex.getMessage(), null));
+        }
+    }
+    
     public void doUpdateContainerType(ActionEvent event)
     {
         selectedContainerTypeEntityToUpdate = (ContainerType)event.getComponent().getAttributes().get("containerTypeToUpdate");
+    }
+    
+    public void updateContainerType(ActionEvent event)
+    {
+        try 
+        {
+            containerTypeSessionBeanLocal.updateContainerType(newContainerTypeEntity);
+        
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Container Type updated successfully", null));
+        } 
+        catch (ContainerTypeNotFoundException ex) 
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating container type: " + ex.getMessage(), null));
+        }
+        catch(InputDataValidationException | UpdateContainerTypeException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+    
+    
+    public void deleteContainerType(ActionEvent event)
+    {
+        try 
+        {
+            ContainerType containerTypeToDelete = (ContainerType)event.getComponent().getAttributes().get("containerTypeToDelete");
+            containerTypeSessionBeanLocal.deleteContainerType(containerTypeToDelete.getContainerTypeId());
+            
+            getContainerTypes().remove(containerTypeToDelete);
+            
+            if(getFilteredContainerTypes() != null)
+            {
+                getFilteredContainerTypes().remove(containerTypeToDelete);
+            }
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Container Type deleted successfully", null));
+        } 
+        catch (ContainerTypeNotFoundException | DeleteContainerTypeException ex) 
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting container type: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
     }
     
     
