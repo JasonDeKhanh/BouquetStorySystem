@@ -10,7 +10,7 @@
         <nav>
             <h:form>
                     
-                <p:menu toggleable="true" style="width:200px;">
+                <p:menu toggleable="true" style="width:270px;">
 
                     <p:submenu label="System">
                         <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
@@ -20,6 +20,12 @@
                     <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
                         <!--<p:menuitem value="Create New Admin" outcome="/adminManagement/createNewAdmin.xhtml" icon="pi pi-home" />-->
                         <p:menuitem value="Manage Admin"  outcome="/adminManagement/manageAdmin.xhtml"  icon="pi pi-sign-out"/>
+                    </p:submenu>
+                    
+                    <p:submenu label="Flower Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Flower Type Management" outcome="/productManagement/flowerTypeManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Flower Management" outcome="/productManagement/flowerManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Search Decoration"  icon="pi pi-search" />
                     </p:submenu>
                     
                     <p:submenu label="Decoration Management" rendered="#{sessionScope.isLogin == true}">

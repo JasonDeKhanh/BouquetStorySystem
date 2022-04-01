@@ -13,18 +13,18 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <h:form id="formViewDecoration">
+        <h:form id="formViewFlower">
             
-                <p:dialog id="dialogViewDecoration" widgetVar="dialogViewDecoration" header="View Decoration" closable="true">
+                <p:dialog id="dialogViewFlower" widgetVar="dialogViewFlower" header="View Flower" closable="true">
 
                     <p:panelGrid>
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Decoration ID: " />
+                                <h:outputLabel value="Flower ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.decorationId}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.flowerId}" />
                             </p:column>
                         </p:row>
 
@@ -33,7 +33,7 @@
                                 <h:outputLabel value="Image: " />
                             </p:column>
                             <p:column>
-                                <p:graphicImage value="#{viewDecorationtManagedBean.decorationEntityToView.imgAddress}" height="100px"/>
+                                <p:graphicImage value="#{viewFlowerManagedBean.flowerEntityToView.imgAddress}" height="100px"/>
                             </p:column>
                         </p:row>
                         
@@ -42,7 +42,25 @@
                                 <h:outputLabel value="Name: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.name}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.name}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Type: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.flowerType.name}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Color: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.flowerColor}" />
                             </p:column>
                         </p:row>
 
@@ -51,7 +69,7 @@
                                 <h:outputLabel value="Description: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.description}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.description}" />
                             </p:column>
                         </p:row>
                       
@@ -61,7 +79,7 @@
                                 <h:outputLabel value="Quantity On Hand: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.quantityOnHand}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.quantityOnHand}" />
                             </p:column>
                         </p:row>
 
@@ -70,7 +88,7 @@
                                 <h:outputLabel value="Reorder Quantity: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.reorderQuantity}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.reorderQuantity}" />
                             </p:column>
                         </p:row>
 
@@ -79,7 +97,7 @@
                                 <h:outputLabel value="Unit Price: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.unitPrice}">
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.unitPrice}">
                                     <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </h:outputText>
                             </p:column>
@@ -90,7 +108,7 @@
                                 <h:outputLabel value="Is On Display: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewDecorationtManagedBean.decorationEntityToView.isOnDisplay}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.isOnDisplay}" />
                             </p:column>
                         </p:row>
 

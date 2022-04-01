@@ -5,6 +5,7 @@
  */
 package ejb.stateless;
 
+import entity.Bouquet;
 import entity.Decoration;
 import java.util.List;
 import java.util.Set;
@@ -142,8 +143,20 @@ public class DecorationSessionBean implements DecorationSessionBeanLocal {
     public void deleteDecoration(Long decorationId) throws DecorationNotFoundException, DeleteDecorationException
     {
         Decoration decorationEntityToRemove = retrieveDecorationByDecorationId(decorationId);
-        
-//        List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = saleTransactionEntitySessionBeanLocal.retrieveSaleTransactionLineItemsByProductId(productId);
+//        
+//        Query query = em.createQuery("SELECT b FROM bouquet b JOIN decoration d WHERE b.:inDecorationId");
+//        //SELECT e FROM Employee e JOIN e.projects p JOIN e.projects p2 WHERE p.name = :p1 and p2.name = :p2
+//        query.setParameter("inDecorationId", decorationId);
+//        
+//        if(query.getResultList().isEmpty()) {
+            em.remove(decorationEntityToRemove);
+//        }
+//        else
+//        {
+//            throw new DeleteDecorationException("Decoration ID " + decorationId + " is associated with existing bouquet(s) and cannot be deleted!");
+//        }
+
+// List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = saleTransactionEntitySessionBeanLocal.retrieveSaleTransactionLineItemsByProductId(productId);
 //        
 //        if(saleTransactionLineItemEntities.isEmpty())
 //        {

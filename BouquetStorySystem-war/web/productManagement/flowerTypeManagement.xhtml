@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                template="/templates/defaultTemplate.xhtml">
+                    
+    <ui:define name="content">
+        <div>
+            <h3>Flower Type Management</h3>
+            
+            <h:form>
+            
+                <p:menubar>
+
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Flower Type" onclick="PF('dialogCreateNewFlowerType').show()" icon="pi pi-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>
+            
+            <h:form id="formAllFlowerTypes">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllFlowerTypes" widgetVar="dataTableAllFlowerTypes" value="#{flowerTypeManagementManagedBean.flowerTypeEntities}" var="flowerTypeEntity" rowKey="#{flowerTypeEntity.flowerTypeId}" rowIndexVar="row"
+                             filteredValue="#{flowerTypeManagementManagedBean.filteredFlowerTypeEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllFlowerTypes').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="FlowerType ID" sortBy="#{flowerTypeEntity.flowerTypeId}" filterBy="#{flowerTypeEntity.flowerTypeId}" filterMatchMode="contains">
+                        <h:outputText value="#{flowerTypeEntity.flowerTypeId}" />
+                    </p:column>
+                    
+                    <p:column headerText="Name" sortBy="#{flowerTypeEntity.name}" filterBy="#{flowerTypeEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{flowerTypeEntity.name}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ccViewFlowerType:formViewFlowerType" oncomplete="PF('dialogViewFlowerType').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{flowerTypeEntity}" target="#{viewFlowerTypeManagedBean.flowerTypeEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{flowerTypeManagementManagedBean.doUpdateFlowerType}" update="formUpdateFlowerType" oncomplete="PF('dialogUpdateFlowerType').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="flowerTypeEntityToUpdate" value="#{flowerTypeEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{flowerTypeManagementManagedBean.deleteFlowerType}" update="formAllFlowerTypes:dataTableAllFlowerTypes formAllFlowerTypes:messages">
+                            <f:attribute name="flowerTypeEntityToDelete" value="#{flowerTypeEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{flowerTypeEntity.name}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <ez:ViewFlowerType id="ccViewFlowerType"/>
+            
+            <h:form id="formCreateNewFlowerType">
+
+                <p:dialog id="dialogCreateNewFlowerType" widgetVar="dialogCreateNewFlowerType" header="Create New FlowerType" closable="true">
+
+                    <p:messages id="messagesCreateNewFlowerType" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{flowerTypeManagementManagedBean.newFlowerTypeEntity.name}" placeholder="FlowerType 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{flowerTypeManagementManagedBean.newFlowerTypeEntity.description}" placeholder="FlowerType 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Flower Type" update="@this @form formAllFlowerTypes:dataTableAllFlowerTypes" actionListener="#{flowerTypeManagementManagedBean.createNewFlowerType}" oncomplete="PF('dialogCreateNewFlowerType').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+
+            <h:form id="formUpdateFlowerType">
+
+                <p:dialog id="dialogUpdateFlowerType" widgetVar="dialogUpdateFlowerType" header="Update FlowerType" closable="true">
+
+                    <p:messages id="messagesUpdateFlowerType" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="FlowerType ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{flowerTypeManagementManagedBean.selectedFlowerTypeEntityToUpdate.flowerTypeId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{flowerTypeManagementManagedBean.selectedFlowerTypeEntityToUpdate.name}" placeholder="FlowerType 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{flowerTypeManagementManagedBean.selectedFlowerTypeEntityToUpdate.description}" placeholder="FlowerType 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                       
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Flower Type" update="@form formAllFlowerTypes:dataTableAllFlowerTypes" actionListener="#{flowerTypeManagementManagedBean.updateFlowerType}" oncomplete="PF('dialogUpdateFlowerType').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+        
+    </ui:define>
+    
+</ui:composition>
