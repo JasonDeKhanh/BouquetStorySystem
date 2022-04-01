@@ -5,9 +5,11 @@
  */
 package jsf.managedBean;
 
+import entity.ContainerType;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 
 /**
  *
@@ -17,10 +19,24 @@ import java.io.Serializable;
 @ViewScoped
 public class ViewContainerTypeManagedBean implements Serializable {
 
-    /**
-     * Creates a new instance of ViewContainerTypeManagedBean
-     */
-    public ViewContainerTypeManagedBean() {
+    private ContainerType containerTypeToView;
+
+    public ViewContainerTypeManagedBean() 
+    {
+        containerTypeToView = new ContainerType();
+    }
+
+    @PostConstruct
+    public void postConstruct()
+    {
+    }
+
+    public ContainerType getContainerTypeToView() {
+        return containerTypeToView;
+    }
+
+    public void setContainerTypeToView(ContainerType containerTypeToView) {
+        this.containerTypeToView = containerTypeToView;
     }
     
 }

@@ -25,11 +25,11 @@
 
             </h:form>
             
-            <h:form id="formAllContainerType">
+            <h:form id="formAllContainerTypes">
             
                 <p:messages id="messages" redisplay="false" closable="true" />
 
-                <p:dataTable id="dataTableAllContainerTypes" widgetVar="dataTableAllContainerType" value="#{containerTypeManagementManagedBean.containerTypes}" var="containerType" rowKey="#{containerType.containerTypeId}" rowIndexVar="row"
+                <p:dataTable id="dataTableAllContainerTypes" widgetVar="dataTableAllContainerTypes" value="#{containerTypeManagementManagedBean.containerTypes}" var="containerType" rowKey="#{containerType.containerTypeId}" rowIndexVar="row"
                              filteredValue="#{containerTypeManagementManagedBean.filteredContainerTypes}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
@@ -72,6 +72,104 @@
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
 
+            </h:form>
+            
+            <ez:ViewContainerType id="ccViewDecoration"/>
+            
+            <h:form id="formCreateNewContainerType">
+                
+                <p:dialog id="dialogCreateNewContainerType" widgetVar="dialogCreateNewContainerType" header="Create New Container Type" closable="true">
+                    
+                    <p:messages id="messagesCreateNewContainerType" redisplay="false" />
+                    
+                    <p:panelGrid>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{containerTypeManagementManagedBean.newContainerTypeEntity.name}" placeholder="Container Type 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="dimensions" value="Dimensions " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="dimensions" value="#{containerTypeManagementManagedBean.newContainerTypeEntity.dimensions}" placeholder="00cm x 00cm" required="true" requiredMessage="Dimensions is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="dimensions" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Container Type" update="@this @form formAllContainerTypes:dataTableAllContainerTypes" actionListener="#{containerTypeManagementManagedBean.createNewContainerType}" oncomplete="PF('dialogCreateNewContainerType').show();" />
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    
+                </p:dialog>
+                
+            </h:form>
+            
+            
+            <h:form id="formUpdateContainerType">
+                
+                <p:dialog id="dialogUpdateNewContainerType" widgetVar="dialogUpdateContainerType" header="Update Container Type" closable="true">
+                    
+                    <p:messages id="messagesUpdateContainerType" redisplay="false" />
+                    
+                    <p:panelGrid>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Container Type ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{containerTypeManagementManagedBean.selectedContainerTypeEntityToUpdate.containerTypeId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{containerTypeManagementManagedBean.selectedContainerTypeEntityToUpdate.name}" placeholder="Container Type 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="dimensions" value="Dimensions " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="dimensions" value="#{containerTypeManagementManagedBean.selectedContainerTypeEntityToUpdate.dimensions}" placeholder="00cm x 00cm" required="true" requiredMessage="Dimensions is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="dimensions" />
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    
+                </p:dialog>
+                
             </h:form>
             
         </div>

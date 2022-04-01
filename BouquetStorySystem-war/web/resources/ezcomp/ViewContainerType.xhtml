@@ -1,11 +1,56 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="./../../templates/defaultTemplate.xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <ui:define name="content">
-        content
-    </ui:define>
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
 
-</ui:composition>
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formViewContainerType">
+            
+                <p:dialog id="dialogViewContainerType" widgetVar="dialogViewContainerType" header="View Container Type" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Container Type ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewContainerTypeManagedBean.containerTypeToView.containerTypeId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewContainerTypeManagedBean.containerTypeToView.name}" />
+                            </p:column>
+                        </p:row>
+                      
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Dimensions" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewContainerTypeManagedBean.containerTypeToView.dimensions}" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+    </cc:implementation>
+</html>
