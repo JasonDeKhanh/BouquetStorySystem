@@ -54,6 +54,12 @@ public class FlowerTypeManagementManagedBean implements Serializable{
         {
             FlowerType pe = flowerTypeSessionBeanLocal.createNewFlowerType(getNewFlowerTypeEntity());
             getFlowerTypeEntities().add(pe);
+            
+            if(filteredFlowerTypeEntities != null) {
+                filteredFlowerTypeEntities.add(pe);
+            }
+            
+            newFlowerTypeEntity = new FlowerType();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New flowerType created successfully (Flower Type ID: " + pe.getFlowerTypeId()+ ")", null));
         }

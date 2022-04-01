@@ -51,9 +51,16 @@ public class AdminManagementManagedBean {
         try {
             Admin admin = adminSessionBeanLocal.createNewAdmin(getNewAdmin());
             
+            
+            getAdminEntities().add(admin);
+            
+            if(filteredAdminEntities != null) {
+                filteredAdminEntities.add(admin);
+            }
+            newAdmin = new Admin();
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New admin created successfully (Admin ID: " + admin.getAdminId() + ")", null));
            
-            getAdminEntities().add(admin);
 
             
         } catch (AdminUsernameExistException ex) {

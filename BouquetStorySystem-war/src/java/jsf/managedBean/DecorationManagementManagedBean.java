@@ -72,6 +72,13 @@ public class DecorationManagementManagedBean implements Serializable {
         {
             Decoration pe = decorationSessionBeanLocal.createNewDecoration(getNewDecorationEntity());
             getDecorationEntities().add(pe);
+            
+            if(filteredDecorationEntities != null) {
+                filteredDecorationEntities.add(pe);
+            }
+            
+            newDecorationEntity = new Decoration();
+            uploadedFilePath = null;
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New decoration created successfully (Decoration ID: " + pe.getDecorationId()+ ")", null));
         }

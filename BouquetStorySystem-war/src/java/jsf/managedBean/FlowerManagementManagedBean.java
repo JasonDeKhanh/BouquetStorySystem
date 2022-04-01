@@ -89,7 +89,15 @@ public class FlowerManagementManagedBean implements Serializable {
     public void createNewFlower(ActionEvent event) {
         try {
             Flower pe = flowerSessionBeanLocal.createNewFlower(getNewFlowerEntity(), getNewFlowerEntityType());
-            getFlowerEntities().add(pe);
+            flowerEntities.add(pe);
+            
+            if(filteredFlowerEntities != null) {
+                filteredFlowerEntities.add(pe);
+            }
+            
+            newFlowerEntity = new Flower();
+            newFlowerEntityType = null;
+            uploadedFilePath = null;
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New flower created successfully (Flower ID: " + pe.getFlowerId() + ")", null));
         } catch (InputDataValidationException | CreateNewFlowerException | FlowerTypeNotFoundException | UnknownPersistenceException ex) {
