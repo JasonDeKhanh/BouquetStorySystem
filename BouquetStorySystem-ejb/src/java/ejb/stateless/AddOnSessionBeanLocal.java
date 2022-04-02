@@ -25,5 +25,5 @@ public interface AddOnSessionBeanLocal {
     public List<AddOn> retrieveAllAddOns();
     public AddOn retrieveAddOnByAddOnId(Long itemId) throws AddOnNotFoundException;
     public void updateAddOn(AddOn addOnEntity) throws AddOnNotFoundException, UpdateAddOnException, InputDataValidationException;
-    public void deleteAddOnDecoration(Long itemId) throws AddOnNotFoundException, DeleteAddOnException;
+    public void deleteAddOn(Long itemId) throws AddOnNotFoundException, DeleteAddOnException;
 }

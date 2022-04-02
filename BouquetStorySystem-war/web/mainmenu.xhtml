@@ -35,13 +35,18 @@
                     
                     <p:submenu label="Gift Card Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Gift Card Type Management" outcome="/productManagement/giftCardTypeManagement.xhtml" icon="pi pi-home" />
-                        <p:menuitem value="Search Decoration"  icon="pi pi-search" />
+                        <p:menuitem value="Search Gift Card Type"  icon="pi pi-search" />
                     </p:submenu>
                     
                     <!-- ugly, fix css later somehow idk lol -->
                     <p:submenu label="Container Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Container Type Management" outcome="/productManagement/containerTypeManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Container Management" icon="pi pi-home" />
+                    </p:submenu>
+                    
+                    <p:submenu label="Add On Management" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Add On Management" outcome="/productManagement/addOnManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Search Add On" icon="pi pi-home" />
                     </p:submenu>
                     
                     <p:submenu label="Sale Transaction Management" rendered="#{sessionScope.isLogin == true}">
