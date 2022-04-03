@@ -7,20 +7,22 @@ package jsf.managedBean;
 
 import ejb.stateless.SaleTransactionSessionBeanLocal;
 import entity.SaleTransaction;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 /**
  *
  * @author matt_
  */
-@Named(value = "viewSalesTransactionManagedBean")
+@Named(value = "SalesTransactionManagedBean")
 @ViewScoped
-public class viewSalesTransactionManagedBean implements Serializable {
+public class SalesTransactionManagedBean implements Serializable {
 
 
     @EJB(name = "SaleTransactionSessionBeanLocal")
@@ -29,7 +31,14 @@ public class viewSalesTransactionManagedBean implements Serializable {
 
     private List<SaleTransaction> saleTransactionEntities;
     
-    public viewSalesTransactionManagedBean() {
+    public SalesTransactionManagedBean() {
+    }
+    
+    public void viewSaleTransactionDetails(ActionEvent event) throws IOException
+    {
+        Long saleTransactionIdToView = (Long)event.getComponent().getAttributes().get("saleTransactionId");
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("saleTransactionToView", saleTransactionIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewSaleTransactionDetails.xhtml");
     }
     
     public List<SaleTransaction> getSaleTransactionEntities() {
