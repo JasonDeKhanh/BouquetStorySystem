@@ -75,7 +75,7 @@
                             <f:setPropertyActionListener value="#{addOnEntity}" target="#{viewAddOnManagedBean.addOnEntityToView}" />
                         </p:commandButton>
                         <p:commandButton actionListener="#{addOnManagementManagedBean.doUpdateAddOn}" update="formUpdateAddOn" oncomplete="PF('dialogUpdateAddOn').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="decorationEntityToUpdate" value="#{addOnEntity}" />
+                            <f:attribute name="addOnEntityToUpdate" value="#{addOnEntity}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-trash" actionListener="#{addOnManagementManagedBean.deleteAddOn}" update="formAllAddOns:dataTableAllAddOns formAllAddOns:messages">
                             <f:attribute name="addOnEntityToDelete" value="#{addOnEntity}" />
@@ -92,7 +92,7 @@
 
             </h:form>
             
-            <ez:ViewDecoration id="ccViewAddOn"/>
+            <ez:ViewAddOn id="ccViewAddOn"/>
             
             <h:form id="formCreateNewAddOn">
 
