@@ -99,10 +99,10 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         List<Container> containers = query.getResultList();
         
         // Lazy loading here!!
-        for(Container container : containers)
-        {
-            container.getContainerType();
-        }
+//        for(Container container : containers)
+//        {
+//            container.getContainerType();
+//        }
         
         return containers;
     }
@@ -117,7 +117,7 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
         if(containerEntity != null)
         {
             // Lazy Loading here
-            containerEntity.getContainerType();
+//            containerEntity.getContainerType();
             
             return containerEntity;
         }

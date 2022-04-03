@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.Customer;
+import entity.RegisteredGuest;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -155,6 +156,9 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         
         if(customerToRemove.getSaleTransactions().isEmpty())
         {
+            if(customerToRemove instanceof RegisteredGuest){
+                ((RegisteredGuest) customerToRemove).setAddresses(null);
+            }
             em.remove(customerToRemove);
         }
         else

@@ -1,12 +1,17 @@
 package ejb.singleton;
 
+import ejb.stateless.AddressSessionBeanLocal;
 import ejb.stateless.AdminSessionBeanLocal;
 import ejb.stateless.CustomerSessionBeanLocal;
 import ejb.stateless.DecorationSessionBeanLocal;
+import entity.Address;
 import entity.Admin;
+import entity.Customer;
 import entity.Decoration;
 import entity.RegisteredGuest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -28,6 +33,9 @@ import util.exception.UnknownPersistenceException;
 
 public class DataInitializationSessionBean
 {
+
+    @EJB(name = "AddressSessionBeanLocal")
+    private AddressSessionBeanLocal addressSessionBeanLocal;
 
     
     @EJB(name = "AdminSessionBeanLocal")
@@ -72,7 +80,17 @@ public class DataInitializationSessionBean
             
             adminSessionBeanLocal.createNewAdmin(new Admin("Default", "Manager", "manager", "password"));
 
+            Customer newCustomer = new RegisteredGuest("Default3", "Customer3","customer3@gmail.com","password");
+            List<Address> addresses = new ArrayList<>();
+            Address newAddress = new Address("Address Line","888000");
+            newAddress.setCustomer((RegisteredGuest)newCustomer);
+            addresses.add(newAddress);
+            ((RegisteredGuest)newCustomer).setAddresses(addresses);
+            
             customerSessionBeanLocal.createNewCustomer(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
+            customerSessionBeanLocal.createNewCustomer(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));
+            customerSessionBeanLocal.createNewCustomer(newCustomer);
+            addressSessionBeanLocal.createNewAddress(newAddress);
             
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration A","xxx.png","Some description...",200,300,new BigDecimal(12.90), true));
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration B","xxx.png","Some description...",100,200,new BigDecimal(9.90), false));

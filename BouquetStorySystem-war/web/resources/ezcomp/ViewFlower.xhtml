@@ -13,46 +13,54 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <h:form id="formViewGiftCardType">
+        <h:form id="formViewFlower">
             
-                <p:dialog id="dialogViewGiftCardType" widgetVar="dialogViewGiftCardType" header="View Gift Card Type" closable="true">
+                <p:dialog id="dialogViewFlower" widgetVar="dialogViewFlower" header="View Flower" closable="true">
 
                     <p:panelGrid>
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Gift Card Type ID: " />
+                                <h:outputLabel value="Flower ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.giftCardTypeId}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.flowerId}" />
                             </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Name: " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.name}" />
-                            </p:column>
-                        </p:row>
-                        
-                        
-                        <p:row>
-                            <p:column>
                                 <h:outputLabel value="Image: " />
                             </p:column>
                             <p:column>
-                                <p:graphicImage value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.imgAddress}" height="100px"/>
+                                <p:graphicImage value="#{viewFlowerManagedBean.flowerEntityToView.imgAddress}" height="100px"/>
                             </p:column>
                         </p:row>
                         
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Size Dimensions " />
+                                <h:outputLabel value="Name: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.sizeDimensions}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.name}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Type: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.flowerType.name}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Color: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.flowerColor}" />
                             </p:column>
                         </p:row>
 
@@ -61,7 +69,7 @@
                                 <h:outputLabel value="Description: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.description}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.description}" />
                             </p:column>
                         </p:row>
                       
@@ -71,7 +79,7 @@
                                 <h:outputLabel value="Quantity On Hand: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.quantityOnHand}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.quantityOnHand}" />
                             </p:column>
                         </p:row>
 
@@ -80,7 +88,7 @@
                                 <h:outputLabel value="Reorder Quantity: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.reorderQuantity}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.reorderQuantity}" />
                             </p:column>
                         </p:row>
 
@@ -89,7 +97,7 @@
                                 <h:outputLabel value="Unit Price: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.unitPrice}">
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.unitPrice}">
                                     <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </h:outputText>
                             </p:column>
@@ -100,7 +108,7 @@
                                 <h:outputLabel value="Is On Display: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.isOnDisplay}" />
+                                <h:outputText value="#{viewFlowerManagedBean.flowerEntityToView.isOnDisplay}" />
                             </p:column>
                         </p:row>
 

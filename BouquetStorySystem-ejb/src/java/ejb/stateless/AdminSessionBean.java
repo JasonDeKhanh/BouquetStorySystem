@@ -173,7 +173,9 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
                 
                 if(adminToUpdate.getUsername().equals(admin.getUsername()))
                 {
-                    // update
+                    adminToUpdate.setFirstName(admin.getFirstName());
+                    adminToUpdate.setLastName(admin.getLastName());
+                    adminToUpdate.setPassword(admin.getPassword());
                 }
                 else
                 {

@@ -221,7 +221,7 @@ public class FlowerSessionBean implements FlowerSessionBeanLocal {
     public void deleteFlower(Long flowerId) throws FlowerNotFoundException, DeleteFlowerException, FlowerTypeNotFoundException
     {
         Flower flowerEntityToRemove = retrieveFlowerByFlowerId(flowerId);
-        
+//        
 //        List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = saleTransactionEntitySessionBeanLocal.retrieveSaleTransactionLineItemsByProductId(productId);
 //        
 //        if(saleTransactionLineItemEntities.isEmpty())
@@ -234,8 +234,8 @@ public class FlowerSessionBean implements FlowerSessionBeanLocal {
 //            }
 //            
 //            productEntityToRemove.getTagEntities().clear();
-//            
-//            entityManager.remove(productEntityToRemove);
+            
+            em.remove(flowerEntityToRemove);
 //        }
 //        else
 //        {

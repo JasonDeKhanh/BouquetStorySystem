@@ -13,18 +13,18 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <h:form id="formViewGiftCardType">
+        <h:form id="formViewAddOn">
             
-                <p:dialog id="dialogViewGiftCardType" widgetVar="dialogViewGiftCardType" header="View Gift Card Type" closable="true">
+                <p:dialog id="dialogViewAddOn" widgetVar="dialogViewAddOn" header="View Add On" closable="true">
 
                     <p:panelGrid>
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Gift Card Type ID: " />
+                                <h:outputLabel value="Item ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.giftCardTypeId}" />
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.itemId}" />
                             </p:column>
                         </p:row>
 
@@ -33,7 +33,7 @@
                                 <h:outputLabel value="Name: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.name}" />
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.name}" />
                             </p:column>
                         </p:row>
                         
@@ -43,25 +43,17 @@
                                 <h:outputLabel value="Image: " />
                             </p:column>
                             <p:column>
-                                <p:graphicImage value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.imgAddress}" height="100px"/>
+                                <p:graphicImage value="#{viewAddOnManagedBean.addOnEntityToView.imgAddress}" height="100px"/>
                             </p:column>
                         </p:row>
                         
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel value="Size Dimensions " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.sizeDimensions}" />
-                            </p:column>
-                        </p:row>
 
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Description: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.description}" />
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.description}" />
                             </p:column>
                         </p:row>
                       
@@ -71,7 +63,7 @@
                                 <h:outputLabel value="Quantity On Hand: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.quantityOnHand}" />
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.quantityOnHand}" />
                             </p:column>
                         </p:row>
 
@@ -80,7 +72,7 @@
                                 <h:outputLabel value="Reorder Quantity: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.reorderQuantity}" />
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.reorderQuantity}" />
                             </p:column>
                         </p:row>
 
@@ -89,7 +81,7 @@
                                 <h:outputLabel value="Unit Price: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.unitPrice}">
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.unitPrice}">
                                     <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </h:outputText>
                             </p:column>
@@ -100,7 +92,7 @@
                                 <h:outputLabel value="Is On Display: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView.isOnDisplay}" />
+                                <h:outputText value="#{viewAddOnManagedBean.addOnEntityToView.isOnDisplay}" />
                             </p:column>
                         </p:row>
 

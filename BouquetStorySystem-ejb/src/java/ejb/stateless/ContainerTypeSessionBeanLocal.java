@@ -13,6 +13,7 @@ import util.exception.CreateNewContainerTypeException;
 import util.exception.DeleteContainerTypeException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdateContainerTypeException;
 
 /**
  *
@@ -27,7 +28,7 @@ public interface ContainerTypeSessionBeanLocal {
 
     public ContainerType retrieveContainerTypeByContainerTypeId(Long containerTypeId) throws ContainerTypeNotFoundException;
 
-    public void updateContainerType(ContainerType containerTypeEntity) throws ContainerTypeNotFoundException, InputDataValidationException;
+    public void updateContainerType(ContainerType containerTypeEntity) throws ContainerTypeNotFoundException, InputDataValidationException, UpdateContainerTypeException;
 
     public void deleteContainerType(Long containerTypeId) throws ContainerTypeNotFoundException, DeleteContainerTypeException;
     

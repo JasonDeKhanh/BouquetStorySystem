@@ -56,6 +56,9 @@
                         </p:column>
 
                         <p:column headerText="Action" >
+                            <p:commandButton actionListener="#{adminManagementManagedBean.doUpdateAdmin}" update="formUpdateAdmin" oncomplete="PF('dialogUpdateAdmin').show()" icon="ui-icon-pencil" title="Update">
+                                <f:attribute name="adminEntityToUpdate" value="#{adminEntity}" />
+                            </p:commandButton>
                             <p:commandButton icon="ui-icon-trash" actionListener="#{adminManagementManagedBean.deleteAdmin}" update="formAllAdmins:dataTableAllAdmins formAllAdmins:messages">
                                 <f:attribute name="adminEntityToDelete" value="#{adminEntity}" />
                                 <p:confirm header="Confirmation" message="Are you sure you want to delete #{adminEntity.username}?" icon="ui-icon-alert" />
@@ -133,6 +136,86 @@
                                 <p:commandButton  value="Create New Admin" update="@this @form formAllAdmins:dataTableAllAdmins" actionListener="#{adminManagementManagedBean.createNewAdmin}"   oncomplete="PF('dialogCreateNewAdmin').show();" />
                             </p:column>
                         </p:row>                      
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formUpdateAdmin">
+
+                <p:dialog id="dialogUpdateAdmin" widgetVar="dialogUpdateAdmin" header="Update Admin" closable="true">
+
+                    <p:messages id="messagesUpdateAdmin" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.adminId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="firstName" value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="firstName" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.firstName}" placeholder="First Name" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="firstName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lastName" value="Last Name: "  />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lastName" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.lastName}" placeholder="Last Name" required="true" requiredMessage="Last Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lastName" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="username" value="Username: "  />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="username" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.username}" placeholder="Username" required="true" requiredMessage="Username is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="username" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="password" value="Password: "  />
+                            </p:column>
+                            <p:column>
+                                <p:password id="password" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.password}" placeholder="Password" required="true" requiredMessage="Password is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="password" />
+                            </p:column>
+                        </p:row>
+                       
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Admin" update="@form formAllAdmins:dataTableAllAdmins" actionListener="#{adminManagementManagedBean.updateAdmin}" oncomplete="PF('dialogUpdateAdmin').show();" />
+                            </p:column>
+                        </p:row>
+
                     </p:panelGrid>
 
                 </p:dialog>

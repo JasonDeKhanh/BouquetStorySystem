@@ -1,144 +1,130 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
-import ejb.stateless.DecorationSessionBeanLocal;
-import entity.Decoration;
+import ejb.stateless.AddOnSessionBeanLocal;
+import entity.AddOn;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.inject.Named;
+import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.view.ViewScoped;
 import org.primefaces.event.FileUploadEvent;
-import util.exception.CreateNewDecorationException;
-import util.exception.DecorationNotFoundException;
-import util.exception.DeleteDecorationException;
+import util.exception.AddOnNotFoundException;
+import util.exception.CreateNewAddOnException;
+import util.exception.DeleteAddOnException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UpdateDecorationException;
+import util.exception.UpdateAddOnException;
 
 /**
  *
- * @author xqy11
+ * @author JORD-SSD
  */
-@Named(value = "decorationManagementManagedBean")
+@Named(value = "addOnManagementManagedBean")
 @ViewScoped
-public class DecorationManagementManagedBean implements Serializable {
+public class AddOnManagementManagedBean implements Serializable {
 
-    @EJB(name = "DecorationSessionBeanLocal")
-    private DecorationSessionBeanLocal decorationSessionBeanLocal;
+    @EJB
+    private AddOnSessionBeanLocal addOnSessionBeanLocal;
     
-    private List<Decoration> decorationEntities;
-    private List<Decoration> filteredDecorationEntities;
+    private List<AddOn> addOnEntities;
+    private List<AddOn> filteredAddOnEntities;
     
-    private Decoration newDecorationEntity;
+    private AddOn newAddOnEntity;
     
-    private Decoration selectedDecorationEntityToUpdate;
+    private AddOn selectedAddOnEntityToUpdate;
     
     private String uploadedFilePath;
     private Boolean showUploadedFile;
     
-    public DecorationManagementManagedBean() {
-        newDecorationEntity = new Decoration();
+    public AddOnManagementManagedBean() {
+        newAddOnEntity = new AddOn();
     }
     
     @PostConstruct
     public void postConstruct()
     {
-        setDecorationEntities(decorationSessionBeanLocal.retrieveAllDecorations());
+        setAddOnEntities(addOnSessionBeanLocal.retrieveAllAddOns());
     }
     
-    public void viewDecorationDetails(ActionEvent event) throws IOException
+    public void viewAddOnDetails(ActionEvent event) throws IOException
     {
-        Long decorationIdToView = (Long)event.getComponent().getAttributes().get("decorationId");
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("decorationIdToView", decorationIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("viewDecorationDetails.xhtml");
+        Long itemIdToView = (Long)event.getComponent().getAttributes().get("itemId");
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("itemIdToView", itemIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewAddOnDetails.xhtml");
     }
     
-    public void createNewDecoration(ActionEvent event)
+    public void createNewAddOn(ActionEvent event)
     {  
         try
         {
-            Decoration pe = decorationSessionBeanLocal.createNewDecoration(getNewDecorationEntity());
-            getDecorationEntities().add(pe);
-            
-            if(filteredDecorationEntities != null) {
-                filteredDecorationEntities.add(pe);
-            }
-            
-            newDecorationEntity = new Decoration();
-            uploadedFilePath = null;
+            AddOn gct = addOnSessionBeanLocal.createNewAddOn(getNewAddOnEntity());
+            getAddOnEntities().add(gct);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New decoration created successfully (Decoration ID: " + pe.getDecorationId()+ ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New add on created successfully (AddOn ID: " + gct.getItemId()+ ")", null));
         }
-        catch(InputDataValidationException | CreateNewDecorationException | UnknownPersistenceException ex)
+        catch(InputDataValidationException | CreateNewAddOnException | UnknownPersistenceException ex)
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new decoration: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new addOn: " + ex.getMessage(), null));
         }
     }
     
-    //doUpdateDecoration
-    public void doUpdateDecoration(ActionEvent event)
+    public void doUpdateAddOn(ActionEvent event)
     {
-        selectedDecorationEntityToUpdate = (Decoration)event.getComponent().getAttributes().get("decorationEntityToUpdate");
-
+        selectedAddOnEntityToUpdate = (AddOn)event.getComponent().getAttributes().get("addOnEntityToUpdate");
     }
-    public void updateDecoration(ActionEvent event)
+    
+    public void updateAddOn(ActionEvent event)
     {        
         try
         {
             
-            decorationSessionBeanLocal.updateDecoration(selectedDecorationEntityToUpdate);
+            addOnSessionBeanLocal.updateAddOn(selectedAddOnEntityToUpdate);
                         
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Decoration updated successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Add on type updated successfully", null));
         }
-        catch(DecorationNotFoundException ex)
+        catch(AddOnNotFoundException ex)
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating decoration: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating add on: " + ex.getMessage(), null));
         }
-        catch(InputDataValidationException | UpdateDecorationException ex)
+        catch(InputDataValidationException | UpdateAddOnException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
     
-    public void deleteDecoration(ActionEvent event)
+    public void deleteAddOn(ActionEvent event)
     {
         try
         {
-            Decoration decorationEntityToDelete = (Decoration)event.getComponent().getAttributes().get("decorationEntityToDelete");
-            decorationSessionBeanLocal.deleteDecoration(decorationEntityToDelete.getDecorationId());
+            AddOn addOnEntityToDelete = (AddOn)event.getComponent().getAttributes().get("addOnEntityToDelete");
+            addOnSessionBeanLocal.deleteAddOn(addOnEntityToDelete.getItemId());
             
-            getDecorationEntities().remove(decorationEntityToDelete);
+            getAddOnEntities().remove(addOnEntityToDelete);
             
-            if(getFilteredDecorationEntities() != null)
+            if(getFilteredAddOnEntities() != null)
             {
-                getFilteredDecorationEntities().remove(decorationEntityToDelete);
+                getFilteredAddOnEntities().remove(addOnEntityToDelete);
             }
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Decoration deleted successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Add on type deleted successfully", null));
         }
-        catch(DecorationNotFoundException | DeleteDecorationException ex)
+        catch(AddOnNotFoundException | DeleteAddOnException ex)
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting decoration: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting add on: " + ex.getMessage(), null));
         }
         catch(Exception ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-
     
     public void handleImageUploadNew(FileUploadEvent event)
     {
@@ -186,7 +172,7 @@ public class DecorationManagementManagedBean implements Serializable {
             setShowUploadedFile((Boolean) true);
             
             // Would it be correct to put setImgAddress(uploadedFilePath) here??
-            getNewDecorationEntity().setImgAddress(uploadedFilePath);
+            getNewAddOnEntity().setImgAddress(uploadedFilePath);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }
@@ -242,7 +228,7 @@ public class DecorationManagementManagedBean implements Serializable {
             setShowUploadedFile((Boolean) true);
             
             // Would it be correct to put setImgAddress(uploadedFilePath) here??
-            getSelectedDecorationEntityToUpdate().setImgAddress(uploadedFilePath);
+            getSelectedAddOnEntityToUpdate().setImgAddress(uploadedFilePath);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }
@@ -251,61 +237,37 @@ public class DecorationManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
         }
     }
-    
-    /**
-     * @return the decorationEntities
-     */
-    public List<Decoration> getDecorationEntities() {
-        return decorationEntities;
+
+    public List<AddOn> getAddOnEntities() {
+        return addOnEntities;
     }
 
-    /**
-     * @param decorationEntities the decorationEntities to set
-     */
-    public void setDecorationEntities(List<Decoration> decorationEntities) {
-        this.decorationEntities = decorationEntities;
+    public void setAddOnEntities(List<AddOn> addOnEntities) {
+        this.addOnEntities = addOnEntities;
     }
 
-    /**
-     * @return the filteredDecorationEntities
-     */
-    public List<Decoration> getFilteredDecorationEntities() {
-        return filteredDecorationEntities;
+    public List<AddOn> getFilteredAddOnEntities() {
+        return filteredAddOnEntities;
     }
 
-    /**
-     * @param filteredDecorationEntities the filteredDecorationEntities to set
-     */
-    public void setFilteredDecorationEntities(List<Decoration> filteredDecorationEntities) {
-        this.filteredDecorationEntities = filteredDecorationEntities;
+    public void setFilteredAddOnEntities(List<AddOn> filteredAddOnEntities) {
+        this.filteredAddOnEntities = filteredAddOnEntities;
     }
 
-    /**
-     * @return the newDecorationEntity
-     */
-    public Decoration getNewDecorationEntity() {
-        return newDecorationEntity;
+    public AddOn getNewAddOnEntity() {
+        return newAddOnEntity;
     }
 
-    /**
-     * @param newDecorationEntity the newDecorationEntity to set
-     */
-    public void setNewDecorationEntity(Decoration newDecorationEntity) {
-        this.newDecorationEntity = newDecorationEntity;
+    public void setNewAddOnEntity(AddOn newAddOnEntity) {
+        this.newAddOnEntity = newAddOnEntity;
     }
 
-    /**
-     * @return the selectedDecorationEntityToUpdate
-     */
-    public Decoration getSelectedDecorationEntityToUpdate() {
-        return selectedDecorationEntityToUpdate;
+    public AddOn getSelectedAddOnEntityToUpdate() {
+        return selectedAddOnEntityToUpdate;
     }
 
-    /**
-     * @param selectedDecorationEntityToUpdate the selectedDecorationEntityToUpdate to set
-     */
-    public void setSelectedDecorationEntityToUpdate(Decoration selectedDecorationEntityToUpdate) {
-        this.selectedDecorationEntityToUpdate = selectedDecorationEntityToUpdate;
+    public void setSelectedAddOnEntityToUpdate(AddOn selectedAddOnEntityToUpdate) {
+        this.selectedAddOnEntityToUpdate = selectedAddOnEntityToUpdate;
     }
 
     public String getUploadedFilePath() {
@@ -323,6 +285,5 @@ public class DecorationManagementManagedBean implements Serializable {
     public void setShowUploadedFile(Boolean showUploadedFile) {
         this.showUploadedFile = showUploadedFile;
     }
-
     
 }

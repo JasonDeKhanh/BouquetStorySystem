@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class FlowerType implements Serializable {
     @Size(max = 128)
     private String description;
     
-    @OneToMany(mappedBy = "flowerType")
+    @OneToMany(mappedBy = "flowerType", fetch = FetchType.EAGER)
     private List<Flower> flowerEntities;
 
     public FlowerType() {

@@ -8,9 +8,11 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -20,6 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 public class Address implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -33,6 +36,10 @@ public class Address implements Serializable {
     @NotNull
     @Size(max = 10)
     private String postCode;
+    
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    private RegisteredGuest customer;
+    
 
     public Address() {
     }
@@ -69,6 +76,21 @@ public class Address implements Serializable {
     public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
+    
+        /**
+     * @return the customer
+     */
+    public RegisteredGuest getCustomer() {
+        return customer;
+    }
+
+    /**
+     * @param customer the customer to set
+     */
+    public void setCustomer(RegisteredGuest customer) {
+        this.customer = customer;
+    }
+
 
     @Override
     public int hashCode() {

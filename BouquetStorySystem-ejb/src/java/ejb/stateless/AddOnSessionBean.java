@@ -137,7 +137,7 @@ public class AddOnSessionBean implements AddOnSessionBeanLocal {
     }
     
     @Override
-    public void deleteAddOnDecoration(Long itemId) throws AddOnNotFoundException, DeleteAddOnException
+    public void deleteAddOn(Long itemId) throws AddOnNotFoundException, DeleteAddOnException
     {
         AddOn addOnEntityToRemove = retrieveAddOnByAddOnId(itemId);
         
