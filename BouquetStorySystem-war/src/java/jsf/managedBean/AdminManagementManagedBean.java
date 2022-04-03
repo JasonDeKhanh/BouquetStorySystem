@@ -7,7 +7,10 @@ package jsf.managedBean;
 
 import ejb.stateless.AdminSessionBeanLocal;
 import entity.Admin;
+import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.ejb.EJB;
@@ -15,18 +18,20 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdateAdminException;
 
 /**
  *
  * @author xqy11
  */
 @Named(value = "adminManagementManagedBean")
-@RequestScoped
-public class AdminManagementManagedBean {
+@ViewScoped
+public class AdminManagementManagedBean implements Serializable {
 
     @EJB(name = "AdminSessionBeanLocal")
     private AdminSessionBeanLocal adminSessionBeanLocal;
@@ -34,6 +39,7 @@ public class AdminManagementManagedBean {
     private Admin newAdmin;
     private List<Admin> adminEntities;
     private List<Admin> filteredAdminEntities;
+    private Admin selectedAdminEntityToUpdate;
     
     public AdminManagementManagedBean() {
         newAdmin = new Admin();
@@ -74,6 +80,37 @@ public class AdminManagementManagedBean {
             
         }
         
+    }
+    
+    public void doUpdateAdmin(ActionEvent event) 
+    {
+        setSelectedAdminEntityToUpdate((Admin)event.getComponent().getAttributes().get("adminEntityToUpdate"));
+        System.out.println("==============================================");
+        System.out.println(getSelectedAdminEntityToUpdate().getUsername());
+        System.out.println(getSelectedAdminEntityToUpdate().getFirstName());
+        System.out.println("==============================================");
+    }
+    
+    public void updateAdmin(ActionEvent event) {
+        try {
+            System.out.println("==================ffff============================");
+            System.out.println(getSelectedAdminEntityToUpdate().getUsername());
+            System.out.println(getSelectedAdminEntityToUpdate().getFirstName());
+            System.out.println("=======================fffff=======================");
+
+        
+            adminSessionBeanLocal.updateAdmin(getSelectedAdminEntityToUpdate());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "The Admin Username: "+getSelectedAdminEntityToUpdate().getUsername()+" has been updated successfully!", null));
+            
+        } catch (AdminNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting admin: " + ex.getMessage(), null));
+        } catch (UpdateAdminException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the new Admin (UpdateAdminException): " + ex.getMessage(), null));
+            
+        } catch (InputDataValidationException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the new Admin (InputDataInvalidationError): " + ex.getMessage(), null));
+            
+        }
     }
     
     public void deleteAdmin(ActionEvent event)
@@ -138,4 +175,19 @@ public class AdminManagementManagedBean {
     public void setFilteredAdminEntities(List<Admin> filteredAdminEntities) {
         this.filteredAdminEntities = filteredAdminEntities;
     }
+
+    /**
+     * @return the selectedAdminEntityToUpdate
+     */
+    public Admin getSelectedAdminEntityToUpdate() {
+        return selectedAdminEntityToUpdate;
+    }
+
+    /**
+     * @param selectedAdminEntityToUpdate the selectedAdminEntityToUpdate to set
+     */
+    public void setSelectedAdminEntityToUpdate(Admin selectedAdminEntityToUpdate) {
+        this.selectedAdminEntityToUpdate = selectedAdminEntityToUpdate;
+    }
+
 }

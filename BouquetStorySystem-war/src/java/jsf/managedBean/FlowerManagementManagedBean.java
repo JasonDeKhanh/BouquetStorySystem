@@ -129,7 +129,8 @@ public class FlowerManagementManagedBean implements Serializable {
 
     public void deleteFlower(ActionEvent event) {
         try {
-            Flower flowerEntityToDelete = (Flower) event.getComponent().getAttributes().get("decorationEntityToDelete");
+            Flower flowerEntityToDelete = (Flower) event.getComponent().getAttributes().get("flowerEntityToDelete");
+            System.out.println("================================"+flowerEntityToDelete.getName());
             flowerSessionBeanLocal.deleteFlower(flowerEntityToDelete.getFlowerId());
 
             getFlowerEntities().remove(flowerEntityToDelete);

@@ -5,8 +5,10 @@
  */
 package entity;
 
+import com.sun.istack.Nullable;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +16,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import util.security.CryptographicHelper;
 
 /**
@@ -25,14 +29,21 @@ import util.security.CryptographicHelper;
 public class RegisteredGuest extends Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    
+    
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String password;
     // ask prof if we need to include this in UML diagram
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
-    @OneToMany(fetch = FetchType.EAGER)
+    
+    @Nullable
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Address> addresses;
+    
+    @Nullable
     @OneToMany(fetch = FetchType.EAGER)
     private List<CreditCard> creditCards;
 
@@ -41,7 +52,7 @@ public class RegisteredGuest extends Customer implements Serializable {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
     }
 
-    public RegisteredGuest(String password, String firstName, String lastName, String email) {
+    public RegisteredGuest(String firstName, String lastName, String email,String password ) {
         super(firstName, lastName, email);
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         setPassword(password);
@@ -110,5 +121,5 @@ public class RegisteredGuest extends Customer implements Serializable {
     public String toString() {
         return "entity.RegisteredGuest[ id=" + customerId + " ]";
     }
-    
+
 }
