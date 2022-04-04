@@ -7,14 +7,12 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -29,10 +27,11 @@ public class Bundle extends Item implements Serializable {
     @OneToOne(optional = true)
     private Promotion promotion;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Product> products;
+    private Map<Integer,Product> products;
 
     public Bundle() {
         super();
+        this.products = new HashMap<>();
     }
 
     public Bundle(String bundleName) {
@@ -59,21 +58,22 @@ public class Bundle extends Item implements Serializable {
         this.promotion = promotion;
     }
 
-    public List<Product> getProducts() {
+    @Override
+    public BigDecimal getUnitPrice() {
+//        BigDecimal totalPrice = new BigDecimal(0);
+//        for (Product product:getProducts()) {
+//            totalPrice = totalPrice.add(product.getUnitPrice());
+//        }
+//        return totalPrice;
+        return new BigDecimal("0.00");
+    }
+
+    public Map<Integer,Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Map<Integer,Product> products) {
         this.products = products;
-    }
-    
-    @Override
-    public BigDecimal getUnitPrice() {
-        BigDecimal totalPrice = new BigDecimal(0);
-        for (Product product:products) {
-            totalPrice = totalPrice.add(product.getUnitPrice());
-        }
-        return totalPrice;
     }
     
     @Override
