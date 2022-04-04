@@ -1,0 +1,395 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                template="./../templates/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <div>
+            <h3>Container Management</h3>
+            
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Container" onclick="PF('dialogCreateNewContainer').show()" icon="pi pi-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+            </h:form>
+            
+            <h:form id="formAllContainers">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllContainers" widgetVar="dataTableAllContainers" value="#{containerManagementManagedBean.containerEntities}" var="containerEntity" rowKey="#{containerEntity.containerId}" rowIndexVar="row"
+                             filteredValue="#{containerManagementManagedBean.filteredContainerEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllFlowers').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Container ID" sortBy="#{containerEntity.containerId}" filterBy="#{containerEntity.containerId}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.containerId}" />
+                    </p:column>                            
+
+                    <p:column headerText="Image">
+                        <p:graphicImage value="#{containerEntity.imgAddress}" height="100px"/>
+                    </p:column>
+                    
+                    <p:column headerText="Type" sortBy="#{containerEntity.containerType.name}" filterBy="#{containerEntity.containerType.name}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.containerType.name}" />
+                    </p:column>
+                    
+                    <p:column headerText="Dimensions" sortBy="#{containerEntity.containerType.dimensions}" filterBy="#{containerEntity.containerType.dimensions}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.containerType.dimensions}" />
+                    </p:column>
+                    
+                    <p:column headerText="Color" sortBy="#{containerEntity.color}" filterBy="#{containerEntity.color}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.color}" />
+                    </p:column>
+                    
+                    <p:column headerText="Description" sortBy="#{containerEntity.description}" filterBy="#{containerEntity.description}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.description}" />
+                    </p:column>
+                    
+                    <p:column headerText="Quantity on Hand" sortBy="#{containerEntity.quantityOnHand}" filterBy="#{containerEntity.quantityOnHand}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.quantityOnHand}" />
+                    </p:column>
+                    
+                    <p:column headerText="Reorder Quantity" sortBy="#{containerEntity.reorderQuantity}" filterBy="#{containerEntity.reorderQuantity}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.reorderQuantity}" />
+                    </p:column>
+                    
+                    <p:column headerText="Flower Limit" sortBy="#{containerEntity.flowerLimit}" filterBy="#{containerEntity.flowerLimit}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.flowerLimit}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{containerEntity.unitPrice}" filterBy="#{containerEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{containerEntity.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="Display" sortBy="#{containerEntity.isOnDisplay}" filterBy="#{containerEntity.isOnDisplay}" filterMatchMode="contains">
+                        <h:outputText value="#{containerEntity.isOnDisplay}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ccViewContainer:formViewContainer" oncomplete="PF('dialogViewContainer').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{containerEntity}" target="#{viewContainerManagedBean.containerEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{containerManagementManagedBean.doUpdateContainer}" update="formUpdateContainer" oncomplete="PF('dialogUpdateContainer').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="containerEntityToUpdate" value="#{containerEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{containerManagementManagedBean.deleteContainer}" update="formAllContainers:dataTableAllContainers formAllContainers:messages">
+                            <f:attribute name="containerEntityToDelete" value="#{containerEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{containerEntity.color} #{containerEntity.containerType.name}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <ez:ViewContainer id="ccViewContainer"/>
+            
+            <h:form id="formCreateNewContainer">
+
+                <p:dialog id="dialogCreateNewContainer" widgetVar="dialogCreateNewContainer" header="Create New Container" closable="true">
+
+                    <p:messages id="messagesCreateNewContainer" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="imgAddress" value="Upload Image: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload listener="#{containerManagementManagedBean.handleImageUploadNew}" multiple="true" update="imgAddress" oncomplete="PF('dialogCreateNewContainer').show()"/>
+                                <p:panel id="imgAddress" header="Uploaded File" visible="#{containerManagementManagedBean.showUploadedFile}">
+                                    <p:graphicImage value="#{containerManagementManagedBean.uploadedFilePath}" height="100px" />
+                                </p:panel>
+                            </p:column>
+                            <p:column>
+                                <p:message for="imgAddress" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selContainerType" value="Container Type " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selContainerType" value="#{containerManagementManagedBean.newContainerEntityTypeId}">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{containerManagementManagedBean.containerTypeEntities}" var="containerTypeEntity" itemValue="#{containerTypeEntity.containerTypeId}" itemLabel="#{containerTypeEntity.name}, #{containerTypeEntity.dimensions}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selContainerType" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="color" value="Color: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="color" value="#{containerManagementManagedBean.newContainerEntity.color}" placeholder="Red " required="true" requiredMessage="Color is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="color" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{containerManagementManagedBean.newContainerEntity.description}" placeholder="Container Description" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{containerManagementManagedBean.newContainerEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{containerManagementManagedBean.newContainerEntity.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Unit Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <p:spinner id="unitPrice" value="#{containerManagementManagedBean.newContainerEntity.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="flowerLimit" value="Flower Limit " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="flowerLimit" value="#{containerManagementManagedBean.newContainerEntity.flowerLimit}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Flower Limit is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="flowerLimit" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{containerManagementManagedBean.newContainerEntity.isOnDisplay}" itemLabel="Display on shop"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Container" update="@this @form formAllContainers:dataTableAllContainers" actionListener="#{containerManagementManagedBean.createNewContainer}" oncomplete="PF('dialogCreateNewContainer').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+
+            <h:form id="formUpdateContainer">
+
+                <p:dialog id="dialogUpdateContainer" widgetVar="dialogUpdateContainer" header="Update Container" closable="true">
+
+                    <p:messages id="messagesUpdateFlower" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Container ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.containerId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="imgAddress" value="Upload Image: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload listener="#{containerManagementManagedBean.handleImageUploadUpdate}" multiple="true" update="imgAddress" oncomplete="PF('dialogCreateNewContainer').show()"/>
+                                <p:panel id="imgAddress" header="Uploaded File" >
+                                    <p:graphicImage value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.imgAddress}" height="100px" />
+                                </p:panel>
+                            </p:column>
+                            <p:column>
+                                <p:message for="imgAddress" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selContainerType" value="Container Type " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selContainerType" value="#{containerManagementManagedBean.containerTypeIdToUpdate}">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{containerManagementManagedBean.containerTypeEntities}" var="containerTypeEntity" itemValue="#{containerTypeEntity.containerTypeId}" itemLabel="#{containerTypeEntity.name}, #{containerTypeEntity.dimensions}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selContainerType" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="color" value="Color: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="color" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.color}" placeholder="Red " required="true" requiredMessage="Color is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="color" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.description}" placeholder="Container Description" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Unit Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <p:spinner id="unitPrice" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="flowerLimit" value="Flower Limit " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="flowerLimit" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.flowerLimit}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Flower Limit is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="flowerLimit" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{containerManagementManagedBean.selectedContainerEntityToUpdate.isOnDisplay}" itemLabel="Display on shop"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>             
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Cotnainer" update="@form formAllContainers:dataTableAllContainers" actionListener="#{containerManagementManagedBean.updateContainer}" oncomplete="PF('dialogUpdateContainer').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+    </ui:define>
+
+</ui:composition>

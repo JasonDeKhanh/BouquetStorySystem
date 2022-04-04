@@ -41,7 +41,7 @@
                     <!-- ugly, fix css later somehow idk lol -->
                     <p:submenu label="Container Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Container Type Management" outcome="/productManagement/containerTypeManagement.xhtml" icon="pi pi-home" />
-                        <p:menuitem value="Container Management" icon="pi pi-home" />
+                        <p:menuitem value="Container Management" outcome="/productManagement/containerManagement.xhtml" icon="pi pi-home" />
                     </p:submenu>
                     
                     <p:submenu label="Add On Management" rendered="#{sessionScope.isLogin == true}">
