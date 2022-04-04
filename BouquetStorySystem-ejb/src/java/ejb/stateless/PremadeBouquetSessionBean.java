@@ -22,6 +22,7 @@ import util.exception.DeletePremadeBouquetException;
 import util.exception.InputDataValidationException;
 import util.exception.PremadeBouquetNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdatePremadeBouquetException;
 
 /**
  *
@@ -43,7 +44,8 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
 
 
     // Create new Premade Bouquet
-    public PremadeBouquet createNewGiftCard(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
+    @Override
+    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
         
@@ -84,6 +86,7 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
     
     
     // retrieve all premade bouquets
+    @Override
     public List<PremadeBouquet> retrieveAllPremadeBouquets()
     {
         Query query = em.createQuery("SELECT pb FROM PremadeBouquet pb ORDER BY pb.itemId ASC");
@@ -95,6 +98,7 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
     
     
     // retrieve premade bouquet by item id
+    @Override
     public PremadeBouquet retrievePremadeBouquetByItemId(Long itemId) throws PremadeBouquetNotFoundException
     {
         PremadeBouquet premadeBouquet = em.find(PremadeBouquet.class, itemId);
@@ -110,7 +114,8 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
     }
     
     
-    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException
+    @Override
+    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException
     {
         if(premadeBouquet != null && premadeBouquet.getItemId()!= null)
         {
@@ -140,6 +145,7 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
     }
     
     
+    @Override
     public void deletePremadeBouquet(Long itemId) throws PremadeBouquetNotFoundException, DeletePremadeBouquetException
     {
         PremadeBouquet premadeBouquetToRemove = retrievePremadeBouquetByItemId(itemId);
