@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -26,7 +27,7 @@ public class Bundle extends Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String bundleName;
-    @OneToOne(optional = true)
+    @ManyToOne(optional = true)
     private Promotion promotion;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;

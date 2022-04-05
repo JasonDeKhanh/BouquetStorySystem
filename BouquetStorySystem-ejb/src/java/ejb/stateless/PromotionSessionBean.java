@@ -129,6 +129,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         Promotion promotionEntityToRemove = retrievePromotionByPromotionId(promotionId);
         
 //        List<Bundle> bundleEntities = bundleEntitySessionBeanLocal.retrieveBundlesByPromotionId(promotionId);
+        em.remove(promotionEntityToRemove);
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Promotion>>constraintViolations)

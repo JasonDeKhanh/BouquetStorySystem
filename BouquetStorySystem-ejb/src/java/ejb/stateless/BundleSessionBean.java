@@ -135,6 +135,8 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
     public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException
     {
         Bundle bundleEntityToRemove = retrieveBundleByItemId(itemId);
+        
+        em.remove(bundleEntityToRemove);
 
     }
 
