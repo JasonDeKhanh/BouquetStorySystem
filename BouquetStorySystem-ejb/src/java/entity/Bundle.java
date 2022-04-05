@@ -29,7 +29,7 @@ public class Bundle extends Item implements Serializable {
     @ManyToOne(optional = true)
     private Promotion promotion;
     @ManyToMany(fetch = FetchType.EAGER)
-    private Map<Integer,Product> products;
+    private Map<Product, Integer> products;
 
     public Bundle() {
         super();
@@ -62,19 +62,22 @@ public class Bundle extends Item implements Serializable {
 
     @Override
     public BigDecimal getUnitPrice() {
-//        BigDecimal totalPrice = new BigDecimal(0);
-//        for (Product product:getProducts()) {
-//            totalPrice = totalPrice.add(product.getUnitPrice());
-//        }
-//        return totalPrice;
-        return new BigDecimal("0.00");
+        BigDecimal totalPrice = new BigDecimal(0);
+        for (Map.Entry<Product, Integer> entry:products.entrySet()) {
+            BigDecimal subTotal = entry.getKey().getUnitPrice().multiply(BigDecimal.valueOf(entry.getValue()));
+            totalPrice = totalPrice.add(subTotal);
+        }
+        if (promotion != null) {
+            totalPrice = totalPrice.multiply(promotion.getDiscountPercent());
+        }
+        return totalPrice;
     }
 
-    public Map<Integer,Product> getProducts() {
+    public Map<Product, Integer> getProducts() {
         return products;
     }
 
-    public void setProducts(Map<Integer,Product> products) {
+    public void setProducts(Map<Product, Integer> products) {
         this.products = products;
     }
     
