@@ -132,7 +132,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
     }
     
     @Override
-    public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException
+    public void deleteBundle(Long itemId) throws BundleNotFoundException, DeleteBundleException
     {
         Bundle bundleEntityToRemove = retrieveBundleByItemId(itemId);
         

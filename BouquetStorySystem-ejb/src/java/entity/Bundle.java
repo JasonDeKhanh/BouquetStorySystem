@@ -10,12 +10,14 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -28,8 +30,11 @@ public class Bundle extends Item implements Serializable {
     private String bundleName;
     @ManyToOne(optional = true)
     private Promotion promotion;
-    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.EAGER)
     private Map<Product, Integer> products;
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isOnDisplay;
 
     public Bundle() {
         super();
@@ -79,6 +84,14 @@ public class Bundle extends Item implements Serializable {
 
     public void setProducts(Map<Product, Integer> products) {
         this.products = products;
+    }
+
+    public Boolean getIsOnDisplay() {
+        return isOnDisplay;
+    }
+
+    public void setIsOnDisplay(Boolean isOnDisplay) {
+        this.isOnDisplay = isOnDisplay;
     }
     
     @Override
