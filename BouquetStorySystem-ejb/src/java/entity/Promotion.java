@@ -31,8 +31,8 @@ public class Promotion implements Serializable {
     private String name;
     @Column(nullable = false)
     @NotNull
-    @DecimalMin(value = "0.0", inclusive = true)
-    @DecimalMax(value = "1.0", inclusive = true)
+    @DecimalMin(value = "1.0", inclusive = true)
+    @DecimalMax(value = "100.0", inclusive = true)
     private BigDecimal discountPercent;
 
     public Long getPromotionId() {
