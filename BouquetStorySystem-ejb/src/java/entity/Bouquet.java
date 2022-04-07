@@ -35,6 +35,14 @@ public abstract class Bouquet extends Product implements Serializable {
     @NotNull
     @Size(min = 1, max = 32)
     private String creatorName;
+    private Map<Flower,Integer> flowerQuantities;
+    private Map<Decoration,Integer> decorationQuantities;
+    
+    // we have a list of entities as the relationship
+    // then we should have a session bean method or a class method
+    // to get the quantities Map
+    // search by key inside the map for the entitye (Flower or Deco)
+    // then get the value which is the quantity
     
     // Relationships
     @ManyToOne(optional = false)
@@ -42,15 +50,17 @@ public abstract class Bouquet extends Product implements Serializable {
     private Container container;
     
     @ManyToMany(fetch = FetchType.EAGER)
-    private Map<Decoration,Integer> decorations;
+    private List<Decoration> decorations;
     
     @ManyToMany(fetch = FetchType.EAGER)
-    private Map<Flower,Integer> flowers;
+    private List<Flower> flowers;
 
     public Bouquet() {
         super();
-        this.decorations = new HashMap<>();
-        this.flowers = new HashMap<>();
+        this.flowerQuantities = new HashMap<>();
+        this.decorationQuantities = new HashMap<>();
+        this.decorations = new ArrayList<>();
+        this.flowers = new ArrayList<>();
     }
 
     public Bouquet(String creatorName) {
@@ -87,20 +97,44 @@ public abstract class Bouquet extends Product implements Serializable {
         this.container = container;
     }
 
-    public Map<Decoration,Integer> getDecorations() {
+    public List<Decoration> getDecorations() {
         return decorations;
     }
 
-    public void setDecorations(Map<Decoration,Integer> decorations) {
+    public void setDecorations(List<Decoration> decorations) {
         this.decorations = decorations;
     }
 
-    public Map<Flower,Integer> getFlowers() {
+//    public Map<Flower,Integer> getFlowers() {
+//        return flowers;
+//    }
+//
+//    public void setFlowers(Map<Flower,Integer> flowers) {
+//        this.flowers = flowers;
+//    }
+    
+    public List<Flower> getFlowers() {
         return flowers;
     }
 
-    public void setFlowers(Map<Flower,Integer> flowers) {
+    public void setFlowers(List<Flower> flowers) {
         this.flowers = flowers;
+    }
+
+    public Map<Flower,Integer> getFlowerQuantities() {
+        return flowerQuantities;
+    }
+
+    public void setFlowerQuantities(Map<Flower,Integer> flowerQuantities) {
+        this.flowerQuantities = flowerQuantities;
+    }
+
+    public Map<Decoration,Integer> getDecorationQuantities() {
+        return decorationQuantities;
+    }
+
+    public void setDecorationQuantities(Map<Decoration,Integer> decorationQuantities) {
+        this.decorationQuantities = decorationQuantities;
     }
 
 
