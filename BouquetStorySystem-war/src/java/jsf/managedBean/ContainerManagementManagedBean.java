@@ -87,6 +87,7 @@ public class ContainerManagementManagedBean implements Serializable {
             newContainerEntity = new Container();
             newContainerEntityTypeId = null;
             uploadedFilePath = null;
+            setShowUploadedFile((Boolean) false);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New container created successfully (Container ID: " + ce.getContainerId()+ ")", null));
         } 
