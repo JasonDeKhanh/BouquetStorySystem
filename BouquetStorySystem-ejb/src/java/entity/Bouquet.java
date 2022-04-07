@@ -42,14 +42,14 @@ public abstract class Bouquet extends Product implements Serializable {
     private Container container;
     
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Decoration> decorations;
+    private Map<Decoration,Integer> decorations;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Map<Flower,Integer> flowers;
 
     public Bouquet() {
         super();
-        this.decorations = new ArrayList<>();
+        this.decorations = new HashMap<>();
         this.flowers = new HashMap<>();
     }
 
@@ -87,11 +87,11 @@ public abstract class Bouquet extends Product implements Serializable {
         this.container = container;
     }
 
-    public List<Decoration> getDecorations() {
+    public Map<Decoration,Integer> getDecorations() {
         return decorations;
     }
 
-    public void setDecorations(List<Decoration> decorations) {
+    public void setDecorations(Map<Decoration,Integer> decorations) {
         this.decorations = decorations;
     }
 
