@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,12 +45,12 @@ public abstract class Bouquet extends Product implements Serializable {
     private List<Decoration> decorations;
     
     @ManyToMany
-    private List<Flower> flowers;
+    private Map<Flower,Integer> flowers;
 
     public Bouquet() {
         super();
         this.decorations = new ArrayList<>();
-        this.flowers = new ArrayList<>();
+        this.flowers = new HashMap<>();
     }
 
     public Bouquet(String creatorName) {
@@ -93,13 +95,14 @@ public abstract class Bouquet extends Product implements Serializable {
         this.decorations = decorations;
     }
 
-    public List<Flower> getFlowers() {
+    public Map<Flower,Integer> getFlowers() {
         return flowers;
     }
 
-    public void setFlowers(List<Flower> flowers) {
+    public void setFlowers(Map<Flower,Integer> flowers) {
         this.flowers = flowers;
     }
+
 
     @Override
     public int hashCode() {
