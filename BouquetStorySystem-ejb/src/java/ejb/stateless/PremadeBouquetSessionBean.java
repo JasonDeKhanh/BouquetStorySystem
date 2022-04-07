@@ -5,9 +5,14 @@
  */
 package ejb.stateless;
 
+import entity.Container;
+import entity.Decoration;
+import entity.Flower;
 import entity.PremadeBouquet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,8 +22,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.ContainerNotFoundException;
 import util.exception.CreateNewPremadeBouquetException;
+import util.exception.DecorationNotFoundException;
 import util.exception.DeletePremadeBouquetException;
+import util.exception.FlowerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.PremadeBouquetNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -31,9 +39,20 @@ import util.exception.UpdatePremadeBouquetException;
 @Stateless
 public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal {
 
+    @EJB(name = "DecorationSessionBeanLocal")
+    private DecorationSessionBeanLocal decorationSessionBeanLocal;
+
+    @EJB(name = "FlowerSessionBeanLocal")
+    private FlowerSessionBeanLocal flowerSessionBeanLocal;
+
+    @EJB(name = "ContainerSessionBeanLocal")
+    private ContainerSessionBeanLocal containerSessionBeanLocal;
+
     @PersistenceContext(unitName = "BouquetStorySystem-ejbPU")
     private EntityManager em;
 
+    
+    
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
@@ -44,8 +63,48 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
 
 
     // Create new Premade Bouquet
+//    @Override
+//    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
+//    {
+//        Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
+//        
+//        if(constraintViolations.isEmpty())
+//        {
+//            try
+//            {
+//                em.persist(premadeBouquet);
+//                em.flush();
+//                
+//                return premadeBouquet;
+//            }
+//            catch(PersistenceException ex)
+//            {
+//                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
+//                {
+//                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
+//                    {
+//                        throw new CreateNewPremadeBouquetException();
+//                    }
+//                    else
+//                    {
+//                        throw new UnknownPersistenceException(ex.getMessage());
+//                    }
+//                }
+//                else
+//                {
+//                    throw new UnknownPersistenceException(ex.getMessage());
+//                }
+//            }
+//        }
+//        else
+//        {
+//            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//        }
+//    }
+    
+    // new proper create
     @Override
-    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
+    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
         
@@ -53,7 +112,31 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         {
             try
             {
+                if(containerId == null)
+                {
+                    throw new CreateNewPremadeBouquetException("Container ID not provided or is erroneous");
+                }
+                Container containerEntity = containerSessionBeanLocal.retrieveContainerByContainerId(containerId);
+                
                 em.persist(premadeBouquet);
+                
+                premadeBouquet.setContainer(containerEntity);
+                
+//                List<Decoration> newDecorations = new ArrayList<>();
+                // associate with decorations
+                for(Decoration decoration : decorations)
+                {
+                    Decoration decorationEntity = decorationSessionBeanLocal.retrieveDecorationByDecorationId(decoration.getDecorationId());
+                    premadeBouquet.getDecorations().add(decorationEntity);
+                }
+                
+                // associate with flowers
+                for(Flower flower : flowers) 
+                {
+                    Flower flowerEntity = flowerSessionBeanLocal.retrieveFlowerByFlowerId(flower.getFlowerId());
+                    premadeBouquet.getFlowers().add(flower);
+                }
+                //
                 em.flush();
                 
                 return premadeBouquet;
@@ -76,14 +159,16 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
             }
+            catch(DecorationNotFoundException | FlowerNotFoundException | ContainerNotFoundException ex)
+            {
+                throw new CreateNewPremadeBouquetException("An error has occurred while creating the new premade bouquet: " + ex.getMessage());
+            }
         }
         else
         {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
-    
     
     // retrieve all premade bouquets
     @Override

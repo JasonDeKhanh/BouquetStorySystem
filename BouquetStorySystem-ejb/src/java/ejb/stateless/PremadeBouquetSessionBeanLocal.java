@@ -5,6 +5,8 @@
  */
 package ejb.stateless;
 
+import entity.Decoration;
+import entity.Flower;
 import entity.PremadeBouquet;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,6 +32,6 @@ public interface PremadeBouquetSessionBeanLocal {
 
     public List<PremadeBouquet> retrieveAllPremadeBouquets();
 
-    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException;
+    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException;
     
 }
