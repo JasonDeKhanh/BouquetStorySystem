@@ -10,12 +10,14 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -28,8 +30,11 @@ public class Bundle extends Item implements Serializable {
     private String bundleName;
     @ManyToOne(optional = true)
     private Promotion promotion;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Map<Integer,Product> products;
+//    @ManyToMany(fetch = FetchType.EAGER)
+    private Map<Product, Integer> products;
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isOnDisplay;
 
     public Bundle() {
         super();
@@ -62,20 +67,31 @@ public class Bundle extends Item implements Serializable {
 
     @Override
     public BigDecimal getUnitPrice() {
-//        BigDecimal totalPrice = new BigDecimal(0);
-//        for (Product product:getProducts()) {
-//            totalPrice = totalPrice.add(product.getUnitPrice());
-//        }
-//        return totalPrice;
-        return new BigDecimal("0.00");
+        BigDecimal totalPrice = new BigDecimal(0);
+        for (Map.Entry<Product, Integer> entry:products.entrySet()) {
+            BigDecimal subTotal = entry.getKey().getUnitPrice().multiply(BigDecimal.valueOf(entry.getValue()));
+            totalPrice = totalPrice.add(subTotal);
+        }
+        if (promotion != null) {
+            totalPrice = totalPrice.multiply(promotion.getDiscountPercent());
+        }
+        return totalPrice;
     }
 
-    public Map<Integer,Product> getProducts() {
+    public Map<Product, Integer> getProducts() {
         return products;
     }
 
-    public void setProducts(Map<Integer,Product> products) {
+    public void setProducts(Map<Product, Integer> products) {
         this.products = products;
+    }
+
+    public Boolean getIsOnDisplay() {
+        return isOnDisplay;
+    }
+
+    public void setIsOnDisplay(Boolean isOnDisplay) {
+        this.isOnDisplay = isOnDisplay;
     }
     
     @Override

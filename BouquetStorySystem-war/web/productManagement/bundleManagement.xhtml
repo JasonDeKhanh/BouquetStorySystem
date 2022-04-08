@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                template="./../templates/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <div>
+            <h3>Bundle Management</h3>
+            
+            <h:form>
+            
+                <p:menubar>
+
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Bundle" onclick="PF('dialogCreateNewBundle').show()" icon="pi pi-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>
+            
+            <h:form id="formAllBundles">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllBundles" widgetVar="dataTableAllBundles" value="#{bundleManagementManagedBean.bundleEntities}" var="bundleEntity" rowKey="#{bundleEntity.itemId}" rowIndexVar="row"
+                             filteredValue="#{bundleManagementManagedBean.filteredBundleEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllBundles').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Item ID" sortBy="#{bundleEntity.itemId}" filterBy="#{bundleEntity.itemId}" filterMatchMode="contains">
+                        <h:outputText value="#{bundleEntity.itemId}" />
+                    </p:column>                            
+                    
+                    <p:column headerText="Name" sortBy="#{bundleEntity.bundleName}" filterBy="#{bundleEntity.bundleName}" filterMatchMode="contains">
+                        <h:outputText value="#{bundleEntity.bundleName}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{bundleEntity.unitPrice}" filterBy="#{bundleEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{bundleEntity.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="Display" sortBy="#{bundleEntity.isOnDisplay}" filterBy="#{bundleEntity.isOnDisplay}" filterMatchMode="contains">
+                        <h:outputText value="#{bundleEntity.isOnDisplay}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{bundleEntity}" target="#{viewBundleManagedBean.bundleEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{bundleManagementManagedBean.doUpdateBundle}" update="formUpdateBundle" oncomplete="PF('dialogUpdateBundle').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="bundleEntityToUpdate" value="#{bundleEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{bundleManagementManagedBean.deleteBundle}" update="formAllBundles:dataTableAllBundles formAllBundles:messages">
+                            <f:attribute name="bundleEntityToDelete" value="#{bundleEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{bundleEntity.bundleName}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <ez:ViewBundle id="ccViewBundle"/>
+            
+            <h:form id="formCreateNewBundle">
+
+                <p:dialog id="dialogCreateNewBundle" widgetVar="dialogCreateNewBundle" header="Create New Bundle" closable="true">
+
+                    <p:messages id="messagesCreateNewBundle" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="bundleName" value="Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="bundleName" value="#{bundleManagementManagedBean.newBundleEntity.bundleName}" placeholder="Bundle 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="bundleName" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="promotion" value="Promotion " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="promotion" value="#{bundleManagementManagedBean.newBundleEntity.promotion}">
+                                    <f:selectItem itemLabel="[Choose One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{bundleManagementManagedBean.promotionEntities}" var="promotionEntity" itemValue="#{promotionEntity.promotionId}" itemLabel="#{promotionEntity.name}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="promotion" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{bundleManagementManagedBean.newBundleEntity.isOnDisplay}" itemLabel="Display on shop"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Bundle" update="@this @form formAllBundles:dataTableAllBundles" actionListener="#{bundleManagementManagedBean.createNewBundle}" oncomplete="PF('dialogCreateNewBundle').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+
+            <h:form id="formUpdateBundle">
+
+                <p:dialog id="dialogUpdateBundle" widgetVar="dialogUpdateBundle" header="Update Bundle" closable="true">
+
+                    <p:messages id="messagesUpdateBundle" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Item ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{bundleManagementManagedBean.selectedBundleEntityToUpdate.itemId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="bundleName" value="Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="bundleName" value="#{bundleManagementManagedBean.selectedBundleEntityToUpdate.bundleName}" placeholder="Bundle 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="bundleName" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="promotion" value="Promotion " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="promotion" value="#{bundleManagementManagedBean.selectedBundleEntityToUpdate.promotion}">
+                                    <f:selectItem itemLabel="[Choose One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{bundleManagementManagedBean.promotionEntities}" var="promotionEntity" itemValue="#{promotionEntity.promotionId}" itemLabel="#{promotionEntity.name}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="promotion" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{bundleManagementManagedBean.selectedBundleEntityToUpdate.isOnDisplay}" itemLabel="Display on shop"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="Premade Bouquet" for="selPremadeBouquet" styleClass="label" />
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selPremadeBouquet" value="#{bundleManagementManagedBean.productToAdd}" required="true">
+                                        <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />
+                                        <f:selectItems value="#{bundleManagementManagedBean.premadeBouquetEntities}" var="productEntity" itemValue="#{productEntity.itemId}" itemLabel="#{productEntity.name}" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="selPremadeBouquet" />
+                                </p:column>
+                                
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="quantityToSet" value="Quantity To Set " style="font-weight: bold;" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:spinner id="quantityToSet" value="#{bundleManagementManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="quantityToSet" />
+                                    </p:column>
+                                </p:row>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton value="Add Premade Bouquet" immediate="true" update="formUpdateBundle:dataTableProducts" actionListener="#{bundleManagementManagedBean.addProductToMap}" />
+                                </p:column>                        
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="Add On" for="selAddOn" styleClass="label" />
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selAddOn" value="#{bundleManagementManagedBean.productToAdd}" required="true">
+                                        <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />
+                                        <f:selectItems value="#{bundleManagementManagedBean.addOnEntities}" var="productEntity" itemValue="#{productEntity.itemId}" itemLabel="#{productEntity.name}" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="selAddOn" />
+                                </p:column>
+                                
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="quantityToSet" value="Quantity To Set " style="font-weight: bold;" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:spinner id="quantityToSet" value="#{bundleManagementManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="quantityToSet" />
+                                    </p:column>
+                                </p:row>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton value="Add add on" immediate="true" update="formUpdateBundle:dataTableProducts" actionListener="#{bundleManagementManagedBean.addProductToMap}" />
+                                </p:column>                        
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:dataTable id="dataTableProducts" value="#{bundleManagementManagedBean.products}" var="product"
+                                    rowIndexVar="rowIndex">
+
+                           <p:column headerText="Product">
+
+                               <h:outputText value="#{product.key.name}" />
+
+                           </p:column>
+                            
+                            <p:column headerText="Quantity">
+
+                               <h:outputText value="#{product.value}" />
+
+                           </p:column>
+
+                           <p:column headerText="Action">
+
+                               <p:commandLink value="Remove" process="@this" update="formMain:dataTableProducts" actionListener="#{bundleManagementManagedBean.removeProductFromMap}">
+                                   <f:attribute name="productToRemove" value="#{product.key}" />
+                               </p:commandLink>
+
+                           </p:column>
+
+                       </p:dataTable>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Bundle" update="@form formAllBundles:dataTableAllBundles" actionListener="#{bundleManagementManagedBean.updateBundle}" oncomplete="PF('dialogUpdateBundle').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+    </ui:define>
+
+</ui:composition>
