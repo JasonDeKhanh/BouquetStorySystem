@@ -6,9 +6,12 @@
 package jsf.managedBean;
 
 import entity.SaleTransaction;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -32,6 +35,13 @@ public class ViewSaleTransactionManagedBean implements Serializable {
      */
     public SaleTransaction getSaleTransactionToView() {
         return saleTransactionToView;
+    }
+    
+    public void back(ActionEvent event) throws IOException
+    {
+        
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewSaleTransactions.xhtml");
+
     }
 
     /**

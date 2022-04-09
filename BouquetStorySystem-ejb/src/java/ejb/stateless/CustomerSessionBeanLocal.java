@@ -23,15 +23,12 @@ import util.exception.UpdateCustomerException;
 @Local
 public interface CustomerSessionBeanLocal {
 
-    public Long createNewCustomer(Customer newCustomer) throws CustomerEmailExistException, UnknownPersistenceException, InputDataValidationException;
 
     public List<Customer> retrieveAllCustomers();
 
     public Customer retrieveCustomerByCustomerId(Long customerId) throws CustomerNotFoundException;
 
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
-
-//    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException;
 
     public void updateCustomer(Customer customer) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException;
 

@@ -88,6 +88,12 @@
                         </p:commandButton>
                         
                     </p:column>
+                    
+                    <p:column headerText="Action">    				
+                        <p:commandLink value="View" actionListener="#{SalesTransactionManagedBean.viewSaleTransactionDetails}">
+                            <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{viewSaleTransactionManagedBean.saleTransactionToView}" />
+                        </p:commandLink>
+                    </p:column>
 
                 </p:dataTable>
 
