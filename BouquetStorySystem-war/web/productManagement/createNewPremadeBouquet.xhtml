@@ -98,6 +98,37 @@
                     
                 </p:panelGrid>
                 
+                <br/>
+                
+                <h3>Select Occasions</h3>
+                <p:panelGrid id="panelGridSelectOccasions">
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selOccasions" value="Occasions: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:selectManyMenu id="selOccasions" widgetVar="selOccasions" value="#{createNewPremadeBouquetManagedBean.newOccasionEnums}"
+                          var="o" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{createNewPremadeBouquetManagedBean.occasionEnums}" var="occasionEnum" itemLabel="#{occasionEnum}" itemValue="#{occasionEnum}" />
+
+                                <p:column>
+                                    <h:outputText value="#{o}" />
+                                </p:column>
+                            </p:selectManyMenu>
+                            <p:outputPanel></p:outputPanel>
+                            <p:outputPanel>
+                                <p:commandButton value="Select All" onclick="PF('selOccasions').selectAll()" />
+                                <p:commandButton value="Unselect All" onclick="PF('selOccasions').unselectAll()" />
+                            </p:outputPanel>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selOccasions" />
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
+                
                 <h3>Select Container</h3>
                 <p:panelGrid id="panelGridSelectContainer">
                     

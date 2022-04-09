@@ -22,6 +22,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
+import util.enumeration.OccasionEnum;
 import util.exception.ContainerNotFoundException;
 import util.exception.CreateNewPremadeBouquetException;
 import util.exception.DecorationNotFoundException;
@@ -62,6 +64,9 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
     
     private PremadeBouquet newPremadeBouquet;
     
+    private List<OccasionEnum> newOccasionEnums;
+    private List<OccasionEnum> occasionEnums;
+    
     private Long newContainerId;
     private List<Container> containers;
     
@@ -87,6 +92,8 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         newPremadeBouquet = new PremadeBouquet();
         Admin currentAdmin = (Admin)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentAdmin");
         newPremadeBouquet.setCreatorName(currentAdmin.getFirstName() + " " + currentAdmin.getLastName() + " (BouquetStory)");
+    
+        occasionEnums = Arrays.asList(OccasionEnum.values());
     }
     
     @PostConstruct
@@ -209,6 +216,9 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
                 newPremadeBouquet.getFlowerQuantities().put(flowerMap.getKey(), flowerMap.getValue());
             }
             
+            // link occasions
+            newPremadeBouquet.setOccasions(newOccasionEnums);
+            
             // call session bean to create
             PremadeBouquet pb = premadeBouquetSessionBeanLocal.createNewPremadeBouquet(newPremadeBouquet, containerToAdd.getContainerId(), newDecorationsList, newFlowersList);
             
@@ -278,6 +288,22 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
 
     public void setNewPremadeBouquet(PremadeBouquet newPremadeBouquet) {
         this.newPremadeBouquet = newPremadeBouquet;
+    }
+
+    public List<OccasionEnum> getNewOccasionEnums() {
+        return newOccasionEnums;
+    }
+
+    public void setNewOccasionEnums(List<OccasionEnum> newOccasionEnums) {
+        this.newOccasionEnums = newOccasionEnums;
+    }
+
+    public List<OccasionEnum> getOccasionEnums() {
+        return occasionEnums;
+    }
+
+    public void setOccasionEnums(List<OccasionEnum> occasionEnums) {
+        this.occasionEnums = occasionEnums;
     }
 
     public Long getNewContainerId() {
