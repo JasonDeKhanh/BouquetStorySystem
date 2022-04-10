@@ -202,7 +202,7 @@
                             <p:outputLabel value="Quantity " style="font-weight: bold;" />
                         </p:column>
                         <p:column headerText="Quantity" rendered="#{createNewPremadeBouquetManagedBean.selectedDecorationId != null}" >
-                            <p:spinner id="quantityDecoration" value="#{createNewPremadeBouquetManagedBean.selectedDecorationQuantity}" placeholder="10" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
+                            <p:spinner id="quantityDecoration" value="#{createNewPremadeBouquetManagedBean.selectedDecorationQuantity}" placeholder="10" min="1" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
                                 <!-- must have this ajax!! else quantity won't be updated -->
                                 <p:ajax process="@this"/>
                             </p:spinner>
@@ -232,8 +232,12 @@
                         <p:outputLabel value="#{decorationEntity.value}"/>
                     </p:column>
                     <p:column headerText="Action">
-                        <p:outputLabel value="Remove plis lol"/>
-                        <p:outputLabel value="Change quantity maybe?"/>
+                        <p:commandButton value="Remove From List" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.deleteDecorationFromList}" update="formCreatePremadeBouquet:dataTableAddedDecorations formCreatePremadeBouquet:messagesCreateNewPremadeBouquet">
+                            <f:attribute name="decorationToDelete" value="#{decorationEntity.key}" />
+                        </p:commandButton>
+                        <p:commandButton value="Update Quantity" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.doUpdateDecorationQuantityInList}" update="formUpdateDecorationQuantityInList" oncomplete="PF('dialogUpdateDecorationQuantityInList').show()">
+                            <f:attribute name="decorationToUpdateQuantity" value="#{decorationEntity.key}" />
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
                 
@@ -275,7 +279,7 @@
                             <p:outputLabel value="Quantity " style="font-weight: bold;" />
                         </p:column>
                         <p:column headerText="Quantity" rendered="#{createNewPremadeBouquetManagedBean.selectedFlowerId != null}" >
-                            <p:spinner id="quantityFlower" value="#{createNewPremadeBouquetManagedBean.selectedFlowerQuantity}" placeholder="10" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
+                            <p:spinner id="quantityFlower" value="#{createNewPremadeBouquetManagedBean.selectedFlowerQuantity}" placeholder="10" min="1" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
                                 <!-- must have this ajax!! else quantity won't be updated -->
                                 <p:ajax process="@this"/>
                             </p:spinner>
@@ -304,8 +308,12 @@
                         <p:outputLabel value="#{flowerEntity.value}"/>
                     </p:column>
                     <p:column headerText="Action">
-                        <p:outputLabel value="Remove plis lol"/>
-                        <p:outputLabel value="Change quantity maybe?"/>
+                        <p:commandButton value="Remove From List" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.deleteFlowerFromList}" update="formCreatePremadeBouquet:dataTableAddedFlowers formCreatePremadeBouquet:messagesCreateNewPremadeBouquet">
+                            <f:attribute name="flowerToDelete" value="#{flowerEntity.key}" />
+                        </p:commandButton>
+                        <p:commandButton value="Update Quantity" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.doUpdateFlowerQuantityInList}" update="formUpdateFlowerQuantityInList" oncomplete="PF('dialogUpdateFlowerQuantityInList').show()">
+                            <f:attribute name="flowerToUpdateQuantity" value="#{flowerEntity.key}" />
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
                 
@@ -316,6 +324,94 @@
                 
             </p:panel>
             
+        </h:form>
+        
+        <h:form id="formUpdateFlowerQuantityInList">
+            
+            <p:dialog id="dialogUpdateFlowerQuantityInList" widgetVar="dialogUpdateFlowerQuantityInList" header="Update Flower Quantity" closable="true">
+                
+                <p:messages id="messagesUpdateFlowerQuantityInList" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel id="name" value="#{createNewPremadeBouquetManagedBean.flowerToUpdateQuantity.name}"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="quantity" value="Quantity: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="quantity" value="#{createNewPremadeBouquetManagedBean.flowerQuantityToUpdate}" placeholder="100" min="1" max="1000000" required="true" requiredMessage="Quantity is required" >
+                                <p:ajax process="@this"/>
+                            </p:spinner>
+                        </p:column>
+                        <p:column>
+                            <p:message for="quantity" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton  value="Update" update="@form formCreatePremadeBouquet:dataTableAddedFlowers" actionListener="#{createNewPremadeBouquetManagedBean.updateFlowerQuantityInList}" oncomplete="PF('dialogUpdateFlowerQuantityInList').show();"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+        
+        <h:form id="formUpdateDecorationQuantityInList">
+            
+            <p:dialog id="dialogUpdateDecorationQuantityInList" widgetVar="dialogUpdateDecorationQuantityInList" header="Update Decoration Quantity" closable="true">
+                
+                <p:messages id="messagesUpdateFlowerQuantityInList" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel id="name" value="#{createNewPremadeBouquetManagedBean.decorationToUpdateQuantity.name}"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="quantity" value="Quantity: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="quantity" value="#{createNewPremadeBouquetManagedBean.decorationQuantityToUpdate}" placeholder="100" min="1" max="1000000" required="true" requiredMessage="Quantity is required" >
+                                <p:ajax process="@this"/>
+                            </p:spinner>
+                        </p:column>
+                        <p:column>
+                            <p:message for="quantity" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton  value="Update" update="@form formCreatePremadeBouquet:dataTableAddedDecorations" actionListener="#{createNewPremadeBouquetManagedBean.updateDecorationQuantityInList}" oncomplete="PF('dialogUpdateDecorationQuantityInList').show();"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
         
     </ui:define>

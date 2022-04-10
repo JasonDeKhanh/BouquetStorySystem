@@ -45,7 +45,7 @@ public abstract class Bouquet extends Product implements Serializable {
     // then get the value which is the quantity
     
     // Relationships
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn
     private Container container;
     
