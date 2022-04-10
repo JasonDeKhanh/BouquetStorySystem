@@ -48,8 +48,8 @@ public class PremadeBouquetManagementManagedBean implements Serializable {
     private PremadeBouquet selectedPremadeBouquetEntityToUpdate;
     private List<OccasionEnum> occasionEnumsToUpdate;
     
-    private String uploadedFilePath;
-    private Boolean showUploadedFile;
+//    private String uploadedFilePath;
+//    private Boolean showUploadedFile;
     
     public PremadeBouquetManagementManagedBean() {
         newPremadeBouquetEntity = new PremadeBouquet();
@@ -123,106 +123,6 @@ public class PremadeBouquetManagementManagedBean implements Serializable {
         }
     }
     
-    public void handleImageUploadNew(FileUploadEvent event) {
-        // from Prof's Lecture 6 Demo 3
-        try {
-//            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_2") + System.getProperty("file.separator") + event.getFile().getFileName();
-            String test = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_2");
-            String test2 = System.getProperty("file.separator");
-            String test3 = event.getFile().getFileName();
-            System.out.println("test: " + test);
-            System.out.println("test2: " + test2);
-            System.out.println("test3: " + test3);
-            String newFilePath = test + test2 + test3;
-
-            System.err.println("********** Bouquet Story System: File name: " + event.getFile().getFileName());
-            System.err.println("********** Bouquet Story System: newFilePath: " + newFilePath);
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputStream();
-
-            while (true) {
-                a = inputStream.read(buffer);
-
-                if (a < 0) {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            setUploadedFilePath(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("uploadedFilesPath") + "/" + event.getFile().getFileName());
-            setShowUploadedFile((Boolean) true);
-
-            // Would it be correct to put setImgAddress(uploadedFilePath) here??
-            getNewPremadeBouquetEntity().setImgAddress(uploadedFilePath);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
-        } catch (IOException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        }
-    }
-    
-    public void handleImageUploadUpdate(FileUploadEvent event) {
-        // from Prof's Lecture 6 Demo 3
-        try {
-//            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_2") + System.getProperty("file.separator") + event.getFile().getFileName();
-            String test = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_2");
-            String test2 = System.getProperty("file.separator");
-            String test3 = event.getFile().getFileName();
-            System.out.println("test: " + test);
-            System.out.println("test2: " + test2);
-            System.out.println("test3: " + test3);
-            String newFilePath = test + test2 + test3;
-
-            System.err.println("********** Bouquet Story System: File name: " + event.getFile().getFileName());
-            System.err.println("********** Bouquet Story System: newFilePath: " + newFilePath);
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputStream();
-
-            while (true) {
-                a = inputStream.read(buffer);
-
-                if (a < 0) {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            setUploadedFilePath(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("uploadedFilesPath") + "/" + event.getFile().getFileName());
-            setShowUploadedFile((Boolean) true);
-
-            // Would it be correct to put setImgAddress(uploadedFilePath) here??
-            getSelectedPremadeBouquetEntityToUpdate().setImgAddress(uploadedFilePath);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
-        } catch (IOException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        }
-    }
-    
     public PremadeBouquet getNewPremadeBouquetEntity() {
         return newPremadeBouquetEntity;
     }
@@ -271,21 +171,5 @@ public class PremadeBouquetManagementManagedBean implements Serializable {
         this.occasionEnumsToUpdate = occasionEnumsToUpdate;
     }
 
-    public String getUploadedFilePath() {
-        return uploadedFilePath;
-    }
-
-    public void setUploadedFilePath(String uploadedFilePath) {
-        this.uploadedFilePath = uploadedFilePath;
-    }
-
-    public Boolean getShowUploadedFile() {
-        return showUploadedFile;
-    }
-
-    public void setShowUploadedFile(Boolean showUploadedFile) {
-        this.showUploadedFile = showUploadedFile;
-    }
-    
     
 }
