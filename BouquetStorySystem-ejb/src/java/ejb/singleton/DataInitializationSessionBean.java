@@ -4,6 +4,7 @@ import ejb.stateless.AddressSessionBeanLocal;
 import ejb.stateless.AdminSessionBeanLocal;
 import ejb.stateless.CustomerSessionBeanLocal;
 import ejb.stateless.DecorationSessionBeanLocal;
+import ejb.stateless.RegisteredGuestSessionBeanLocal;
 import entity.Address;
 import entity.Admin;
 import entity.Customer;
@@ -34,6 +35,9 @@ import util.exception.UnknownPersistenceException;
 public class DataInitializationSessionBean
 {
 
+    @EJB(name = "RegisteredGuestSessionBeanLocal")
+    private RegisteredGuestSessionBeanLocal registeredGuestSessionBeanLocal;
+
     @EJB(name = "AddressSessionBeanLocal")
     private AddressSessionBeanLocal addressSessionBeanLocal;
 
@@ -43,6 +47,8 @@ public class DataInitializationSessionBean
     
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
+    
+    
     
     @EJB(name = "DecorationSessionBeanLocal")
     private DecorationSessionBeanLocal decorationSessionBeanLocal;
@@ -80,16 +86,17 @@ public class DataInitializationSessionBean
             
             adminSessionBeanLocal.createNewAdmin(new Admin("Default", "Manager", "manager", "password"));
 
-            Customer newCustomer = new RegisteredGuest("Default3", "Customer3","customer3@gmail.com","password");
+            RegisteredGuest newCustomer = new RegisteredGuest("Default3", "Customer3","customer3@gmail.com","password");
             List<Address> addresses = new ArrayList<>();
             Address newAddress = new Address("Address Line","888000");
             newAddress.setCustomer((RegisteredGuest)newCustomer);
             addresses.add(newAddress);
             ((RegisteredGuest)newCustomer).setAddresses(addresses);
             
-            customerSessionBeanLocal.createNewCustomer(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
-            customerSessionBeanLocal.createNewCustomer(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));
-            customerSessionBeanLocal.createNewCustomer(newCustomer);
+            registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
+            registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));
+            registeredGuestSessionBeanLocal.createNewRegisteredGuest(newCustomer);
+    
             addressSessionBeanLocal.createNewAddress(newAddress);
             
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration A","xxx.png","Some description...",200,300,new BigDecimal(12.90), true));

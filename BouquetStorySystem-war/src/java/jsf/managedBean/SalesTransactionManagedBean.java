@@ -38,7 +38,7 @@ public class SalesTransactionManagedBean implements Serializable {
     {
         Long saleTransactionIdToView = (Long)event.getComponent().getAttributes().get("saleTransactionId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("saleTransactionToView", saleTransactionIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("viewSaleTransactionDetails.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("saleTransactionDetails.xhtml");
     }
     
     public List<SaleTransaction> getSaleTransactionEntities() {
