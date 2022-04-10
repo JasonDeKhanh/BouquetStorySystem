@@ -198,9 +198,8 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         }
     }
     
-    
     @Override
-    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException
+    public void updatePremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException
     {
         if(premadeBouquet != null && premadeBouquet.getItemId()!= null)
         {
@@ -208,15 +207,48 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         
             if(constraintViolations.isEmpty())
             {
-                // Do Update
-                PremadeBouquet premadeBouquetToUpdate = retrievePremadeBouquetByItemId(premadeBouquet.getItemId());
+                try 
+                {
+                    
+                    // Do Update
+                    PremadeBouquet premadeBouquetToUpdate = retrievePremadeBouquetByItemId(premadeBouquet.getItemId());
 
-                premadeBouquetToUpdate.setName(premadeBouquet.getName());
-                premadeBouquetToUpdate.setImgAddress(premadeBouquet.getImgAddress());
-                premadeBouquetToUpdate.setDescription(premadeBouquet.getDescription());
-                premadeBouquetToUpdate.setBouquetPrice(premadeBouquet.getBouquetPrice());
-                premadeBouquetToUpdate.setIsOnDisplay(premadeBouquet.getIsOnDisplay());
-                premadeBouquetToUpdate.setCreatorName(premadeBouquet.getCreatorName());
+                    premadeBouquetToUpdate.setName(premadeBouquet.getName());
+                    premadeBouquetToUpdate.setImgAddress(premadeBouquet.getImgAddress());
+                    premadeBouquetToUpdate.setDescription(premadeBouquet.getDescription());
+                    premadeBouquetToUpdate.setBouquetPrice(premadeBouquet.getBouquetPrice());
+                    premadeBouquetToUpdate.setIsOnDisplay(premadeBouquet.getIsOnDisplay());
+                    premadeBouquetToUpdate.setCreatorName(premadeBouquet.getCreatorName());
+                    premadeBouquetToUpdate.setOccasions(premadeBouquet.getOccasions());
+                    
+                    // update decoration quantities
+                    premadeBouquetToUpdate.getDecorationQuantities().clear();
+                    premadeBouquetToUpdate.getDecorationQuantities().putAll(premadeBouquet.getDecorationQuantities());
+
+                    // update flower quantities
+                    premadeBouquetToUpdate.getFlowerQuantities().clear();
+                    premadeBouquetToUpdate.getFlowerQuantities().putAll(premadeBouquet.getFlowerQuantities());
+
+                    // update container
+                    Container containerToUpdate = containerSessionBeanLocal.retrieveContainerByContainerId(containerId);
+                    premadeBouquet.setContainer(containerToUpdate);
+                    
+                    // update Decorations
+                    premadeBouquetToUpdate.getDecorations().clear();
+                    premadeBouquetToUpdate.getDecorations().addAll(decorations);
+                    
+                    // update Flowers
+                    premadeBouquetToUpdate.getFlowers().clear();
+                    premadeBouquetToUpdate.getFlowers().addAll(flowers);
+
+
+                } 
+                catch (ContainerNotFoundException ex) 
+                {
+                    throw new UpdatePremadeBouquetException("An error has occurred while updating premade bouquet: " + ex.getMessage());
+                }
+                
+                
             }
             else
             {
@@ -228,6 +260,36 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
             throw new PremadeBouquetNotFoundException("Premade Bouquet ID not provided for giftCard to be updated");
         }
     }
+    
+//    @Override
+//    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException
+//    {
+//        if(premadeBouquet != null && premadeBouquet.getItemId()!= null)
+//        {
+//            Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
+//        
+//            if(constraintViolations.isEmpty())
+//            {
+//                // Do Update
+//                PremadeBouquet premadeBouquetToUpdate = retrievePremadeBouquetByItemId(premadeBouquet.getItemId());
+//
+//                premadeBouquetToUpdate.setName(premadeBouquet.getName());
+//                premadeBouquetToUpdate.setImgAddress(premadeBouquet.getImgAddress());
+//                premadeBouquetToUpdate.setDescription(premadeBouquet.getDescription());
+//                premadeBouquetToUpdate.setBouquetPrice(premadeBouquet.getBouquetPrice());
+//                premadeBouquetToUpdate.setIsOnDisplay(premadeBouquet.getIsOnDisplay());
+//                premadeBouquetToUpdate.setCreatorName(premadeBouquet.getCreatorName());
+//            }
+//            else
+//            {
+//                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//            }
+//        }
+//        else
+//        {
+//            throw new PremadeBouquetNotFoundException("Premade Bouquet ID not provided for giftCard to be updated");
+//        }
+//    }
     
     
     @Override

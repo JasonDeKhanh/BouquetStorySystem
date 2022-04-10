@@ -84,9 +84,13 @@
                     </p:column>
 
                     <p:column headerText="Action" >
-                        <p:link outcome="/productManagement/viewPremadeBouquet" value="View Premade Bouquet Details">
+                        <p:link outcome="/productManagement/viewPremadeBouquet" value="View Details">
                             <f:param name="premadeBouquetId" value="#{premadeBouquetEntity.itemId}" />
+                        </p:link>, 
+                        <p:link outcome="/productManagement/updatePremadeBouquet" value="Update">
+                            <f:param name="premadeBouquetToUpdateId" value="#{premadeBouquetEntity.itemId}" />
                         </p:link>
+        
 <!--                        <p:commandButton update="ccViewFlower:formViewFlower" oncomplete="PF('dialogViewFlower').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{flowerEntity}" target="#{viewFlowerManagedBean.flowerEntityToView}" />
                         </p:commandButton>
