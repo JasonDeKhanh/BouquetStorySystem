@@ -67,38 +67,6 @@ public class PremadeBouquetManagementManagedBean implements Serializable {
 //        
 //    }
     
-    public void doUpdatePremadeBouquet(ActionEvent event) 
-    {
-        selectedPremadeBouquetEntityToUpdate = (PremadeBouquet) event.getComponent().getAttributes().get("premadeBouquetEntityToUpdate");
-        occasionEnumsToUpdate = new ArrayList<>();
-        
-        for(OccasionEnum occasionEnum : selectedPremadeBouquetEntityToUpdate.getOccasions())
-        {
-            occasionEnumsToUpdate.add(occasionEnum);
-        }
-    }
-    
-    public void updatePremadeBouquet(ActionEvent event)
-    {
-        try 
-        {
-            selectedPremadeBouquetEntityToUpdate.setOccasions(occasionEnumsToUpdate);
-            
-            premadeBouquetSessionBeanLocal.updatePremadeBouquet(selectedPremadeBouquetEntityToUpdate);
-            setPremadeBouquetEntities(premadeBouquetSessionBeanLocal.retrieveAllPremadeBouquets());
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Premade bouquet updated successfully", null));
-        } 
-        catch (PremadeBouquetNotFoundException | UpdatePremadeBouquetException ex) 
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating premade bouquet: " + ex.getMessage(), null));
-        }
-        catch (InputDataValidationException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
-        }
-    }
-    
     public void deletePremadeBouquet(ActionEvent event)
     {
         try 
