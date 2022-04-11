@@ -8,13 +8,14 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <h3>Create New Premade Bouquet</h3>
         
-        <h:form id="formCreatePremadeBouquet">
+        <h3>Update Premade Bouquet</h3>
+        
+        <h:form id="formUpdatePremadeBouquet">
             
             <p:panel>
                 
-                <p:messages id="messagesCreateNewPremadeBouquet" redisplay="false"/>
+                <p:messages id="messagesUpdatePremadeBouquet" redisplay="false"/>
             
                 <h3>General</h3>
                 <p:panelGrid>
@@ -25,8 +26,8 @@
                         </p:column>
                         <p:column>
                             <p:fileUpload listener="#{createNewPremadeBouquetManagedBean.handleImageUploadNew}" multiple="true" update="imgAddress"/>
-                            <p:panel id="imgAddress" header="Uploaded File" visible="#{createNewPremadeBouquetManagedBean.showUploadedFile}">
-                                <p:graphicImage value="#{createNewPremadeBouquetManagedBean.uploadedFilePath}" height="100px" />
+                            <p:panel id="imgAddress" header="Uploaded File">
+                                <p:graphicImage value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.imgAddress}" height="100px" />
                             </p:panel>
                         </p:column>
                         <p:column>
@@ -39,7 +40,7 @@
                             <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:inputText id="name" value="#{createNewPremadeBouquetManagedBean.newPremadeBouquet.name}" placeholder="Bouquet Name " required="true" requiredMessage="Name is required">
+                            <p:inputText id="name" value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.name}" placeholder="Bouquet Name " required="true" requiredMessage="Name is required">
                                 <f:validateLength minimum="3" maximum="64" />
                             </p:inputText>
                         </p:column>
@@ -53,7 +54,7 @@
                             <p:outputLabel for="creatorName" value="Creator Name: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:inputText id="creatorName" value="#{createNewPremadeBouquetManagedBean.newPremadeBouquet.creatorName}" placeholder="Your Name " required="true" requiredMessage="Creator Name is required" />
+                            <p:inputText id="creatorName" value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.creatorName}" placeholder="Your Name " required="true" requiredMessage="Creator Name is required" />
                         </p:column>
                         <p:column>
                             <p:message for="creatorName" />
@@ -65,7 +66,7 @@
                             <p:outputLabel for="description" value="Description; " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:inputTextarea rows="6" cols="60" id="description" value="#{createNewPremadeBouquetManagedBean.newPremadeBouquet.description}" placeholder="Description " required="true" requiredMessage="Description is required" />
+                            <p:inputTextarea rows="6" cols="60" id="description" value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.description}" placeholder="Description " required="true" requiredMessage="Description is required" />
                         </p:column>
                         <p:column>
                             <p:message for="description" />
@@ -77,7 +78,7 @@
                             <p:outputLabel for="bouquetPrice" value="Unit Price " style="font-weight: bold;" />
                         </p:column>
                         <p:column>                            
-                            <p:spinner id="bouquetPrice" value="#{createNewPremadeBouquetManagedBean.newPremadeBouquet.bouquetPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Bouquet Price is required" />
+                            <p:spinner id="bouquetPrice" value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.bouquetPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Bouquet Price is required" />
                         </p:column>
                         <p:column>
                             <p:message for="bouquetPrice" />
@@ -89,7 +90,7 @@
                             <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:selectBooleanCheckbox id="isOnDisplay" value="#{createNewPremadeBouquetManagedBean.newPremadeBouquet.isOnDisplay}" itemLabel="Display on shop"/>
+                            <p:selectBooleanCheckbox id="isOnDisplay" value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.isOnDisplay}" itemLabel="Display on shop"/>
                         </p:column>
                         <p:column>
                             <p:message for="isOnDisplay" />
@@ -108,10 +109,10 @@
                             <p:outputLabel for="selOccasions" value="Occasions: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:selectManyMenu id="selOccasions" widgetVar="selOccasions" value="#{createNewPremadeBouquetManagedBean.newOccasionEnums}"
+                            <p:selectManyMenu id="selOccasions" widgetVar="selOccasions" value="#{updatePremadeBouquetManagedBean.updateOccasionEnums}"
                           var="o" filter="true" filterMatchMode="contains" showCheckbox="true">
-                                <f:selectItems value="#{createNewPremadeBouquetManagedBean.occasionEnums}" var="occasionEnum" itemLabel="#{occasionEnum}" itemValue="#{occasionEnum}" />
-
+                                <f:selectItems value="#{updatePremadeBouquetManagedBean.occasionEnums}" var="occasionEnum" itemLabel="#{occasionEnum}" itemValue="#{occasionEnum}" />
+                                <p:ajax event="change" process="@this" />
                                 <p:column>
                                     <h:outputText value="#{o}" />
                                 </p:column>
@@ -137,10 +138,10 @@
                             <p:outputLabel for="selContainer" value="Container: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="selContainer" value="#{createNewPremadeBouquetManagedBean.newContainerId}"
+                            <p:selectOneMenu id="selContainer" value="#{updatePremadeBouquetManagedBean.updateContainerId}"
                                              filter="true" filterMatchMode="contains">
                                 <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
-                                <f:selectItems value="#{createNewPremadeBouquetManagedBean.containers}" var="containerEntity" itemValue="#{containerEntity.containerId}" itemLabel="#{containerEntity.color}, #{containerEntity.containerType.name}" />
+                                <f:selectItems value="#{updatePremadeBouquetManagedBean.containers}" var="containerEntity" itemValue="#{containerEntity.containerId}" itemLabel="#{containerEntity.color}, #{containerEntity.containerType.name}" />
                                 <p:ajax event="change" update="panelGridSelectContainer" />
                             </p:selectOneMenu>
                         </p:column>
@@ -153,10 +154,10 @@
                         <p:column>
                             
                         </p:column>
-                        <p:column headerText="Image" rendered="#{createNewPremadeBouquetManagedBean.containerById != null}" >
-                            <p:graphicImage value="#{createNewPremadeBouquetManagedBean.containerById.imgAddress}" height="200px"/>
+                        <p:column headerText="Image" rendered="#{updatePremadeBouquetManagedBean.containerById != null}" >
+                            <p:graphicImage value="#{updatePremadeBouquetManagedBean.containerById.imgAddress}" height="200px"/>
                             <br/>
-                            <p:outputLabel value="#{createNewPremadeBouquetManagedBean.containerById.containerType.dimensions}"/>
+                            <p:outputLabel value="#{updatePremadeBouquetManagedBean.containerById.containerType.dimensions}"/>
                         </p:column>
                         <p:column>
                             
@@ -173,10 +174,10 @@
                             <p:outputLabel for="selDecoration" value="Decoration: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="selDecoration" value="#{createNewPremadeBouquetManagedBean.selectedDecorationId}" panelStyle="width:180px"
+                            <p:selectOneMenu id="selDecoration" value="#{updatePremadeBouquetManagedBean.selectedDecorationId}" panelStyle="width:180px"
                              effect="fade" style="width:300px" filter="true" filterMatchMode="contains">
                                 <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
-                                <f:selectItems value="#{createNewPremadeBouquetManagedBean.decorations}" var="decorationEntity" itemLabel="#{decorationEntity.name}" itemValue="#{decorationEntity.decorationId}" />
+                                <f:selectItems value="#{updatePremadeBouquetManagedBean.decorations}" var="decorationEntity" itemLabel="#{decorationEntity.name}" itemValue="#{decorationEntity.decorationId}" />
                                 <p:ajax event="change" update="panelGridSelectDecoration" />
                             </p:selectOneMenu>
                         </p:column>
@@ -189,8 +190,8 @@
                         <p:column>
 
                         </p:column>
-                        <p:column headerText="Image" rendered="#{createNewPremadeBouquetManagedBean.decorationById != null}" >
-                            <p:graphicImage value="#{createNewPremadeBouquetManagedBean.decorationById.imgAddress}" height="200px"/>
+                        <p:column headerText="Image" rendered="#{updatePremadeBouquetManagedBean.decorationById != null}" >
+                            <p:graphicImage value="#{updatePremadeBouquetManagedBean.decorationById.imgAddress}" height="200px"/>
                         </p:column>
                         <p:column>
 
@@ -201,8 +202,8 @@
                         <p:column>
                             <p:outputLabel value="Quantity " style="font-weight: bold;" />
                         </p:column>
-                        <p:column headerText="Quantity" rendered="#{createNewPremadeBouquetManagedBean.selectedDecorationId != null}" >
-                            <p:spinner id="quantityDecoration" value="#{createNewPremadeBouquetManagedBean.selectedDecorationQuantity}" placeholder="10" min="1" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
+                        <p:column headerText="Quantity" rendered="#{updatePremadeBouquetManagedBean.selectedDecorationId != null}" >
+                            <p:spinner id="quantityDecoration" value="#{updatePremadeBouquetManagedBean.selectedDecorationQuantity}" placeholder="10" min="1" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
                                 <!-- must have this ajax!! else quantity won't be updated -->
                                 <p:ajax process="@this"/>
                             </p:spinner>
@@ -215,14 +216,14 @@
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton value="Add Decoration" immediate="true" update="@this formCreatePremadeBouquet:panelGridSelectDecoration formCreatePremadeBouquet:dataTableAddedDecorations" actionListener="#{createNewPremadeBouquetManagedBean.addDecorationToList}"/>
+                            <p:commandButton value="Add Decoration" immediate="true" update="@this formUpdatePremadeBouquet:panelGridSelectDecoration formUpdatePremadeBouquet:dataTableAddedDecorations" actionListener="#{updatePremadeBouquetManagedBean.addDecorationToList}"/>
                         </p:column>
                     </p:row>
 
                 </p:panelGrid>
                 
                 <br/>
-                <p:dataTable id="dataTableAddedDecorations" value="#{createNewPremadeBouquetManagedBean.newDecorations}" var="decorationEntity"
+                <p:dataTable id="dataTableAddedDecorations" value="#{updatePremadeBouquetManagedBean.updateDecorations}" var="decorationEntity"
                                  rowIndexVar="rowIndex">
                         
                     <p:column headerText="Decoration Name">
@@ -232,10 +233,10 @@
                         <p:outputLabel value="#{decorationEntity.value}"/>
                     </p:column>
                     <p:column headerText="Action">
-                        <p:commandButton value="Remove From List" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.deleteDecorationFromList}" update="formCreatePremadeBouquet:dataTableAddedDecorations formCreatePremadeBouquet:messagesCreateNewPremadeBouquet">
+                        <p:commandButton value="Remove From List" immediate="true" actionListener="#{updatePremadeBouquetManagedBean.deleteDecorationFromList}" update="formUpdatePremadeBouquet:dataTableAddedDecorations formUpdatePremadeBouquet:messagesUpdatePremadeBouquet">
                             <f:attribute name="decorationToDelete" value="#{decorationEntity.key}" />
                         </p:commandButton>
-                        <p:commandButton value="Update Quantity" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.doUpdateDecorationQuantityInList}" update="formUpdateDecorationQuantityInList" oncomplete="PF('dialogUpdateDecorationQuantityInList').show()">
+                        <p:commandButton value="Update Quantity" immediate="true" actionListener="#{updatePremadeBouquetManagedBean.doUpdateDecorationQuantityInList}" update="formUpdateDecorationQuantityInList" oncomplete="PF('dialogUpdateDecorationQuantityInList').show()">
                             <f:attribute name="decorationToUpdateQuantity" value="#{decorationEntity.key}" />
                         </p:commandButton>
                     </p:column>
@@ -250,10 +251,10 @@
                             <p:outputLabel for="selFlower" value="Decoration: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="selFlower" value="#{createNewPremadeBouquetManagedBean.selectedFlowerId}" panelStyle="width:180px"
+                            <p:selectOneMenu id="selFlower" value="#{updatePremadeBouquetManagedBean.selectedFlowerId}" panelStyle="width:180px"
                              effect="fade" style="width:300px" filter="true" filterMatchMode="contains">
                                 <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
-                                <f:selectItems value="#{createNewPremadeBouquetManagedBean.flowers}" var="flowerEntity" itemLabel="#{flowerEntity.name}" itemValue="#{flowerEntity.flowerId}" />
+                                <f:selectItems value="#{updatePremadeBouquetManagedBean.flowers}" var="flowerEntity" itemLabel="#{flowerEntity.name}" itemValue="#{flowerEntity.flowerId}" />
                                 <p:ajax event="change" update="panelGridSelectFlower" />
                             </p:selectOneMenu>
                         </p:column>
@@ -266,8 +267,8 @@
                         <p:column>
 
                         </p:column>
-                        <p:column headerText="Image" rendered="#{createNewPremadeBouquetManagedBean.flowerById != null}" >
-                            <p:graphicImage value="#{createNewPremadeBouquetManagedBean.flowerById.imgAddress}" height="200px"/>
+                        <p:column headerText="Image" rendered="#{updatePremadeBouquetManagedBean.flowerById != null}" >
+                            <p:graphicImage value="#{updatePremadeBouquetManagedBean.flowerById.imgAddress}" height="200px"/>
                         </p:column>
                         <p:column>
 
@@ -278,8 +279,8 @@
                         <p:column>
                             <p:outputLabel value="Quantity " style="font-weight: bold;" />
                         </p:column>
-                        <p:column headerText="Quantity" rendered="#{createNewPremadeBouquetManagedBean.selectedFlowerId != null}" >
-                            <p:spinner id="quantityFlower" value="#{createNewPremadeBouquetManagedBean.selectedFlowerQuantity}" placeholder="10" min="1" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
+                        <p:column headerText="Quantity" rendered="#{updatePremadeBouquetManagedBean.selectedFlowerId != null}" >
+                            <p:spinner id="quantityFlower" value="#{updatePremadeBouquetManagedBean.selectedFlowerQuantity}" placeholder="10" min="1" max="1000000" stepFactor="1" required="true" requiredMessage="Quantity is required" >
                                 <!-- must have this ajax!! else quantity won't be updated -->
                                 <p:ajax process="@this"/>
                             </p:spinner>
@@ -292,13 +293,13 @@
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton value="Add Flower" immediate="true" update="@this formCreatePremadeBouquet:panelGridSelectFlower formCreatePremadeBouquet:dataTableAddedFlowers" actionListener="#{createNewPremadeBouquetManagedBean.addFlowerToList}"/>
+                            <p:commandButton value="Add Flower" immediate="true" update="@this formUpdatePremadeBouquet:panelGridSelectFlower formUpdatePremadeBouquet:dataTableAddedFlowers" actionListener="#{updatePremadeBouquetManagedBean.addFlowerToList}"/>
                         </p:column>
                     </p:row>
                     
                 </p:panelGrid>
                 <br/>
-                <p:dataTable id="dataTableAddedFlowers" value="#{createNewPremadeBouquetManagedBean.newFlowers}" var="flowerEntity"
+                <p:dataTable id="dataTableAddedFlowers" value="#{updatePremadeBouquetManagedBean.updateFlowers}" var="flowerEntity"
                                  rowIndexVar="rowIndex">
                         
                     <p:column headerText="Decoration Name">
@@ -308,10 +309,10 @@
                         <p:outputLabel value="#{flowerEntity.value}"/>
                     </p:column>
                     <p:column headerText="Action">
-                        <p:commandButton value="Remove From List" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.deleteFlowerFromList}" update="formCreatePremadeBouquet:dataTableAddedFlowers formCreatePremadeBouquet:messagesCreateNewPremadeBouquet">
+                        <p:commandButton value="Remove From List" immediate="true" actionListener="#{updatePremadeBouquetManagedBean.deleteFlowerFromList}" update="formUpdatePremadeBouquet:dataTableAddedFlowers formUpdatePremadeBouquet:messagesUpdatePremadeBouquet">
                             <f:attribute name="flowerToDelete" value="#{flowerEntity.key}" />
                         </p:commandButton>
-                        <p:commandButton value="Update Quantity" immediate="true" actionListener="#{createNewPremadeBouquetManagedBean.doUpdateFlowerQuantityInList}" update="formUpdateFlowerQuantityInList" oncomplete="PF('dialogUpdateFlowerQuantityInList').show()">
+                        <p:commandButton value="Update Quantity" immediate="true" actionListener="#{updatePremadeBouquetManagedBean.doUpdateFlowerQuantityInList}" update="formUpdateFlowerQuantityInList" oncomplete="PF('dialogUpdateFlowerQuantityInList').show()">
                             <f:attribute name="flowerToUpdateQuantity" value="#{flowerEntity.key}" />
                         </p:commandButton>
                     </p:column>
@@ -320,7 +321,7 @@
                 <br/>
                 <p:commandButton type="reset" value="Clear" />
                 <h:outputText value="&#160;" /> <!-- this is a non-breaking space -->
-                <p:commandButton value="Create New Premade Bouquet" update="@this @form" actionListener="#{createNewPremadeBouquetManagedBean.createNewPremadeBouquet}"/>
+                <p:commandButton value="Update Premade Bouquet" update="@this @form" actionListener="#{updatePremadeBouquetManagedBean.updatePremadeBouquet}"/>
                 
             </p:panel>
             
@@ -339,7 +340,7 @@
                             <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:outputLabel id="name" value="#{createNewPremadeBouquetManagedBean.flowerToUpdateQuantity.name}"/>
+                            <p:outputLabel id="name" value="#{updatePremadeBouquetManagedBean.flowerToUpdateQuantity.name}"/>
                         </p:column>
                         <p:column>
                             <p:message for="name" />
@@ -351,7 +352,7 @@
                             <p:outputLabel for="quantity" value="Quantity: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:spinner id="quantity" value="#{createNewPremadeBouquetManagedBean.flowerQuantityToUpdate}" placeholder="100" min="1" max="1000000" required="true" requiredMessage="Quantity is required" >
+                            <p:spinner id="quantity" value="#{updatePremadeBouquetManagedBean.flowerQuantityToUpdate}" placeholder="100" min="1" max="1000000" required="true" requiredMessage="Quantity is required" >
                                 <p:ajax process="@this"/>
                             </p:spinner>
                         </p:column>
@@ -362,7 +363,7 @@
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton  value="Update" update="@form formCreatePremadeBouquet:dataTableAddedFlowers" actionListener="#{createNewPremadeBouquetManagedBean.updateFlowerQuantityInList}" oncomplete="PF('dialogUpdateFlowerQuantityInList').show();"/>
+                            <p:commandButton  value="Update" update="@form formUpdatePremadeBouquet:dataTableAddedFlowers" actionListener="#{updatePremadeBouquetManagedBean.updateFlowerQuantityInList}" oncomplete="PF('dialogUpdateFlowerQuantityInList').show();"/>
                         </p:column>
                     </p:row>
 
@@ -383,7 +384,7 @@
                             <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:outputLabel id="name" value="#{createNewPremadeBouquetManagedBean.decorationToUpdateQuantity.name}"/>
+                            <p:outputLabel id="name" value="#{updatePremadeBouquetManagedBean.decorationToUpdateQuantity.name}"/>
                         </p:column>
                         <p:column>
                             <p:message for="name" />
@@ -395,7 +396,7 @@
                             <p:outputLabel for="quantity" value="Quantity: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:spinner id="quantity" value="#{createNewPremadeBouquetManagedBean.decorationQuantityToUpdate}" placeholder="100" min="1" max="1000000" required="true" requiredMessage="Quantity is required" >
+                            <p:spinner id="quantity" value="#{updatePremadeBouquetManagedBean.decorationQuantityToUpdate}" placeholder="100" min="1" max="1000000" required="true" requiredMessage="Quantity is required" >
                                 <p:ajax process="@this"/>
                             </p:spinner>
                         </p:column>
@@ -406,7 +407,7 @@
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton  value="Update" update="@form formCreatePremadeBouquet:dataTableAddedDecorations" actionListener="#{createNewPremadeBouquetManagedBean.updateDecorationQuantityInList}" oncomplete="PF('dialogUpdateDecorationQuantityInList').show();"/>
+                            <p:commandButton  value="Update" update="@form formUpdatePremadeBouquet:dataTableAddedDecorations" actionListener="#{updatePremadeBouquetManagedBean.updateDecorationQuantityInList}" oncomplete="PF('dialogUpdateDecorationQuantityInList').show();"/>
                         </p:column>
                     </p:row>
 

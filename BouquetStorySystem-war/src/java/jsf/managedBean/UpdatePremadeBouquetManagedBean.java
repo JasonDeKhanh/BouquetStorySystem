@@ -9,7 +9,6 @@ import ejb.stateless.ContainerSessionBeanLocal;
 import ejb.stateless.DecorationSessionBeanLocal;
 import ejb.stateless.FlowerSessionBeanLocal;
 import ejb.stateless.PremadeBouquetSessionBeanLocal;
-import entity.Admin;
 import entity.Container;
 import entity.Decoration;
 import entity.Flower;
@@ -34,22 +33,20 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import util.enumeration.OccasionEnum;
 import util.exception.ContainerNotFoundException;
-import util.exception.CreateNewPremadeBouquetException;
 import util.exception.DecorationNotFoundException;
 import util.exception.FlowerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.PremadeBouquetNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdatePremadeBouquetException;
 
 /**
  *
  * @author msipc
  */
-@Named(value = "createNewPremadeBouquetManagedBean")
+@Named(value = "updatePremadeBouquetManagedBean")
 @ViewScoped
-public class CreateNewPremadeBouquetManagedBean implements Serializable {
-
-    @EJB(name = "FlowerSessionBeanLocal")
-    private FlowerSessionBeanLocal flowerSessionBeanLocal;
+public class UpdatePremadeBouquetManagedBean implements Serializable {
 
     @EJB(name = "ContainerSessionBeanLocal")
     private ContainerSessionBeanLocal containerSessionBeanLocal;
@@ -57,22 +54,24 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
     @EJB(name = "DecorationSessionBeanLocal")
     private DecorationSessionBeanLocal decorationSessionBeanLocal;
 
+    @EJB(name = "FlowerSessionBeanLocal")
+    private FlowerSessionBeanLocal flowerSessionBeanLocal;
+
     @EJB(name = "PremadeBouquetSessionBeanLocal")
     private PremadeBouquetSessionBeanLocal premadeBouquetSessionBeanLocal;
 
+    private Long premadeBouquetToUpdateId;
+    private PremadeBouquet updatePremadeBouquet;
     
-    
-    private PremadeBouquet newPremadeBouquet;
-    
-    private List<OccasionEnum> newOccasionEnums;
+    private List<OccasionEnum> updateOccasionEnums;
     private List<OccasionEnum> occasionEnums;
     
-    private Long newContainerId;
+    private Long updateContainerId;
     private List<Container> containers;
     
     private Long selectedDecorationId;
     private Integer selectedDecorationQuantity;
-    private Map<Decoration, Integer> newDecorations;
+    private Map<Decoration, Integer> updateDecorations;
     private List<Decoration> decorations;
     
     private Decoration decorationToUpdateQuantity;
@@ -80,7 +79,7 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
     
     private Long selectedFlowerId;
     private Integer selectedFlowerQuantity;
-    private Map<Flower, Integer> newFlowers;
+    private Map<Flower, Integer> updateFlowers;
     private List<Flower> flowers;
     
     private Flower flowerToUpdateQuantity;
@@ -88,17 +87,14 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
     
     private String uploadedFilePath;
     private Boolean showUploadedFile;
-    
 
-
-    public CreateNewPremadeBouquetManagedBean() {
-        newDecorations = new HashMap<>();
-        newFlowers = new HashMap<>();
+    public UpdatePremadeBouquetManagedBean() {
+        updateOccasionEnums = new ArrayList<>();
+        updateDecorations = new HashMap<>();
+        updateFlowers = new HashMap<>();
         
-        newPremadeBouquet = new PremadeBouquet();
-        Admin currentAdmin = (Admin)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentAdmin");
-        newPremadeBouquet.setCreatorName(currentAdmin.getFirstName() + " " + currentAdmin.getLastName() + " (BouquetStory)");
-    
+        updatePremadeBouquet = new PremadeBouquet();
+        
         occasionEnums = Arrays.asList(OccasionEnum.values());
     }
     
@@ -108,14 +104,38 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         containers = containerSessionBeanLocal.retrieveAllContainers();
         decorations = decorationSessionBeanLocal.retrieveAllDecorations();
         flowers = flowerSessionBeanLocal.retrieveAllFlowers();
+        
+        try 
+        {
+            containers = containerSessionBeanLocal.retrieveAllContainers();
+            decorations = decorationSessionBeanLocal.retrieveAllDecorations();
+            flowers = flowerSessionBeanLocal.retrieveAllFlowers();
+            
+            premadeBouquetToUpdateId = (Long.valueOf(
+                    FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("premadeBouquetToUpdateId")));
+            updatePremadeBouquet = premadeBouquetSessionBeanLocal.retrievePremadeBouquetByItemId(premadeBouquetToUpdateId);
+            
+            updateOccasionEnums.addAll(updatePremadeBouquet.getOccasions());
+            updateContainerId = updatePremadeBouquet.getContainer().getContainerId();
+            updateDecorations.putAll(updatePremadeBouquet.getDecorationQuantities());
+            updateFlowers.putAll(updatePremadeBouquet.getFlowerQuantities());
+            
+        } 
+        catch (PremadeBouquetNotFoundException ex) 
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "An error has occurred while retrieving the premade bouquet record: " + ex.getMessage(), null));
+        } 
+        catch (NumberFormatException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Premade Bouquet ID not provided", null));
+        }
     }
-    
-    
-    
+
     public Container getContainerById()
     {
         for(Container container: containers) {
-            if(container.getContainerId().equals(newContainerId)){
+            if(container.getContainerId().equals(updateContainerId)){
                 return container;
             }
         }
@@ -141,11 +161,9 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         }
         return null;
     }
-
     
     public void addDecorationToList(ActionEvent event)
     {
-        System.out.println("inside addDecoration beginning!");
         try 
         {
             if(selectedDecorationQuantity == null)
@@ -153,12 +171,10 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
                 selectedDecorationQuantity = 1;
             }
             
-            System.out.println("inside addDecoration try block!");
             Decoration decorationToAdd = decorationSessionBeanLocal.retrieveDecorationByDecorationId(selectedDecorationId);
-            System.out.println("after calling session bean, before put");
-            System.out.println("Decoration: " + decorationToAdd.getName() + ", Quantity: " + selectedDecorationQuantity);
-            newDecorations.put(decorationToAdd, selectedDecorationQuantity);
-            System.out.println("hashmap currently: " + newDecorations.toString());
+
+            updateDecorations.put(decorationToAdd, selectedDecorationQuantity);
+            System.out.println("hashmap currently: " + updateDecorations.toString());
         
             selectedDecorationId = null;
             selectedDecorationQuantity = null;
@@ -178,37 +194,35 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         System.out.println("inside delete Decoration From List");
         Decoration decorationToDelete = (Decoration)event.getComponent().getAttributes().get("decorationToDelete");
         System.out.println("Decoration to delete: " + decorationToDelete.getName());
-        newDecorations.remove(decorationToDelete);
+        updateDecorations.remove(decorationToDelete);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Decoration " + decorationToDelete.getName() + " deleted from list to add successfully", "Decoration " + decorationToDelete.getName() + " deleted from lsit to add successfully"));
     }
     
     public void doUpdateDecorationQuantityInList(ActionEvent event)
     {
         decorationToUpdateQuantity = (Decoration)event.getComponent().getAttributes().get("decorationToUpdateQuantity");
-        decorationQuantityToUpdate = newDecorations.get(decorationToUpdateQuantity);
+        decorationQuantityToUpdate = updateDecorations.get(decorationToUpdateQuantity);
     }
     
     public void updateDecorationQuantityInList(ActionEvent event)
     {
-        newDecorations.put(decorationToUpdateQuantity, decorationQuantityToUpdate);
+        updateDecorations.put(decorationToUpdateQuantity, decorationQuantityToUpdate);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Decoration quantity updated successfully", "Decoration quantity updated successfully"));
     
     }
     
     public void addFlowerToList(ActionEvent event)
     {
-        System.out.println("inside addFlowerToList beginning!");
         try 
         {
             if(selectedFlowerQuantity == null)
             {
                 selectedFlowerQuantity = 1;
             }
-            System.out.println("inside addFlowerToList try block!");
             Flower flowerToAdd = flowerSessionBeanLocal.retrieveFlowerByFlowerId(selectedFlowerId);
             System.out.println("Flower: " + flowerToAdd.getName() + ", Quantity: " + selectedFlowerQuantity);
-            newFlowers.put(flowerToAdd, selectedFlowerQuantity);
-            System.out.println("hashmap currently: " + newFlowers.toString());
+            updateFlowers.put(flowerToAdd, selectedFlowerQuantity);
+            System.out.println("hashmap currently: " + updateFlowers.toString());
         } 
         catch (FlowerNotFoundException ex) 
         {
@@ -225,75 +239,78 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         System.out.println("inside Delete Flower From List");
         Flower flowerToDelete = (Flower)event.getComponent().getAttributes().get("flowerToDelete");
     
-        newFlowers.remove(flowerToDelete);
+        updateFlowers.remove(flowerToDelete);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flower " + flowerToDelete.getName() + " deleted from list to add successfully", "Flower " + flowerToDelete.getName() + " deleted from lsit to add successfully"));
     }
     
     public void doUpdateFlowerQuantityInList(ActionEvent event)
     {
         flowerToUpdateQuantity = (Flower)event.getComponent().getAttributes().get("flowerToUpdateQuantity");
-        flowerQuantityToUpdate = newFlowers.get(flowerToUpdateQuantity);
+        flowerQuantityToUpdate = updateFlowers.get(flowerToUpdateQuantity);
     }
     
     public void updateFlowerQuantityInList(ActionEvent event)
     {
-        newFlowers.put(flowerToUpdateQuantity, flowerQuantityToUpdate);
+        updateFlowers.put(flowerToUpdateQuantity, flowerQuantityToUpdate);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flower quantity updated successfully", "Flower quantity updated successfully"));
     
     }
     
     ///
-    public void createNewPremadeBouquet(ActionEvent event)
+    public void updatePremadeBouquet(ActionEvent event)
     {
         try 
         {
             // link container
-            Container containerToAdd = containerSessionBeanLocal.retrieveContainerByContainerId(newContainerId);
+            Container containerToAdd = containerSessionBeanLocal.retrieveContainerByContainerId(updateContainerId);
 //            newPremadeBouquet.setContainer(containToAdd);
             
-            List<Decoration> newDecorationsList = new ArrayList<>();
+            List<Decoration> updateDecorationsList = new ArrayList<>();
             // link deocrations
-            for(Map.Entry<Decoration,Integer> decorationMap : newDecorations.entrySet())
+            for(Map.Entry<Decoration,Integer> decorationMap : updateDecorations.entrySet())
             {
                 // associate
 //                newPremadeBouquet.getDecorations().add(decorationMap.getKey());
                 // nvm must do in session bean
-                newDecorationsList.add(decorationMap.getKey());
+                updateDecorationsList.add(decorationMap.getKey());
                 // update quantities
-                newPremadeBouquet.getDecorationQuantities().put(decorationMap.getKey(), decorationMap.getValue());
+                updatePremadeBouquet.getDecorationQuantities().put(decorationMap.getKey(), decorationMap.getValue());
             }
             
-            List<Flower> newFlowersList = new ArrayList<>();
+            List<Flower> updateFlowersList = new ArrayList<>();
             // link flowers
-            for(Map.Entry<Flower,Integer> flowerMap : newFlowers.entrySet())
+            for(Map.Entry<Flower,Integer> flowerMap : updateFlowers.entrySet())
             {
                 // associate
 //                newPremadeBouquet.getFlowers().add(flowerMap.getKey());
                 // nvm must do inside session bean
-                newFlowersList.add(flowerMap.getKey());
+                updateFlowersList.add(flowerMap.getKey());
                 // update quantities
                 System.out.println("Type of flowerMap key: " + flowerMap.getKey().getClass());
                 System.out.println("Type of flowerMap value: " + flowerMap.getValue().getClass().getSimpleName());
-                newPremadeBouquet.getFlowerQuantities().put(flowerMap.getKey(), flowerMap.getValue());
+                updatePremadeBouquet.getFlowerQuantities().put(flowerMap.getKey(), flowerMap.getValue());
             }
             
             // link occasions
-            newPremadeBouquet.setOccasions(newOccasionEnums);
+            System.out.println("updateOccasionEnums: " + updateOccasionEnums.toString());
+            updatePremadeBouquet.getOccasions().clear();
+            updatePremadeBouquet.getOccasions().addAll(updateOccasionEnums);
             
             // call session bean to create
-            PremadeBouquet pb = premadeBouquetSessionBeanLocal.createNewPremadeBouquet(newPremadeBouquet, containerToAdd.getContainerId(), newDecorationsList, newFlowersList);
+//            PremadeBouquet pb = premadeBouquetSessionBeanLocal.updatePremadeBouquet(updatePremadeBouquet, containerToAdd.getContainerId(), updateDecorationsList, updateFlowersList);
+            premadeBouquetSessionBeanLocal.updatePremadeBouquet(updatePremadeBouquet, containerToAdd.getContainerId(), updateDecorationsList, updateFlowersList);
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New premade bouquet created successfully (PremadeBouquet ID: " + pb.getItemId()+ ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Premade bouquet updated successfully", null));
         } 
-        catch (InputDataValidationException | CreateNewPremadeBouquetException | ContainerNotFoundException | UnknownPersistenceException ex) 
+        catch (InputDataValidationException | PremadeBouquetNotFoundException | UpdatePremadeBouquetException | ContainerNotFoundException ex) 
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new premade bouquet: " + ex.getMessage(), null));
         }
         
     }
     
-    ///
-    public void handleImageUploadNew(FileUploadEvent event) {
+    
+    public void handleImageUploadUpdate(FileUploadEvent event) {
         // from Prof's Lecture 6 Demo 3
         try {
 //            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_2") + System.getProperty("file.separator") + event.getFile().getFileName();
@@ -335,28 +352,38 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
             setShowUploadedFile((Boolean) true);
 
             // Would it be correct to put setImgAddress(uploadedFilePath) here??
-            getNewPremadeBouquet().setImgAddress(uploadedFilePath);
+            getUpdatePremadeBouquet().setImgAddress(uploadedFilePath);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
         }
     }
+
+    public Long getPremadeBouquetToUpdateId() {
+        return premadeBouquetToUpdateId;
+    }
+
+    public void setPremadeBouquetToUpdateId(Long premadeBouquetToUpdateId) {
+        this.premadeBouquetToUpdateId = premadeBouquetToUpdateId;
+    }
     
-    public PremadeBouquet getNewPremadeBouquet() {
-        return newPremadeBouquet;
+    
+    /////////
+    public PremadeBouquet getUpdatePremadeBouquet() {
+        return updatePremadeBouquet;
     }
 
-    public void setNewPremadeBouquet(PremadeBouquet newPremadeBouquet) {
-        this.newPremadeBouquet = newPremadeBouquet;
+    public void setUpdatePremadeBouquet(PremadeBouquet updatePremadeBouquet) {
+        this.updatePremadeBouquet = updatePremadeBouquet;
     }
 
-    public List<OccasionEnum> getNewOccasionEnums() {
-        return newOccasionEnums;
+    public List<OccasionEnum> getUpdateOccasionEnums() {
+        return updateOccasionEnums;
     }
 
-    public void setNewOccasionEnums(List<OccasionEnum> newOccasionEnums) {
-        this.newOccasionEnums = newOccasionEnums;
+    public void setUpdateOccasionEnums(List<OccasionEnum> updateOccasionEnums) {
+        this.updateOccasionEnums = updateOccasionEnums;
     }
 
     public List<OccasionEnum> getOccasionEnums() {
@@ -367,12 +394,12 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         this.occasionEnums = occasionEnums;
     }
 
-    public Long getNewContainerId() {
-        return newContainerId;
+    public Long getUpdateContainerId() {
+        return updateContainerId;
     }
 
-    public void setNewContainerId(Long newContainerId) {
-        this.newContainerId = newContainerId;
+    public void setUpdateContainerId(Long updateContainerId) {
+        this.updateContainerId = updateContainerId;
     }
 
     public List<Container> getContainers() {
@@ -399,12 +426,12 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         this.selectedDecorationQuantity = selectedDecorationQuantity;
     }
 
-    public Map<Decoration, Integer> getNewDecorations() {
-        return newDecorations;
+    public Map<Decoration, Integer> getUpdateDecorations() {
+        return updateDecorations;
     }
 
-    public void setNewDecorations(Map<Decoration, Integer> newDecorations) {
-        this.newDecorations = newDecorations;
+    public void setUpdateDecorations(Map<Decoration, Integer> updateDecorations) {
+        this.updateDecorations = updateDecorations;
     }
 
     public List<Decoration> getDecorations() {
@@ -413,54 +440,6 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
 
     public void setDecorations(List<Decoration> decorations) {
         this.decorations = decorations;
-    }
-
-    public Long getSelectedFlowerId() {
-        return selectedFlowerId;
-    }
-
-    public void setSelectedFlowerId(Long selectedFlowerId) {
-        this.selectedFlowerId = selectedFlowerId;
-    }
-
-    public Integer getSelectedFlowerQuantity() {
-        return selectedFlowerQuantity;
-    }
-
-    public void setSelectedFlowerQuantity(Integer selectedFlowerQuantity) {
-        this.selectedFlowerQuantity = selectedFlowerQuantity;
-    }
-
-    public Map<Flower, Integer> getNewFlowers() {
-        return newFlowers;
-    }
-
-    public void setNewFlowers(Map<Flower, Integer> newFlowers) {
-        this.newFlowers = newFlowers;
-    }
-
-    public List<Flower> getFlowers() {
-        return flowers;
-    }
-
-    public void setFlowers(List<Flower> flowers) {
-        this.flowers = flowers;
-    }
-
-    public String getUploadedFilePath() {
-        return uploadedFilePath;
-    }
-
-    public void setUploadedFilePath(String uploadedFilePath) {
-        this.uploadedFilePath = uploadedFilePath;
-    }
-
-    public Boolean getShowUploadedFile() {
-        return showUploadedFile;
-    }
-
-    public void setShowUploadedFile(Boolean showUploadedFile) {
-        this.showUploadedFile = showUploadedFile;
     }
 
     public Decoration getDecorationToUpdateQuantity() {
@@ -479,6 +458,38 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
         this.decorationQuantityToUpdate = decorationQuantityToUpdate;
     }
 
+    public Long getSelectedFlowerId() {
+        return selectedFlowerId;
+    }
+
+    public void setSelectedFlowerId(Long selectedFlowerId) {
+        this.selectedFlowerId = selectedFlowerId;
+    }
+
+    public Integer getSelectedFlowerQuantity() {
+        return selectedFlowerQuantity;
+    }
+
+    public void setSelectedFlowerQuantity(Integer selectedFlowerQuantity) {
+        this.selectedFlowerQuantity = selectedFlowerQuantity;
+    }
+
+    public Map<Flower, Integer> getUpdateFlowers() {
+        return updateFlowers;
+    }
+
+    public void setUpdateFlowers(Map<Flower, Integer> updateFlowers) {
+        this.updateFlowers = updateFlowers;
+    }
+
+    public List<Flower> getFlowers() {
+        return flowers;
+    }
+
+    public void setFlowers(List<Flower> flowers) {
+        this.flowers = flowers;
+    }
+
     public Flower getFlowerToUpdateQuantity() {
         return flowerToUpdateQuantity;
     }
@@ -493,6 +504,22 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
 
     public void setFlowerQuantityToUpdate(Integer flowerQuantityToUpdate) {
         this.flowerQuantityToUpdate = flowerQuantityToUpdate;
+    }
+
+    public String getUploadedFilePath() {
+        return uploadedFilePath;
+    }
+
+    public void setUploadedFilePath(String uploadedFilePath) {
+        this.uploadedFilePath = uploadedFilePath;
+    }
+
+    public Boolean getShowUploadedFile() {
+        return showUploadedFile;
+    }
+
+    public void setShowUploadedFile(Boolean showUploadedFile) {
+        this.showUploadedFile = showUploadedFile;
     }
     
 }

@@ -54,23 +54,19 @@
                         <h:outputText value="#{premadeBouquetEntity.creatorName}" />
                     </p:column>
                     
-                    <p:column headerText="Type" sortBy="#{flowerEntity.flowerType.name}" filterBy="#{flowerEntity.flowerType.name}" filterMatchMode="contains">
-                        <h:outputText value="#{flowerEntity.flowerType.name}" />
-                    </p:column>
-                    
                     <p:column headerText="Description" sortBy="#{premadeBouquetEntity.description}" filterBy="#{premadeBouquetEntity.description}" filterMatchMode="contains">
                         <h:outputText value="#{premadeBouquetEntity.description}" />
                     </p:column>
                     
                     
-                    <p:column headerText="Occasions" sortBy="#{premadeBouquetEntity.isOnDisplay}" filterBy="#{premadeBouquetEntity.isOnDisplay}" filterMatchMode="contains">
+                    <p:column headerText="Occasions" sortBy="#{premadeBouquetEntity.occasions}" filterBy="#{premadeBouquetEntity.occasions}" filterMatchMode="contains">
                         <p:dataList value="#{premadeBouquetEntity.occasions}" var="occasion" type="ordered">
                             #{occasion}
                         </p:dataList>
                     </p:column>
                     
                     <p:column headerText="Bouquet Unit Price" sortBy="#{premadeBouquetEntity.unitPrice}" filterBy="#{premadeBouquetEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
-                        <h:outputText value="#{flowerEntity.unitPrice}">
+                        <h:outputText value="#{premadeBouquetEntity.unitPrice}">
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>
                     </p:column>
@@ -78,8 +74,23 @@
                     <p:column headerText="Display" sortBy="#{premadeBouquetEntity.isOnDisplay}" filterBy="#{premadeBouquetEntity.isOnDisplay}" filterMatchMode="contains">
                         <h:outputText value="#{premadeBouquetEntity.isOnDisplay}" />
                     </p:column>
+                    
+                    <p:column headerText="Total num. of Flowers" sortBy="#{premadeBouquetEntity.totalNumOfFlowers}" filterBy="#{premadeBouquetEntity.totalNumOfFlowers}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.totalNumOfFlowers}" />
+                    </p:column>
+                    
+                    <p:column headerText="Total num. of Decorations" sortBy="#{premadeBouquetEntity.totalNumOfDecorations}" filterBy="#{premadeBouquetEntity.totalNumOfDecorations}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.totalNumOfDecorations}" />
+                    </p:column>
 
                     <p:column headerText="Action" >
+                        <p:link outcome="/productManagement/viewPremadeBouquet" value="View Details">
+                            <f:param name="premadeBouquetId" value="#{premadeBouquetEntity.itemId}" />
+                        </p:link>, 
+                        <p:link outcome="/productManagement/updatePremadeBouquet" value="Update">
+                            <f:param name="premadeBouquetToUpdateId" value="#{premadeBouquetEntity.itemId}" />
+                        </p:link>
+        
 <!--                        <p:commandButton update="ccViewFlower:formViewFlower" oncomplete="PF('dialogViewFlower').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{flowerEntity}" target="#{viewFlowerManagedBean.flowerEntityToView}" />
                         </p:commandButton>

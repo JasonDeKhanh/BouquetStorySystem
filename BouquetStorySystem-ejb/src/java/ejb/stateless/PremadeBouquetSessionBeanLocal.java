@@ -26,12 +26,12 @@ public interface PremadeBouquetSessionBeanLocal {
 
     public void deletePremadeBouquet(Long itemId) throws PremadeBouquetNotFoundException, DeletePremadeBouquetException;
 
-    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException;
-
     public PremadeBouquet retrievePremadeBouquetByItemId(Long itemId) throws PremadeBouquetNotFoundException;
 
     public List<PremadeBouquet> retrieveAllPremadeBouquets();
 
     public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException;
+
+    public void updatePremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException;
     
 }
