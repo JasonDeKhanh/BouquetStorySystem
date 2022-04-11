@@ -25,7 +25,6 @@ import util.exception.CreateNewContainerException;
 import util.exception.DeleteContainerException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UpdateContainerException;
 
 /**
  *
@@ -129,13 +128,8 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
     }
     
     @Override
-    public void updateContainer(Container containerEntity, Long containerTypeId) throws ContainerNotFoundException,InputDataValidationException, ContainerTypeNotFoundException, UpdateContainerException
+    public void updateContainer(Container containerEntity, Long containerTypeId) throws ContainerNotFoundException,InputDataValidationException, ContainerTypeNotFoundException
     {
-        System.out.println("containerEntity toString: " + containerEntity.toString());
-        System.out.println("container Entity ID: " + containerEntity.getContainerId());
-        System.out.println("containerTypeId: " + containerTypeId);
-        System.out.println("");
-        System.out.println("containerEntity containerType id: " + containerEntity.getContainerType().getContainerTypeId());
         if(containerEntity != null && containerEntity.getContainerId()!= null)
         {
             Set<ConstraintViolation<Container>>constraintViolations = validator.validate(containerEntity);
@@ -145,7 +139,7 @@ public class ContainerSessionBean implements ContainerSessionBeanLocal {
                 // Do Update
                 Container containerEntityToUpdate = retrieveContainerByContainerId(containerEntity.getContainerId());
                 
-                if(containerTypeId != null && (!containerEntityToUpdate.getContainerType().getContainerTypeId().equals(containerTypeId)))
+                if(containerTypeId != null && (containerEntityToUpdate.getContainerType().getContainerTypeId().equals(containerTypeId)))
                 {
                     ContainerType containerTypeToUpdate = containerTypeSessionBeanLocal.retrieveContainerTypeByContainerTypeId(containerTypeId);
                     

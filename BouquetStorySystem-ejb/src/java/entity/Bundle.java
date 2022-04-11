@@ -7,17 +7,15 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -28,21 +26,13 @@ public class Bundle extends Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String bundleName;
-    @Column(nullable = false)
-    @NotNull
-    private String imgAddress;
-    @ManyToOne(optional = true)
+    @OneToOne(optional = true)
     private Promotion promotion;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;
-    private Map<Product, Integer> productQuantities;
-    @Column(nullable = false)
-    @NotNull
-    private Boolean isOnDisplay;
 
     public Bundle() {
         super();
-        this.productQuantities = new HashMap<>();
     }
 
     public Bundle(String bundleName) {
@@ -61,14 +51,6 @@ public class Bundle extends Item implements Serializable {
         this.bundleName = bundleName;
     }
 
-    public String getImgAddress() {
-        return imgAddress;
-    }
-
-    public void setImgAddress(String imgAddress) {
-        this.imgAddress = imgAddress;
-    }
-
     public Promotion getPromotion() {
         return promotion;
     }
@@ -84,34 +66,14 @@ public class Bundle extends Item implements Serializable {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
-
+    
     @Override
     public BigDecimal getUnitPrice() {
         BigDecimal totalPrice = new BigDecimal(0);
-        for (Map.Entry<Product, Integer> entry:productQuantities.entrySet()) {
-            BigDecimal subTotal = entry.getKey().getUnitPrice().multiply(BigDecimal.valueOf(entry.getValue()));
-            totalPrice = totalPrice.add(subTotal);
-        }
-        if (promotion != null) {
-            totalPrice = totalPrice.multiply(promotion.getDiscountPercent());
+        for (Product product:products) {
+            totalPrice = totalPrice.add(product.getUnitPrice());
         }
         return totalPrice;
-    }
-
-    public Map<Product, Integer> getProductQuantities() {
-        return productQuantities;
-    }
-
-    public void setProductQuantities(Map<Product, Integer> productQuantities) {
-        this.productQuantities = productQuantities;
-    }
-
-    public Boolean getIsOnDisplay() {
-        return isOnDisplay;
-    }
-
-    public void setIsOnDisplay(Boolean isOnDisplay) {
-        this.isOnDisplay = isOnDisplay;
     }
     
     @Override

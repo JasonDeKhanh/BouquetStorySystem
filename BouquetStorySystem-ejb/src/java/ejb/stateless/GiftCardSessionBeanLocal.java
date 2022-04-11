@@ -25,5 +25,5 @@ public interface GiftCardSessionBeanLocal {
     public List<GiftCard> retrieveAllGiftCards();
     public GiftCard retrieveGiftCardByGiftCardId(Long itemId) throws GiftCardNotFoundException;
     public void updateGiftCard(GiftCard giftCardEntity) throws GiftCardNotFoundException, UpdateGiftCardException, InputDataValidationException;
-    public void deleteGiftCard(Long itemId) throws GiftCardNotFoundException, DeleteGiftCardException;
+    public void deleteGiftCardDecoration(Long itemId) throws GiftCardNotFoundException, DeleteGiftCardException;
 }

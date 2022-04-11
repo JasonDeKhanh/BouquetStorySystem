@@ -5,7 +5,6 @@
  */
 package ejb.stateless;
 
-import entity.GiftCard;
 import entity.GiftCardType;
 import java.util.List;
 import java.util.Set;
@@ -147,17 +146,6 @@ public class GiftCardTypeSessionBean implements GiftCardTypeSessionBeanLocal {
     {
         GiftCardType giftCardTypeEntityToRemove = retrieveGiftCardTypeByGiftCardTypeId(giftCardTypeId);
         
-        Query query = em.createQuery("SELECT g FROM GiftCard g WHERE g.giftCardType.giftCardTypeId = :inGiftCardTypeId");
-        List<GiftCard> giftCards = query.getResultList();
-        
-        if(!giftCards.isEmpty())
-        {
-            throw new DeleteGiftCardTypeException ("Gift Card Type ID " + giftCardTypeId + " is associated with existing gift cards and cannot be deleted!");
-        }
-        else
-        {
-            em.remove(giftCardTypeEntityToRemove);
-        }
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<GiftCardType>>constraintViolations)

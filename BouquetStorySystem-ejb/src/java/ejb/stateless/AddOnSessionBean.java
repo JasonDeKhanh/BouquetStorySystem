@@ -141,8 +141,6 @@ public class AddOnSessionBean implements AddOnSessionBeanLocal {
     {
         AddOn addOnEntityToRemove = retrieveAddOnByAddOnId(itemId);
         
-        em.remove(addOnEntityToRemove);
-        
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<AddOn>>constraintViolations)

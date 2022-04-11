@@ -133,11 +133,9 @@ public class GiftCardSessionBean implements GiftCardSessionBeanLocal {
     }
     
     @Override
-    public void deleteGiftCard(Long itemId) throws GiftCardNotFoundException, DeleteGiftCardException
+    public void deleteGiftCardDecoration(Long itemId) throws GiftCardNotFoundException, DeleteGiftCardException
     {
         GiftCard giftCardEntityToRemove = retrieveGiftCardByGiftCardId(itemId);
-        
-        em.remove(giftCardEntityToRemove);
         
     }
 

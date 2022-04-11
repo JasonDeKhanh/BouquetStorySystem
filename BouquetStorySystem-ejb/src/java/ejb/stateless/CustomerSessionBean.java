@@ -38,7 +38,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
     @PersistenceContext(unitName = "BouquetStorySystem-ejbPU")
     private EntityManager em;
-    
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
@@ -47,6 +47,32 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
 
+    @Override
+    public Long createNewCustomer(Customer newCustomer) throws CustomerEmailExistException, UnknownPersistenceException, InputDataValidationException {
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(newCustomer);
+
+        if (constraintViolations.isEmpty()) {
+            try {
+                em.persist(newCustomer);
+                em.flush();
+
+                return newCustomer.getCustomerId();
+            } catch (PersistenceException ex) {
+                if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                    if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
+                        throw new CustomerEmailExistException();
+                    } else {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    }
+                } else {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+            }
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+
+    }
 
     @Override
     public List<Customer> retrieveAllCustomers() {
@@ -80,7 +106,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
 
     }
-    
+
 //    @Override
 //    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException {
 //        try {

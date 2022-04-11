@@ -61,28 +61,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     }
 
     
-    // added method
-    public Integer getTotalNumOfFlowers()
-    {
-        Integer total = 0;
-        for(Flower flower : this.getFlowers())
-        {
-            total += this.getFlowerQuantities().get(flower);
-        }
-        return total;
-    }
     
-    // added method
-    public Integer getTotalNumOfDecorations()
-    {
-        Integer total = 0;
-        for(Decoration decoration : this.getDecorations())
-        {
-            total += this.getDecorationQuantities().get(decoration);
-        }
-        
-        return total;
-    }
     
     public String getName() {
         return name;

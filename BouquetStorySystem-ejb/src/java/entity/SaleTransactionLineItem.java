@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -43,21 +41,17 @@ public class SaleTransactionLineItem implements Serializable {
     @DecimalMin("0.00")
     @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
     private BigDecimal unitPrice;
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Item itemEntity;
 
     public SaleTransactionLineItem() {
     }
 
-    public SaleTransactionLineItem(Integer serialNumber, Integer quantity, BigDecimal unitPrice, Item itemEntity) {
+    public SaleTransactionLineItem(Integer serialNumber, Integer quantity, BigDecimal unitPrice) {
     
         this();
         
         this.serialNumber = serialNumber;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
-        this.itemEntity = itemEntity;
     }
     
     
@@ -92,14 +86,6 @@ public class SaleTransactionLineItem implements Serializable {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
-    }
-    
-    public Item getItemEntity() {
-        return itemEntity;
-    }
-
-    public void setItemEntity(Item itemEntity) {
-        this.itemEntity = itemEntity;
     }
 
     @Override
