@@ -20,6 +20,7 @@
                     <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Manage Customer" outcome="/adminManagement/manageCustomer.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Manage Admin"  outcome="/adminManagement/manageAdmin.xhtml"  icon="pi pi-sign-out"/>
+                        <p:menuitem value="Test Email"  outcome="/adminManagement/testEmail.xhtml"  icon="pi pi-sign-out"/>
                     </p:submenu>
                     
                     <p:submenu label="Flower Management" rendered="#{sessionScope.isLogin == true}">
