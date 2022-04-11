@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,20 +35,30 @@ public abstract class Bouquet extends Product implements Serializable {
     @NotNull
     @Size(min = 1, max = 32)
     private String creatorName;
+    private Map<Flower,Integer> flowerQuantities;
+    private Map<Decoration,Integer> decorationQuantities;
+    
+    // we have a list of entities as the relationship
+    // then we should have a session bean method or a class method
+    // to get the quantities Map
+    // search by key inside the map for the entitye (Flower or Deco)
+    // then get the value which is the quantity
     
     // Relationships
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn
     private Container container;
     
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Decoration> decorations;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Flower> flowers;
 
     public Bouquet() {
         super();
+        this.flowerQuantities = new HashMap<>();
+        this.decorationQuantities = new HashMap<>();
         this.decorations = new ArrayList<>();
         this.flowers = new ArrayList<>();
     }
@@ -93,6 +105,14 @@ public abstract class Bouquet extends Product implements Serializable {
         this.decorations = decorations;
     }
 
+//    public Map<Flower,Integer> getFlowers() {
+//        return flowers;
+//    }
+//
+//    public void setFlowers(Map<Flower,Integer> flowers) {
+//        this.flowers = flowers;
+//    }
+    
     public List<Flower> getFlowers() {
         return flowers;
     }
@@ -100,6 +120,23 @@ public abstract class Bouquet extends Product implements Serializable {
     public void setFlowers(List<Flower> flowers) {
         this.flowers = flowers;
     }
+
+    public Map<Flower,Integer> getFlowerQuantities() {
+        return flowerQuantities;
+    }
+
+    public void setFlowerQuantities(Map<Flower,Integer> flowerQuantities) {
+        this.flowerQuantities = flowerQuantities;
+    }
+
+    public Map<Decoration,Integer> getDecorationQuantities() {
+        return decorationQuantities;
+    }
+
+    public void setDecorationQuantities(Map<Decoration,Integer> decorationQuantities) {
+        this.decorationQuantities = decorationQuantities;
+    }
+
 
     @Override
     public int hashCode() {

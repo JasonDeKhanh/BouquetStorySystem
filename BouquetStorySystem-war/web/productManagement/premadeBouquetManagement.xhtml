@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                template="./../templates/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <div>
+            <h3>Premade Bouquet Management</h3>
+            
+<!--            <h:form>
+                <p:menubar>
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Premade" onclick="PF('dialogCreateNewFlower').show()" icon="pi pi-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>-->
+            
+            <h:form id="formAllPremadeBouquets">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllPremadeBouquets" widgetVar="dataTableAllPremadeBouquets" value="#{premadeBouquetManagementManagedBean.premadeBouquetEntities}" var="premadeBouquetEntity" rowKey="#{premadeBouquetEntity.itemId}" rowIndexVar="row"
+                             filteredValue="#{premadeBouquetManagementManagedBean.filtPremadeBouquetEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllPremadeBouquets').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Premade Bouquet Item ID" sortBy="#{premadeBouquetEntity.itemId}" filterBy="#{premadeBouquetEntity.itemId}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.itemId}" />
+                    </p:column>                            
+
+                    <p:column headerText="Image">
+                        <p:graphicImage value="#{premadeBouquetEntity.imgAddress}" height="100px"/>
+                    </p:column>
+                    
+                    <p:column headerText="Name" sortBy="#{premadeBouquetEntity.name}" filterBy="#{premadeBouquetEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.name}" />
+                    </p:column>
+                    
+                    <p:column headerText="Creator Name" sortBy="#{premadeBouquetEntity.creatorName}" filterBy="#{premadeBouquetEntity.creatorName}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.creatorName}" />
+                    </p:column>
+                    
+                    <p:column headerText="Description" sortBy="#{premadeBouquetEntity.description}" filterBy="#{premadeBouquetEntity.description}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.description}" />
+                    </p:column>
+                    
+                    
+                    <p:column headerText="Occasions" sortBy="#{premadeBouquetEntity.occasions}" filterBy="#{premadeBouquetEntity.occasions}" filterMatchMode="contains">
+                        <p:dataList value="#{premadeBouquetEntity.occasions}" var="occasion" type="ordered">
+                            #{occasion}
+                        </p:dataList>
+                    </p:column>
+                    
+                    <p:column headerText="Bouquet Unit Price" sortBy="#{premadeBouquetEntity.unitPrice}" filterBy="#{premadeBouquetEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{premadeBouquetEntity.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="Display" sortBy="#{premadeBouquetEntity.isOnDisplay}" filterBy="#{premadeBouquetEntity.isOnDisplay}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.isOnDisplay}" />
+                    </p:column>
+                    
+                    <p:column headerText="Total num. of Flowers" sortBy="#{premadeBouquetEntity.totalNumOfFlowers}" filterBy="#{premadeBouquetEntity.totalNumOfFlowers}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.totalNumOfFlowers}" />
+                    </p:column>
+                    
+                    <p:column headerText="Total num. of Decorations" sortBy="#{premadeBouquetEntity.totalNumOfDecorations}" filterBy="#{premadeBouquetEntity.totalNumOfDecorations}" filterMatchMode="contains">
+                        <h:outputText value="#{premadeBouquetEntity.totalNumOfDecorations}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:link outcome="/productManagement/viewPremadeBouquet" value="View Details">
+                            <f:param name="premadeBouquetId" value="#{premadeBouquetEntity.itemId}" />
+                        </p:link>, 
+                        <p:link outcome="/productManagement/updatePremadeBouquet" value="Update">
+                            <f:param name="premadeBouquetToUpdateId" value="#{premadeBouquetEntity.itemId}" />
+                        </p:link>
+        
+<!--                        <p:commandButton update="ccViewFlower:formViewFlower" oncomplete="PF('dialogViewFlower').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{flowerEntity}" target="#{viewFlowerManagedBean.flowerEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{flowerManagementManagedBean.doUpdateFlower}" update="formUpdateFlower" oncomplete="PF('dialogUpdateFlower').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="flowerEntityToUpdate" value="#{flowerEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{flowerManagementManagedBean.deleteFlower}" update="formAllFlowers:dataTableAllFlowers formAllFlowers:messages">
+                            <f:attribute name="flowerEntityToDelete" value="#{flowerEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{flowerEntity.name}?" icon="ui-icon-alert" />
+                        </p:commandButton>-->
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <!--<ez:ViewFlower id="ccViewFlower"/>-->
+            
+<!--            <h:form id="formUpdatePremadeBouquet">
+
+                <p:dialog id="dialogUpdatePremadeBouquet" widgetVar="dialogUpdatePremadeBouquet" header="Update Premade Bouquet" closable="true">
+
+                    <p:messages id="messagesUpdatePremadeBouquet" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Premade Bouquet Item ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{premadeBouquetManagementManagedBean.selectedPremadeBouquetEntityToUpdate.itemId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="imgAddress" value="Image  " />
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload listener="#{premadeBouquetManagementManagedBean.handleImageUploadUpdate}" multiple="true" update="imgAddress" oncomplete="PF('dialogUpdatePremadeBouquet').show()"/>
+                                <p:panel id="imgAddress" header="Current Image">
+                                    <p:graphicImage value="#{premadeBouquetManagementManagedBean.selectedPremadeBouquetEntityToUpdate.imgAddress}" height="100px" />
+                                </p:panel>
+                            </p:column>
+                            <p:column>
+                                <p:message for="imgAddress" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{premadeBouquetManagementManagedBean.selectedPremadeBouquetEntityToUpdate.name}" placeholder="Premade Bouquet 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{flowerManagementManagedBean.selectedFlowerEntityToUpdate.description}" placeholder="Flower 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{flowerManagementManagedBean.selectedFlowerEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{flowerManagementManagedBean.selectedFlowerEntityToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Unit Price " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="unitPrice" value="#{flowerManagementManagedBean.selectedFlowerEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{flowerManagementManagedBean.selectedFlowerEntityToUpdate.isOnDisplay}" itemLabel="Display on Shop"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="isOnDisplay" />
+                            </p:column>
+                        </p:row>                 
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Flower" update="@form formAllFlowers:dataTableAllFlowers" actionListener="#{flowerManagementManagedBean.updateFlower}" oncomplete="PF('dialogUpdateFlower').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>-->
+
+        </div>
+    </ui:define>
+
+</ui:composition>

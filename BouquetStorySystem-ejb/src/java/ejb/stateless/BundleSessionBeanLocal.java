@@ -25,5 +25,5 @@ public interface BundleSessionBeanLocal {
     public List<Bundle> retrieveAllBundles();
     public Bundle retrieveBundleByItemId(Long itemId) throws BundleNotFoundException;
     public void updateBundle(Bundle bundleEntity) throws BundleNotFoundException, UpdateBundleException, InputDataValidationException;
-    public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException;
+    public void deleteBundle(Long itemId) throws BundleNotFoundException, DeleteBundleException;
 }

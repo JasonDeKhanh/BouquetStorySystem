@@ -118,7 +118,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
 
                 bundleEntityToUpdate.setBundleName(bundleEntity.getBundleName());
                 bundleEntityToUpdate.setPromotion(bundleEntity.getPromotion());
-                bundleEntityToUpdate.setProducts(bundleEntity.getProducts());
+                bundleEntityToUpdate.setProductQuantities(bundleEntity.getProductQuantities());
             }
             else
             {
@@ -132,9 +132,11 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
     }
     
     @Override
-    public void deleteBundleDecoration(Long itemId) throws BundleNotFoundException, DeleteBundleException
+    public void deleteBundle(Long itemId) throws BundleNotFoundException, DeleteBundleException
     {
         Bundle bundleEntityToRemove = retrieveBundleByItemId(itemId);
+        
+        em.remove(bundleEntityToRemove);
 
     }
 

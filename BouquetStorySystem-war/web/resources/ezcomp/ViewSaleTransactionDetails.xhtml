@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formViewSaleTransaction">
+            
+            <p:dialog id="dialogViewSaleTransaction" widgetVar="dialogViewSaleTransaction" header="View SaleTransaction" closable="true">
+                
+                <p:dataTable id="dataTableSaleTransactionLineItems" widgetVar="dataTableSaleTransactionLineItems" value="#{viewSaleTransactionManagedBean.saleTransactionToView.saleTransactionLineItems}" var="saleTransactionLineItem" rowKey="#{saleTransactionLineItem.saleTranscationLineItemId}" rowIndexVar="row"
+                             filteredValue="#{productManagementManagedBean.filteredProductEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+
+
+                    <p:column headerText="serialNumber">
+                        <h:outputText value="#{saleTransactionLineItem.serialNumber}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{saleTransactionLineItem.quantity}" />
+                    </p:column>                            
+
+                    <p:column headerText="unitPrice">
+                        <h:outputText value="#{saleTransactionLineItem.unitPrice}" style="text-align: right;">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+                    
+                   <!-- This part definitely wrong ah, but i dont know how to do -->
+                    <p:column headerText="item">
+                        <h:outputText value="#{saleTransactionLineItem.itemEntity}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                
+                    
+                
+
+            </p:dialog>
+            
+        </h:form>
+    </cc:implementation>
+</html>

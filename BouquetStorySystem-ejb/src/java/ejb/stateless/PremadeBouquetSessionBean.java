@@ -5,9 +5,14 @@
  */
 package ejb.stateless;
 
+import entity.Container;
+import entity.Decoration;
+import entity.Flower;
 import entity.PremadeBouquet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,11 +22,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.ContainerNotFoundException;
 import util.exception.CreateNewPremadeBouquetException;
+import util.exception.DecorationNotFoundException;
 import util.exception.DeletePremadeBouquetException;
+import util.exception.FlowerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.PremadeBouquetNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdatePremadeBouquetException;
 
 /**
  *
@@ -30,9 +39,20 @@ import util.exception.UnknownPersistenceException;
 @Stateless
 public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal {
 
+    @EJB(name = "DecorationSessionBeanLocal")
+    private DecorationSessionBeanLocal decorationSessionBeanLocal;
+
+    @EJB(name = "FlowerSessionBeanLocal")
+    private FlowerSessionBeanLocal flowerSessionBeanLocal;
+
+    @EJB(name = "ContainerSessionBeanLocal")
+    private ContainerSessionBeanLocal containerSessionBeanLocal;
+
     @PersistenceContext(unitName = "BouquetStorySystem-ejbPU")
     private EntityManager em;
 
+    
+    
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
@@ -43,7 +63,48 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
 
 
     // Create new Premade Bouquet
-    public PremadeBouquet createNewGiftCard(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
+//    @Override
+//    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
+//    {
+//        Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
+//        
+//        if(constraintViolations.isEmpty())
+//        {
+//            try
+//            {
+//                em.persist(premadeBouquet);
+//                em.flush();
+//                
+//                return premadeBouquet;
+//            }
+//            catch(PersistenceException ex)
+//            {
+//                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
+//                {
+//                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
+//                    {
+//                        throw new CreateNewPremadeBouquetException();
+//                    }
+//                    else
+//                    {
+//                        throw new UnknownPersistenceException(ex.getMessage());
+//                    }
+//                }
+//                else
+//                {
+//                    throw new UnknownPersistenceException(ex.getMessage());
+//                }
+//            }
+//        }
+//        else
+//        {
+//            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//        }
+//    }
+    
+    // new proper create
+    @Override
+    public PremadeBouquet createNewPremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws CreateNewPremadeBouquetException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
         
@@ -51,7 +112,31 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         {
             try
             {
+                if(containerId == null)
+                {
+                    throw new CreateNewPremadeBouquetException("Container ID not provided or is erroneous");
+                }
+                Container containerEntity = containerSessionBeanLocal.retrieveContainerByContainerId(containerId);
+                
                 em.persist(premadeBouquet);
+                
+                premadeBouquet.setContainer(containerEntity);
+                
+//                List<Decoration> newDecorations = new ArrayList<>();
+                // associate with decorations
+                for(Decoration decoration : decorations)
+                {
+                    Decoration decorationEntity = decorationSessionBeanLocal.retrieveDecorationByDecorationId(decoration.getDecorationId());
+                    premadeBouquet.getDecorations().add(decorationEntity);
+                }
+                
+                // associate with flowers
+                for(Flower flower : flowers) 
+                {
+                    Flower flowerEntity = flowerSessionBeanLocal.retrieveFlowerByFlowerId(flower.getFlowerId());
+                    premadeBouquet.getFlowers().add(flower);
+                }
+                //
                 em.flush();
                 
                 return premadeBouquet;
@@ -74,6 +159,10 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
             }
+            catch(DecorationNotFoundException | FlowerNotFoundException | ContainerNotFoundException ex)
+            {
+                throw new CreateNewPremadeBouquetException("An error has occurred while creating the new premade bouquet: " + ex.getMessage());
+            }
         }
         else
         {
@@ -81,9 +170,8 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         }
     }
     
-    
-    
     // retrieve all premade bouquets
+    @Override
     public List<PremadeBouquet> retrieveAllPremadeBouquets()
     {
         Query query = em.createQuery("SELECT pb FROM PremadeBouquet pb ORDER BY pb.itemId ASC");
@@ -95,6 +183,7 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
     
     
     // retrieve premade bouquet by item id
+    @Override
     public PremadeBouquet retrievePremadeBouquetByItemId(Long itemId) throws PremadeBouquetNotFoundException
     {
         PremadeBouquet premadeBouquet = em.find(PremadeBouquet.class, itemId);
@@ -109,8 +198,8 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         }
     }
     
-    
-    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException
+    @Override
+    public void updatePremadeBouquet(PremadeBouquet premadeBouquet, Long containerId, List<Decoration> decorations, List<Flower> flowers) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException
     {
         if(premadeBouquet != null && premadeBouquet.getItemId()!= null)
         {
@@ -118,15 +207,48 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         
             if(constraintViolations.isEmpty())
             {
-                // Do Update
-                PremadeBouquet premadeBouquetToUpdate = retrievePremadeBouquetByItemId(premadeBouquet.getItemId());
+                try 
+                {
+                    
+                    // Do Update
+                    PremadeBouquet premadeBouquetToUpdate = retrievePremadeBouquetByItemId(premadeBouquet.getItemId());
 
-                premadeBouquetToUpdate.setName(premadeBouquet.getName());
-                premadeBouquetToUpdate.setImgAddress(premadeBouquet.getImgAddress());
-                premadeBouquetToUpdate.setDescription(premadeBouquet.getDescription());
-                premadeBouquetToUpdate.setBouquetPrice(premadeBouquet.getBouquetPrice());
-                premadeBouquetToUpdate.setIsOnDisplay(premadeBouquet.getIsOnDisplay());
-                premadeBouquetToUpdate.setCreatorName(premadeBouquet.getCreatorName());
+                    premadeBouquetToUpdate.setName(premadeBouquet.getName());
+                    premadeBouquetToUpdate.setImgAddress(premadeBouquet.getImgAddress());
+                    premadeBouquetToUpdate.setDescription(premadeBouquet.getDescription());
+                    premadeBouquetToUpdate.setBouquetPrice(premadeBouquet.getBouquetPrice());
+                    premadeBouquetToUpdate.setIsOnDisplay(premadeBouquet.getIsOnDisplay());
+                    premadeBouquetToUpdate.setCreatorName(premadeBouquet.getCreatorName());
+                    premadeBouquetToUpdate.setOccasions(premadeBouquet.getOccasions());
+                    
+                    // update decoration quantities
+                    premadeBouquetToUpdate.getDecorationQuantities().clear();
+                    premadeBouquetToUpdate.getDecorationQuantities().putAll(premadeBouquet.getDecorationQuantities());
+
+                    // update flower quantities
+                    premadeBouquetToUpdate.getFlowerQuantities().clear();
+                    premadeBouquetToUpdate.getFlowerQuantities().putAll(premadeBouquet.getFlowerQuantities());
+
+                    // update container
+                    Container containerToUpdate = containerSessionBeanLocal.retrieveContainerByContainerId(containerId);
+                    premadeBouquet.setContainer(containerToUpdate);
+                    
+                    // update Decorations
+                    premadeBouquetToUpdate.getDecorations().clear();
+                    premadeBouquetToUpdate.getDecorations().addAll(decorations);
+                    
+                    // update Flowers
+                    premadeBouquetToUpdate.getFlowers().clear();
+                    premadeBouquetToUpdate.getFlowers().addAll(flowers);
+
+
+                } 
+                catch (ContainerNotFoundException ex) 
+                {
+                    throw new UpdatePremadeBouquetException("An error has occurred while updating premade bouquet: " + ex.getMessage());
+                }
+                
+                
             }
             else
             {
@@ -139,7 +261,38 @@ public class PremadeBouquetSessionBean implements PremadeBouquetSessionBeanLocal
         }
     }
     
+//    @Override
+//    public void updatePremadeBouquet(PremadeBouquet premadeBouquet) throws PremadeBouquetNotFoundException, InputDataValidationException, UpdatePremadeBouquetException
+//    {
+//        if(premadeBouquet != null && premadeBouquet.getItemId()!= null)
+//        {
+//            Set<ConstraintViolation<PremadeBouquet>>constraintViolations = validator.validate(premadeBouquet);
+//        
+//            if(constraintViolations.isEmpty())
+//            {
+//                // Do Update
+//                PremadeBouquet premadeBouquetToUpdate = retrievePremadeBouquetByItemId(premadeBouquet.getItemId());
+//
+//                premadeBouquetToUpdate.setName(premadeBouquet.getName());
+//                premadeBouquetToUpdate.setImgAddress(premadeBouquet.getImgAddress());
+//                premadeBouquetToUpdate.setDescription(premadeBouquet.getDescription());
+//                premadeBouquetToUpdate.setBouquetPrice(premadeBouquet.getBouquetPrice());
+//                premadeBouquetToUpdate.setIsOnDisplay(premadeBouquet.getIsOnDisplay());
+//                premadeBouquetToUpdate.setCreatorName(premadeBouquet.getCreatorName());
+//            }
+//            else
+//            {
+//                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//            }
+//        }
+//        else
+//        {
+//            throw new PremadeBouquetNotFoundException("Premade Bouquet ID not provided for giftCard to be updated");
+//        }
+//    }
     
+    
+    @Override
     public void deletePremadeBouquet(Long itemId) throws PremadeBouquetNotFoundException, DeletePremadeBouquetException
     {
         PremadeBouquet premadeBouquetToRemove = retrievePremadeBouquetByItemId(itemId);

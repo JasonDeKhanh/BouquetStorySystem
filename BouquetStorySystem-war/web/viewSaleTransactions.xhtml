@@ -28,7 +28,7 @@
             <h:form id="formAllSaleTransactions">
             
 
-                <p:dataTable id="dataTableAllSaleTransactions" widgetVar="dataTableAllSaleTransactions" value="#{viewSalesTransactionManagedBean.saleTransactionEntities}" var="saleTransactionEntity" rowKey="#{saleTransactionEntity.saleTransactionId}" rowIndexVar="row"
+                <p:dataTable id="dataTableAllSaleTransactions" widgetVar="dataTableAllSaleTransactions" value="#{SalesTransactionManagedBean.saleTransactionEntities}" var="saleTransactionEntity" rowKey="#{saleTransactionEntity.saleTransactionId}" rowIndexVar="row"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
                     <f:facet name="header">
@@ -82,7 +82,18 @@
                         <h:outputText value="#{saleTransactionEntity.isCompleted}" />
                     </p:column>
 
-
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ccViewSaleTransaction:formViewSaleTransaction" oncomplete="PF('dialogViewSaleTransaction').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{viewSaleTransactionManagedBean.saleTransactionToView}" />
+                        </p:commandButton>
+                        
+                    </p:column>
+                    
+                    <p:column headerText="Action">    				
+                        <p:commandLink value="View" actionListener="#{SalesTransactionManagedBean.viewSaleTransactionDetails}">
+                            <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{viewSaleTransactionManagedBean.saleTransactionToView}" />
+                        </p:commandLink>
+                    </p:column>
 
                 </p:dataTable>
 
@@ -96,6 +107,8 @@
                 </p:growl>
 
             </h:form>
+            
+            <ez:ViewSaleTransactionDetails id="ccViewSaleTransaction"/>
         </div>
     </ui:define>
 
