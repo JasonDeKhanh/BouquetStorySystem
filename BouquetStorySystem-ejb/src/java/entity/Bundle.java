@@ -28,17 +28,21 @@ public class Bundle extends Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String bundleName;
+    @Column(nullable = false)
+    @NotNull
+    private String imgAddress;
     @ManyToOne(optional = true)
     private Promotion promotion;
-//    @ManyToMany(fetch = FetchType.EAGER)
-    private Map<Product, Integer> products;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Product> products;
+    private Map<Product, Integer> productQuantities;
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
 
     public Bundle() {
         super();
-        this.products = new HashMap<>();
+        this.productQuantities = new HashMap<>();
     }
 
     public Bundle(String bundleName) {
@@ -57,6 +61,14 @@ public class Bundle extends Item implements Serializable {
         this.bundleName = bundleName;
     }
 
+    public String getImgAddress() {
+        return imgAddress;
+    }
+
+    public void setImgAddress(String imgAddress) {
+        this.imgAddress = imgAddress;
+    }
+
     public Promotion getPromotion() {
         return promotion;
     }
@@ -65,10 +77,18 @@ public class Bundle extends Item implements Serializable {
         this.promotion = promotion;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     @Override
     public BigDecimal getUnitPrice() {
         BigDecimal totalPrice = new BigDecimal(0);
-        for (Map.Entry<Product, Integer> entry:products.entrySet()) {
+        for (Map.Entry<Product, Integer> entry:productQuantities.entrySet()) {
             BigDecimal subTotal = entry.getKey().getUnitPrice().multiply(BigDecimal.valueOf(entry.getValue()));
             totalPrice = totalPrice.add(subTotal);
         }
@@ -78,12 +98,12 @@ public class Bundle extends Item implements Serializable {
         return totalPrice;
     }
 
-    public Map<Product, Integer> getProducts() {
-        return products;
+    public Map<Product, Integer> getProductQuantities() {
+        return productQuantities;
     }
 
-    public void setProducts(Map<Product, Integer> products) {
-        this.products = products;
+    public void setProductQuantities(Map<Product, Integer> productQuantities) {
+        this.productQuantities = productQuantities;
     }
 
     public Boolean getIsOnDisplay() {

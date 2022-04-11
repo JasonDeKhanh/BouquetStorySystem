@@ -55,6 +55,11 @@
                         <p:menuitem value="Create Premade Bouquet" outcome="/productManagement/createNewPremadeBouquet.xhtml" icon="pi pi-home" />
                     </p:submenu>
                     
+                    <p:submenu label="Bundles" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Bundle Management" outcome="/productManagement/bundleManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Create Bundle" outcome="/productManagement/createNewBundle.xhtml" icon="pi pi-home" />
+                    </p:submenu>
+                    
                     <p:submenu label="Sale Transaction Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="View All Sale Transactions" outcome="/viewSaleTransactions.xhtml" icon="pi pi-home" />
                     </p:submenu>

@@ -37,13 +37,21 @@
                             </p:column>
                         </p:row>
                         
-                        
                         <p:row>
+                            <p:column>
+                                <h:outputLabel value="Image: " />
+                            </p:column>
+                            <p:column>
+                                <p:graphicImage value="#{viewBundleManagedBean.bundleEntityToView.imgAddress}" height="100px" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row rendered="#{viewBundleManagedBean.bundleEntityToView.promotion != null}">
                             <p:column>
                                 <h:outputLabel value="Promotion ID: " />
                             </p:column>
                             <p:column>
-                                <p:graphicImage value="#{viewBundleManagedBean.bundleEntityToView.promotion.promotionId}" height="100px"/>
+                                <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.promotion.promotionId}"/>
                             </p:column>
                         </p:row>
 
@@ -67,6 +75,24 @@
                             </p:column>
                         </p:row>
 
+                        <br />
+                        <h3>Products in Bundle</h3>
+                        <p:dataTable id="dataTableProducts" value="#{viewBundleManagedBean.bundleEntityToView.productQuantities}" var="product"
+                                    rowIndexVar="rowIndex">
+
+                           <p:column headerText="Product ID">
+
+                               <h:outputText value="#{product.key.itemId}" />
+
+                           </p:column>
+
+                            <p:column headerText="Quantity">
+
+                               <h:outputText value="#{product.value}" />
+
+                           </p:column>
+
+                        </p:dataTable>
   
                     </p:panelGrid>
 
