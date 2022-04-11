@@ -8,6 +8,8 @@ package ejb.stateless;
 import entity.SaleTransaction;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateNewSaleTransactionException;
+import util.exception.CustomerNotFoundException;
 import util.exception.SaleTransactionAlreadyVoidedRefundedException;
 import util.exception.SaleTransactionNotFoundException;
 
@@ -25,5 +27,7 @@ public interface SaleTransactionSessionBeanLocal {
     public void updateSaleTransaction(SaleTransaction saleTransactionEntity);
 
     public void voidRefundSaleTransaction(Long saleTransactionId) throws SaleTransactionNotFoundException, SaleTransactionAlreadyVoidedRefundedException;
+
+    public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException;
     
 }

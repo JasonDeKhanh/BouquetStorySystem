@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.Customer;
+import entity.Item;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.CreateNewSaleTransactionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InsufficientQuantityException;
 import util.exception.SaleTransactionAlreadyVoidedRefundedException;
 import util.exception.SaleTransactionNotFoundException;
 
@@ -37,7 +39,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     private CustomerSessionBeanLocal customerSessionBeanLocal;
     
     
-  /*  
+    
     @Override
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException
     {
@@ -46,22 +48,27 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             try
             {
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
-                newSaleTransaction.setCustomerEntity(customer);
+                newSaleTransaction.setCustomer(customer);
                 customer.getSaleTransactions().add(newSaleTransaction);
 
                 em.persist(newSaleTransaction);
-
-                for(SaleTransactionLineItem saleTransactionLineItem:newSaleTransaction.getSaleTransactionLineItemEntities())
-                {
-                    //productEntitySessionBeanLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
-                    //entityManager.persist(saleTransactionLineItemEntity);
+                
+                if(newSaleTransaction.getIsPreorder() == false) {
+                    
+                    for(SaleTransactionLineItem saleTransactionLineItem:newSaleTransaction.getSaleTransactionLineItems()) {
+                    debitQuantityOnHand(saleTransactionLineItem.getItemEntity().getItemId(), saleTransactionLineItem.getQuantity());
+                    //em.persist(saleTransactionLineItemEntity);
                 }
+                    newSaleTransaction.setIsCompleted(true);
+                }
+
+               
 
                 em.flush();
 
                 return newSaleTransaction;
             }
-            catch(ProductNotFoundException | ProductInsufficientQuantityOnHandException ex)
+            catch(InsufficientQuantityException ex)
             {
                 // The line below rolls back all changes made to the database.
                 eJBContext.setRollbackOnly();
@@ -74,7 +81,16 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             throw new CreateNewSaleTransactionException("Sale transaction information not provided");
         }
     }
-*/
+    //method not completed yet
+    public void debitQuantityOnHand(Long itemId, int quantity) throws InsufficientQuantityException {
+        if(true){
+        }
+        else{
+        // do a bunch of if checks to see the instance of
+        throw new InsufficientQuantityException("Item insufficient qty");
+        }
+    }
+
 
    @Override
     public List<SaleTransaction> retrieveAllSaleTransactions()
