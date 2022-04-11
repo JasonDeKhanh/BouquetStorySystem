@@ -73,21 +73,6 @@ public class BundleManagementManagedBean implements Serializable {
         setBundleEntities(bundleSessionBeanLocal.retrieveAllBundles());
     }
     
-    public void createNewBundle(ActionEvent event) {
-        try
-        {
-            newBundleEntity.setProducts(products);
-            Bundle bundle = bundleSessionBeanLocal.createNewBundle(newBundleEntity);
-            bundleEntities.add(newBundleEntity);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bundle created successfully (GiftCardType ID: " + bundle.getItemId() + ")", null));
-        }
-        catch (InputDataValidationException | CreateNewBundleException | UnknownPersistenceException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new Bundle: " + ex.getMessage(), null));
-        }
-    }
-    
     public void deleteBundle(ActionEvent event) {
         try
         {
@@ -114,12 +99,12 @@ public class BundleManagementManagedBean implements Serializable {
     
     public void doUpdateBundle(ActionEvent event) {
         selectedBundleEntityToUpdate = (Bundle)event.getComponent().getAttributes().get("bundleEntityToUpdate");
-        products = selectedBundleEntityToUpdate.getProducts();
+        products = selectedBundleEntityToUpdate.getProductQuantities();
         
     }
     
     public void updateBundle(ActionEvent event) {
-        selectedBundleEntityToUpdate.setProducts(products);
+        selectedBundleEntityToUpdate.setProductQuantities(products);
         try
         {
             bundleSessionBeanLocal.updateBundle(selectedBundleEntityToUpdate);

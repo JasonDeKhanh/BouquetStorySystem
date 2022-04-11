@@ -47,6 +47,10 @@
                     <p:column headerText="Name" sortBy="#{bundleEntity.bundleName}" filterBy="#{bundleEntity.bundleName}" filterMatchMode="contains">
                         <h:outputText value="#{bundleEntity.bundleName}" />
                     </p:column>
+                    
+                    <p:column headerText="Image">
+                        <p:graphicImage value="#{bundleEntity.imgAddress}" height="100px"/>
+                    </p:column>
 
                     <p:column headerText="Unit Price" sortBy="#{bundleEntity.unitPrice}" filterBy="#{bundleEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
                         <h:outputText value="#{bundleEntity.unitPrice}">
@@ -81,66 +85,6 @@
             </h:form>
             
             <ez:ViewBundle id="ccViewBundle"/>
-            
-            <h:form id="formCreateNewBundle">
-
-                <p:dialog id="dialogCreateNewBundle" widgetVar="dialogCreateNewBundle" header="Create New Bundle" closable="true">
-
-                    <p:messages id="messagesCreateNewBundle" redisplay="false" />
-
-                    <p:panelGrid>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="bundleName" value="Name: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText id="bundleName" value="#{bundleManagementManagedBean.newBundleEntity.bundleName}" placeholder="Bundle 1" required="true" requiredMessage="Name is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="bundleName" />
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="promotion" value="Promotion " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="promotion" value="#{bundleManagementManagedBean.newBundleEntity.promotion}">
-                                    <f:selectItem itemLabel="[Choose One]" noSelectionOption="true" />
-                                    <f:selectItems value="#{bundleManagementManagedBean.promotionEntities}" var="promotionEntity" itemValue="#{promotionEntity.promotionId}" itemLabel="#{promotionEntity.name}" />
-                                </p:selectOneMenu>
-                            </p:column>
-                            <p:column>
-                                <p:message for="promotion" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox id="isOnDisplay" value="#{bundleManagementManagedBean.newBundleEntity.isOnDisplay}" itemLabel="Display on shop"/>
-                            </p:column>
-                            <p:column>
-                                <p:message for="isOnDisplay" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton  value="Create New Bundle" update="@this @form formAllBundles:dataTableAllBundles" actionListener="#{bundleManagementManagedBean.createNewBundle}" oncomplete="PF('dialogCreateNewBundle').show();" />
-                            </p:column>
-                        </p:row>
-
-                    </p:panelGrid>
-
-                </p:dialog>
-
-            </h:form>
 
 
             <h:form id="formUpdateBundle">
@@ -219,13 +163,13 @@
                                 
                                 <p:row>
                                     <p:column>
-                                        <p:outputLabel for="quantityToSet" value="Quantity To Set " style="font-weight: bold;" />
+                                        <p:outputLabel for="quantityBouquetToSet" value="Quantity To Set " style="font-weight: bold;" />
                                     </p:column>
                                     <p:column>
-                                        <p:spinner id="quantityToSet" value="#{bundleManagementManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" />
+                                        <p:spinner id="quantityBouquetToSet" value="#{bundleManagementManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" />
                                     </p:column>
                                     <p:column>
-                                        <p:message for="quantityToSet" />
+                                        <p:message for="quantityBouquetToSet" />
                                     </p:column>
                                 </p:row>
                             </p:row>
@@ -254,13 +198,13 @@
                                 
                                 <p:row>
                                     <p:column>
-                                        <p:outputLabel for="quantityToSet" value="Quantity To Set " style="font-weight: bold;" />
+                                        <p:outputLabel for="quantityAddOnToSet" value="Quantity To Set " style="font-weight: bold;" />
                                     </p:column>
                                     <p:column>
-                                        <p:spinner id="quantityToSet" value="#{bundleManagementManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" />
+                                        <p:spinner id="quantityAddOnToSet" value="#{bundleManagementManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" />
                                     </p:column>
                                     <p:column>
-                                        <p:message for="quantityToSet" />
+                                        <p:message for="quantityAddOnToSet" />
                                     </p:column>
                                 </p:row>
                             </p:row>

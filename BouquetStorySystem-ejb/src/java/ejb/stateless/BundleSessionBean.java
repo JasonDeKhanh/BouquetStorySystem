@@ -118,7 +118,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
 
                 bundleEntityToUpdate.setBundleName(bundleEntity.getBundleName());
                 bundleEntityToUpdate.setPromotion(bundleEntity.getPromotion());
-                bundleEntityToUpdate.setProducts(bundleEntity.getProducts());
+                bundleEntityToUpdate.setProductQuantities(bundleEntity.getProductQuantities());
             }
             else
             {
