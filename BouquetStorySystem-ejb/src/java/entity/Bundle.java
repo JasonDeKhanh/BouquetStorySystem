@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 public class Bundle extends Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String bundleName;
+    private String name;
     @Column(nullable = false)
     @NotNull
     private String imgAddress;
@@ -45,20 +45,22 @@ public class Bundle extends Item implements Serializable {
         this.productQuantities = new HashMap<>();
     }
 
-    public Bundle(String bundleName) {
+    public Bundle(String name) {
         super();
-        this.bundleName = bundleName;
+        this.name = name;
     }
 
+    public String getType() {
+        return "Bundle";
+    }
     
     
-    
-     public String getBundleName() {
-        return bundleName;
+     public String getName() {
+        return name;
     }
 
-    public void setBundleName(String bundleName) {
-        this.bundleName = bundleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getImgAddress() {

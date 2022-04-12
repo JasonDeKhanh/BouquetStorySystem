@@ -84,6 +84,11 @@ public class PremadeBouquet extends Bouquet implements Serializable {
         return total;
     }
     
+    public String getType() {
+        return "Premade Bouquet";
+    }
+    
+    @Override
     public String getName() {
         return name;
     }
@@ -92,6 +97,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
         this.name = name;
     }
 
+    @Override
     public String getImgAddress() {
         return imgAddress;
     }

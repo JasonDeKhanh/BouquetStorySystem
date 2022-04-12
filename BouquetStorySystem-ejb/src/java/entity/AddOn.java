@@ -74,7 +74,10 @@ public class AddOn extends Product implements Serializable {
         this.isOnDisplay = isOnDisplay;
     }
 
-    
+    @Override
+    public String getType() {
+        return "AddOn";
+    }
     
 //    public Long getAddOnId() {
 //        return addOnId;

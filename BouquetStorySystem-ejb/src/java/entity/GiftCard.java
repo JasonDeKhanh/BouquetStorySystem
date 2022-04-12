@@ -47,8 +47,20 @@ public class GiftCard extends Product implements Serializable {
         this.photoImgAddress = photoImgAddress;
     }
 
+    @Override
+    public String getName() {
+        return giftCardType.getName();
+    }
     
+    @Override
+    public String getType() {
+        return "Gift Card";
+    }
     
+    @Override
+    public String getImgAddress() {
+        return giftCardType.getImgAddress();
+    }
     
 //    public Long getGiftCardId() {
 //        return giftCardId;

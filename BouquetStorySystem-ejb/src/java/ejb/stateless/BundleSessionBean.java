@@ -116,7 +116,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
             {
                 Bundle bundleEntityToUpdate = retrieveBundleByItemId(bundleEntity.getItemId());
 
-                bundleEntityToUpdate.setBundleName(bundleEntity.getBundleName());
+                bundleEntityToUpdate.setName(bundleEntity.getName());
                 bundleEntityToUpdate.setPromotion(bundleEntity.getPromotion());
                 bundleEntityToUpdate.setProductQuantities(bundleEntity.getProductQuantities());
             }

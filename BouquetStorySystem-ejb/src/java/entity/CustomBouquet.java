@@ -39,7 +39,20 @@ public class CustomBouquet extends Bouquet implements Serializable {
         this.totalPriceAmount = totalPriceAmount;
     }
     
+    @Override
+    public String getName() {
+        return "Custom Bouquet";
+    }
     
+    @Override
+    public String getType() {
+        return "Custom Bouquet";
+    }
+    
+    @Override
+    public String getImgAddress() {
+        return null;
+    }
 
     public BigDecimal getTotalPriceAmount() {
         return totalPriceAmount;

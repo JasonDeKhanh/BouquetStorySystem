@@ -38,6 +38,12 @@ public abstract class Item implements Serializable {
         this.itemId = itemId;
     }
     
+    public abstract String getType();
+    
+    public abstract String getName();
+    
+    public abstract String getImgAddress();
+    
     public abstract BigDecimal getUnitPrice();
 
     @Override
