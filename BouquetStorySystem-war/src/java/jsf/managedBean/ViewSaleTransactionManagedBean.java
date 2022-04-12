@@ -42,7 +42,9 @@ public class ViewSaleTransactionManagedBean implements Serializable {
     private SaleTransaction saleTransactionToView;
     private Item currItem;
     private AddOn currAddOn;
-    
+    private Bundle currBundle;
+    private GiftCard currGiftCard;
+    private GiftCardType currGiftCardType;
     private String itemType;
     private Long saleTransactionId;
 
@@ -142,7 +144,20 @@ public class ViewSaleTransactionManagedBean implements Serializable {
     
     public void convertItemToAddOn(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
-        currAddOn = (AddOn) tempItem;;
+        currAddOn = (AddOn) tempItem;
+    }
+    
+    public void convertItemToBundle(ActionEvent event) {
+        Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
+        currBundle = (Bundle) tempItem;
+    }
+    
+    public void convertItemToGiftCard(ActionEvent event) {
+        Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
+        currGiftCard = (GiftCard) tempItem;
+        currGiftCardType = currGiftCard.getGiftCardType();
+        
+        
     }
 
     public void back(ActionEvent event) throws IOException {
@@ -213,6 +228,48 @@ public class ViewSaleTransactionManagedBean implements Serializable {
      */
     public void setCurrAddOn(AddOn currAddOn) {
         this.currAddOn = currAddOn;
+    }
+
+    /**
+     * @return the currBundle
+     */
+    public Bundle getCurrBundle() {
+        return currBundle;
+    }
+
+    /**
+     * @param currBundle the currBundle to set
+     */
+    public void setCurrBundle(Bundle currBundle) {
+        this.currBundle = currBundle;
+    }
+
+    /**
+     * @return the currGiftCard
+     */
+    public GiftCard getCurrGiftCard() {
+        return currGiftCard;
+    }
+
+    /**
+     * @param currGiftCard the currGiftCard to set
+     */
+    public void setCurrGiftCard(GiftCard currGiftCard) {
+        this.currGiftCard = currGiftCard;
+    }
+
+    /**
+     * @return the currGiftCardType
+     */
+    public GiftCardType getCurrGiftCardType() {
+        return currGiftCardType;
+    }
+
+    /**
+     * @param currGiftCardType the currGiftCardType to set
+     */
+    public void setCurrGiftCardType(GiftCardType currGiftCardType) {
+        this.currGiftCardType = currGiftCardType;
     }
 
 }

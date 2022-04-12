@@ -41,12 +41,12 @@ public class CustomBouquet extends Bouquet implements Serializable {
     
     @Override
     public String getName() {
-        return "Custom Bouquet";
+        return "CustomBouquet";
     }
     
     @Override
     public String getType() {
-        return "Custom Bouquet";
+        return "CustomBouquet";
     }
     
     @Override

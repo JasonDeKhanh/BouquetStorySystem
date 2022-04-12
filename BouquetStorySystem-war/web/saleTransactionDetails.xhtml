@@ -9,9 +9,9 @@
                 template="./templates/defaultTemplate.xhtml">
 
     <ui:define name="content">
-    
 
-       
+
+
         <p:commandButton value="Back to View All Sale Transactions" action="viewSaleTransactions.xhtml"/>
 
 
@@ -19,7 +19,7 @@
 
         <br/>
         <h:form id="formViewSaleTransactionDetails">
-           
+
             <p:panel>
 
                 <p:panelGrid>
@@ -154,6 +154,16 @@
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currAddOn}" target="#{viewAddOnManagedBean.addOnEntityToView}"/>    
                         </p:commandButton>
 
+                        <p:commandButton value="View Bundle Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToBundle}" update="@form formViewSaleTransactionDetails:ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'Bundle'}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currBundle}" target="#{viewBundleManagedBean.bundleEntityToView}"/>    
+                        </p:commandButton>
+
+                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}" update="@form formViewSaleTransactionDetails:ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCardType}" target="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView}"/>    
+                        </p:commandButton>
+
                     </p:column>
 
 
@@ -161,6 +171,9 @@
 
                 </p:dataTable>
                 <ez:ViewAddOn id="ccViewAddOn"/>
+              
+                <ez:ViewBundle id="ccViewBundle"/>
+                
                 <ez:ViewGiftCardType id="ccViewGiftCardType"/>
 
 

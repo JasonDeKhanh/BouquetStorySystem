@@ -54,7 +54,7 @@ public class GiftCard extends Product implements Serializable {
     
     @Override
     public String getType() {
-        return "Gift Card";
+        return "GiftCard";
     }
     
     @Override

@@ -86,7 +86,7 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     
     @Override
     public String getType() {
-        return "Premade Bouquet";
+        return "PremadeBouquet";
     }
     
     @Override
