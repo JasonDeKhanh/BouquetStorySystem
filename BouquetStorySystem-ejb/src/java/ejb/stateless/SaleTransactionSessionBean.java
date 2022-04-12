@@ -62,8 +62,6 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                     newSaleTransaction.setIsCompleted(true);
                 }
 
-               
-
                 em.flush();
 
                 return newSaleTransaction;

@@ -9,34 +9,128 @@
                 template="./templates/defaultTemplate.xhtml">
 
     <ui:define name="content">
-        <!--f:view beforePhase="#{viewProductDetailsManagedBean.phaseListener}" afterPhase="#{viewProductDetailsManagedBean.phaseListener}"-->
-        
-            <!--ez:Breadcrumb pageName="viewProductDetails" /-->
+    
 
-            <div>
-                <h3>View Sale Transasction Details</h3>
+       
+        <p:commandButton value="Back to View All Sale Transactions" action="viewSaleTransactions.xhtml"/>
 
-                <br/>
 
-                <!--h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" warnClass="warnTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" /-->
-                <br/>
+        <h3>View Sale Transaction Details</h3>
 
-                <h:form rendered="#{viewSaleTransactionManagedBean.saleTransactionToView != null}">
-                    <p:commandLink value="Back" actionListener="#{viewSaleTransactionManagedBean.back}" />&nbsp;|
-                    <!--p:commandLink value="Update" actionListener="#{viewProductDetailsManagedBean.updateProduct}" /-->
-                    
-                </h:form>
+        <br/>
+        <h:form id="formViewSaleTransactionDetails">
+           
+            <p:panel>
 
-                <br/>
-                
-                <p:dataTable id="dataTableSaleTransactionLineItems" widgetVar="dataTableSaleTransactionLineItems" value="#{viewSaleTransactionManagedBean.saleTransactionToView.saleTransactionLineItems}" var="saleTransactionLineItem" rowKey="#{saleTransactionLineItem.saleTranscationLineItemId}" rowIndexVar="row"
-                             filteredValue="#{productManagementManagedBean.filteredProductEntities}"
-                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50" rendered="#{viewSaleTransactionManagedBean.saleTransactionToView != null}">
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Sale Transaction ID: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.saleTransactionId}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Total Line Item: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.totalLineItem}" />
+                        </p:column>                            
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Total Quantity: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.totalQuantity}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Total Amount: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.totalAmount}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD"/>
+                            </h:outputText>  
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Transaction Date Time: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.transactionDateTime}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Collection Date Time: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.collectionDateTime}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Self Pick Up: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.isSelfPickup}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Delivery Address: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.deliveryAddress}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="isPreorder: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.isPreorder}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="isCompleted: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.isCompleted}" />
+                        </p:column>
+                    </p:row>     
+                </p:panelGrid>
+
+                <h3>Line Items</h3>
+                <p:dataTable id="dataTableSaleTransactionLineItems" widgetVar="dataTableSaleTransactionLineItems" value="#{viewSaleTransactionManagedBean.saleTransactionToView.saleTransactionLineItems}" var="saleTransactionLineItem" rowKey="#{saleTransactionLineItem.saleTranscationLineItemId}" rowIndexVar="row">
 
 
 
                     <p:column headerText="serialNumber">
                         <h:outputText value="#{saleTransactionLineItem.serialNumber}" />
+                    </p:column>
+
+                    <p:column headerText="Item Type">
+                        <h:outputText value="#{saleTransactionLineItem.itemEntity.type}" />
+                    </p:column>
+                    <p:column headerText="Item Name">
+                        <h:outputText value="#{saleTransactionLineItem.itemEntity.name}" />
                     </p:column>
 
                     <p:column headerText="Quantity">
@@ -48,17 +142,30 @@
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>
                     </p:column>
-                    
-                   <!-- This part definitely wrong ah, but i dont know how to do -->
-                    <p:column headerText="item">
-                        <h:outputText value="#{saleTransactionLineItem.itemEntity}" />
+
+                    <p:column headerText="itemID">
+                        <h:outputText value="#{saleTransactionLineItem.itemEntity.itemId}" />
                     </p:column>
 
-                </p:dataTable>
 
-                
-            </div>
-        
+                    <p:column headerText="Action">
+                        <p:commandButton value="View AddOn Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToAddOn}" update="@form formViewSaleTransactionDetails:ccViewAddOn:formViewAddOn" oncomplete="PF('dialogViewAddOn').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq "AddOn"}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currAddOn}" target="#{viewAddOnManagedBean.addOnEntityToView}"/>    
+                        </p:commandButton>
+
+                    </p:column>
+
+
+
+
+                </p:dataTable>
+                <ez:ViewAddOn id="ccViewAddOn"/>
+                <ez:ViewGiftCardType id="ccViewGiftCardType"/>
+
+
+            </p:panel>
+        </h:form>
         <!--/f:view-->
     </ui:define>
 

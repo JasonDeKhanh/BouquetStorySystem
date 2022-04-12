@@ -1,17 +1,23 @@
 package ejb.singleton;
 
+import ejb.stateless.AddOnSessionBeanLocal;
 import ejb.stateless.AddressSessionBeanLocal;
 import ejb.stateless.AdminSessionBeanLocal;
 import ejb.stateless.CustomerSessionBeanLocal;
 import ejb.stateless.DecorationSessionBeanLocal;
 import ejb.stateless.RegisteredGuestSessionBeanLocal;
+import ejb.stateless.SaleTransactionSessionBeanLocal;
+import entity.AddOn;
 import entity.Address;
 import entity.Admin;
 import entity.Customer;
 import entity.Decoration;
 import entity.RegisteredGuest;
+import entity.SaleTransaction;
+import entity.SaleTransactionLineItem;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -21,8 +27,11 @@ import javax.ejb.Startup;
 import javax.persistence.PersistenceContext;
 import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
+import util.exception.CreateNewAddOnException;
 import util.exception.CreateNewDecorationException;
+import util.exception.CreateNewSaleTransactionException;
 import util.exception.CustomerEmailExistException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 
@@ -34,6 +43,12 @@ import util.exception.UnknownPersistenceException;
 
 public class DataInitializationSessionBean
 {
+
+    @EJB(name = "AddOnSessionBeanLocal")
+    private AddOnSessionBeanLocal addOnSessionBeanLocal;
+
+    @EJB(name = "SaleTransactionSessionBeanLocal")
+    private SaleTransactionSessionBeanLocal saleTransactionSessionBeanLocal;
 
     @EJB(name = "RegisteredGuestSessionBeanLocal")
     private RegisteredGuestSessionBeanLocal registeredGuestSessionBeanLocal;
@@ -47,6 +62,7 @@ public class DataInitializationSessionBean
     
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
+    
     
     
     
@@ -98,13 +114,19 @@ public class DataInitializationSessionBean
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(newCustomer);
     
             addressSessionBeanLocal.createNewAddress(newAddress);
-            
+            AddOn newAddOn = addOnSessionBeanLocal.createNewAddOn(new AddOn("AddOn 2", "/uploadedFiles/e.png", "Add On 2 description", 15, 10, new BigDecimal(12.00), true));
+            SaleTransactionLineItem newSaleTransactionLineItem = new SaleTransactionLineItem(123, 2, new BigDecimal(10.00), newAddOn);
+            SaleTransaction newSaleTransaction = new SaleTransaction(1,2,new BigDecimal(20.00), new Date(), new Date(), true, "null", false, true, true);
+            List<SaleTransactionLineItem> lineItems = new ArrayList<>();
+            lineItems.add(newSaleTransactionLineItem);
+            newSaleTransaction.setSaleTransactionLineItems(lineItems);
+            saleTransactionSessionBeanLocal.createNewSaleTransaction(newCustomer.getCustomerId(), newSaleTransaction);
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration A","xxx.png","Some description...",200,300,new BigDecimal(12.90), true));
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration B","xxx.png","Some description...",100,200,new BigDecimal(9.90), false));
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration C","xxx.png","Some description...",200,500,new BigDecimal(20.90), true));
             decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration D","xxx.png","Some description...",250,400,new BigDecimal(4.90), false));
         }
-        catch(AdminUsernameExistException | CustomerEmailExistException | CreateNewDecorationException | UnknownPersistenceException | InputDataValidationException ex)
+        catch(AdminUsernameExistException | CustomerEmailExistException | CreateNewDecorationException | UnknownPersistenceException | InputDataValidationException | CustomerNotFoundException | CreateNewSaleTransactionException | CreateNewAddOnException ex)
         {
             ex.printStackTrace();
         }
