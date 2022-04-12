@@ -44,8 +44,8 @@
                         <h:outputText value="#{bundleEntity.itemId}" />
                     </p:column>                            
                     
-                    <p:column headerText="Name" sortBy="#{bundleEntity.bundleName}" filterBy="#{bundleEntity.bundleName}" filterMatchMode="contains">
-                        <h:outputText value="#{bundleEntity.bundleName}" />
+                    <p:column headerText="Name" sortBy="#{bundleEntity.name}" filterBy="#{bundleEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{bundleEntity.name}" />
                     </p:column>
                     
                     <p:column headerText="Image">
@@ -71,7 +71,7 @@
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-trash" actionListener="#{bundleManagementManagedBean.deleteBundle}" update="formAllBundles:dataTableAllBundles formAllBundles:messages">
                             <f:attribute name="bundleEntityToDelete" value="#{bundleEntity}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{bundleEntity.bundleName}?" icon="ui-icon-alert" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{bundleEntity.name}?" icon="ui-icon-alert" />
                         </p:commandButton>
                     </p:column>
 
@@ -109,13 +109,13 @@
                         
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="bundleName" value="Name: " style="font-weight: bold;" />
+                                <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="bundleName" value="#{bundleManagementManagedBean.selectedBundleEntityToUpdate.bundleName}" placeholder="Bundle 1" required="true" requiredMessage="Name is required" />
+                                <p:inputText id="name" value="#{bundleManagementManagedBean.selectedBundleEntityToUpdate.name}" placeholder="Bundle 1" required="true" requiredMessage="Name is required" />
                             </p:column>
                             <p:column>
-                                <p:message for="bundleName" />
+                                <p:message for="name" />
                             </p:column>
                         </p:row>
                         
