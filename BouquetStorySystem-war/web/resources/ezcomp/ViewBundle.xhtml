@@ -80,17 +80,27 @@
                         <p:dataTable id="dataTableProducts" value="#{viewBundleManagedBean.bundleEntityToView.productQuantities}" var="product"
                                     rowIndexVar="rowIndex">
 
-                           <p:column headerText="Product ID">
+                            <p:column headerText="Product ID">
 
-                               <h:outputText value="#{product.key.itemId}" />
+                                <h:outputText value="#{product.key.itemId}" />
 
-                           </p:column>
+                            </p:column>
+                            
+                            <p:column headerText="Product Name">
+
+                               <h:outputText value="#{product.key.name}" />
+
+                            </p:column>
+                            
+                            <p:column headerText="Image" >
+                                <p:graphicImage value="#{product.key.imgAddress}" height="200px"/>
+                            </p:column>
 
                             <p:column headerText="Quantity">
 
                                <h:outputText value="#{product.value}" />
 
-                           </p:column>
+                            </p:column>
 
                         </p:dataTable>
   

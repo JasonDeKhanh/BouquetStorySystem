@@ -84,7 +84,7 @@ public class BundleSessionBean implements BundleSessionBeanLocal {
     @Override
     public List<Bundle> retrieveAllBundles()
     {
-        Query query = em.createQuery("SELECT b FROM Bundle b ORDER BY b.bundleName ASC");
+        Query query = em.createQuery("SELECT b FROM Bundle b ORDER BY b.name ASC");
         List<Bundle> bundleEntities = query.getResultList();
         
         return bundleEntities;
