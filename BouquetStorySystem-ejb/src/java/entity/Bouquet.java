@@ -68,6 +68,10 @@ public abstract class Bouquet extends Product implements Serializable {
         super();
         
         this.creatorName = creatorName;
+        this.flowerQuantities = new HashMap<>();
+        this.decorationQuantities = new HashMap<>();
+        this.decorations = new ArrayList<>();
+        this.flowers = new ArrayList<>();
     }
     
     
