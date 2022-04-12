@@ -149,7 +149,7 @@
 
 
                     <p:column headerText="Action">
-                        <p:commandButton value="View AddOn Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToAddOn}" update="@form formViewSaleTransactionDetails:ccViewAddOn:formViewAddOn" oncomplete="PF('dialogViewAddOn').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq "AddOn"}">
+                        <p:commandButton value="View AddOn Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToAddOn}" update="@form formViewSaleTransactionDetails:ccViewAddOn:formViewAddOn" oncomplete="PF('dialogViewAddOn').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'AddOn'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currAddOn}" target="#{viewAddOnManagedBean.addOnEntityToView}"/>    
                         </p:commandButton>
