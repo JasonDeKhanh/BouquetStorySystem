@@ -45,6 +45,8 @@ public class ViewSaleTransactionManagedBean implements Serializable {
     private Bundle currBundle;
     private GiftCard currGiftCard;
     private GiftCardType currGiftCardType;
+    private CustomBouquet currCustomBouquet;
+    private PremadeBouquet currPremadeBouquet;
     private String itemType;
     private Long saleTransactionId;
 
@@ -155,8 +157,22 @@ public class ViewSaleTransactionManagedBean implements Serializable {
     public void convertItemToGiftCard(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currGiftCard = (GiftCard) tempItem;
-        currGiftCardType = currGiftCard.getGiftCardType();
-        
+        currGiftCardType = currGiftCard.getGiftCardType();   
+    }
+    public void convertItemToGiftCardType(ActionEvent event) {
+        Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
+        currGiftCard = (GiftCard) tempItem;
+        currGiftCardType = currGiftCard.getGiftCardType();   
+    }
+    
+    public void convertItemToCustomBouquet(ActionEvent event) {
+        Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
+        currCustomBouquet = (CustomBouquet) tempItem;
+    }
+    
+    public void convertItemToPremadeBouquet(ActionEvent event) {
+        Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
+        currPremadeBouquet = (PremadeBouquet) tempItem;
         
     }
 
@@ -270,6 +286,34 @@ public class ViewSaleTransactionManagedBean implements Serializable {
      */
     public void setCurrGiftCardType(GiftCardType currGiftCardType) {
         this.currGiftCardType = currGiftCardType;
+    }
+
+    /**
+     * @return the currCustomBouquet
+     */
+    public CustomBouquet getCurrCustomBouquet() {
+        return currCustomBouquet;
+    }
+
+    /**
+     * @param currCustomBouquet the currCustomBouquet to set
+     */
+    public void setCurrCustomBouquet(CustomBouquet currCustomBouquet) {
+        this.currCustomBouquet = currCustomBouquet;
+    }
+
+    /**
+     * @return the currPremadeBouquet
+     */
+    public PremadeBouquet getCurrPremadeBouquet() {
+        return currPremadeBouquet;
+    }
+
+    /**
+     * @param currPremadeBouquet the currPremadeBouquet to set
+     */
+    public void setCurrPremadeBouquet(PremadeBouquet currPremadeBouquet) {
+        this.currPremadeBouquet = currPremadeBouquet;
     }
 
 }
