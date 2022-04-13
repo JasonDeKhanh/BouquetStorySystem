@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
  *
  * @author xqy11
  */
-@Path("Resource")
+@Path("Bouquet")
 public class BouquetResource {
 
     PremadeBouquetSessionBeanLocal premadeBouquetSessionBeanLocal = lookupPremadeBouquetSessionBeanLocal();
@@ -55,10 +55,14 @@ public class BouquetResource {
         try
         {
             List<PremadeBouquet> premadeBouquetEntities = premadeBouquetSessionBeanLocal.retrieveAllPremadeBouquets();
-
-//            for(PremadeBouquet premadeBouquetEntity:premadeBouquetEntities)
-//            {
-//            }
+            
+            for(PremadeBouquet premadeBouquetEntity:premadeBouquetEntities)
+            {
+                for(Flower flowerEntity : premadeBouquetEntity.getFlowers()) {
+                    flowerEntity.getFlowerType().setFlowerEntities(null);
+                }
+                
+            }
             
             GenericEntity<List<PremadeBouquet>> genericEntity = new GenericEntity<List<PremadeBouquet>>(premadeBouquetEntities) {};
 
