@@ -120,8 +120,6 @@
                 <h3>Line Items</h3>
                 <p:dataTable id="dataTableSaleTransactionLineItems" widgetVar="dataTableSaleTransactionLineItems" value="#{viewSaleTransactionManagedBean.saleTransactionToView.saleTransactionLineItems}" var="saleTransactionLineItem" rowKey="#{saleTransactionLineItem.saleTranscationLineItemId}" rowIndexVar="row">
 
-
-
                     <p:column headerText="serialNumber">
                         <h:outputText value="#{saleTransactionLineItem.serialNumber}" />
                     </p:column>
@@ -158,26 +156,51 @@
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currBundle}" target="#{viewBundleManagedBean.bundleEntityToView}"/>    
                         </p:commandButton>
+                        
+                       
+                        <p:commandButton value="Download image" ajax="false" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}" onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-arrow-down" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCard}" target="#{viewGiftCardManagedBean.giftCardToView}"/> 
+                            <p:fileDownload value="#{viewGiftCardManagedBean.file}" />
+                        </p:commandButton>
+                       
+          
 
-                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}" update="@form formViewSaleTransactionDetails:ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                        <p:commandButton value="View GiftCard message" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}" update="@form formViewSaleTransactionDetails:ccViewGiftCard:formViewGiftCard" oncomplete="PF('dialogViewGiftCard').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCard}" target="#{viewGiftCardManagedBean.giftCardToView}"/>    
+                        </p:commandButton>
+
+                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCardType}" update="@form formViewSaleTransactionDetails:ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCardType}" target="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView}"/>    
                         </p:commandButton>
 
+                        <p:commandButton value="View Custom Bouquet Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToCustomBouquet}" update="@form formViewSaleTransactionDetails:ccViewCustomBouquet:formViewCustomBouquet" oncomplete="PF('dialogViewCustomBouquet" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'CustomBouquet'}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currCustomBouquet}" target="#{viewCustomBouquetManagedBean.customBouquetToView}"/>    
+                        </p:commandButton>
+
+                        <p:commandButton value="View Premade Bouquet Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToPremadeBouquet}" update="@form formViewSaleTransactionDetails:ccViewPremadeBouquet:formViewPremadeBouquet" oncomplete="PF('dialogViewPremadeBouquet" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'PremadeBouquet'}">
+                            <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currPremadeBouquet}" target="#{viewPremadeBouquetDetailsManagedBean.premadeBouquet}"/>    
+                        </p:commandButton>
+
                     </p:column>
-
-
-
 
                 </p:dataTable>
                 <ez:ViewAddOn id="ccViewAddOn"/>
-              
-                <ez:ViewBundle id="ccViewBundle"/>
-                
-                <ez:ViewGiftCardType id="ccViewGiftCardType"/>
 
 
             </p:panel>
+            <ez:ViewBundle id="ccViewBundle"/>
+
+            <ez:ViewGiftCardType id="ccViewGiftCardType"/>
+
+            <ez:ViewGiftCard id="ccViewGiftCard"/>
+            <ez:ViewCustomBouquet id="ccViewCustomBouquet"/>
+            <ez:ViewPremadeBouquet id="ccViewPremadeBouquet"/>
+
         </h:form>
         <!--/f:view-->
     </ui:define>
