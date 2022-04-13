@@ -56,28 +56,27 @@ public class EmailManagedBean implements Serializable {
             asyncResult = emailSessionBeanLocal.emailRegisterNotificationAsync(newCustomer, toEmailAddress);
             
             Thread thread = new Thread()
-        {
-            public void run()
             {
-                try
+                public void run()
                 {
-                    if(asyncResult.get())
+                    try
                     {
-                        System.out.println("[SERVER] Checkout notification email actually sent successfully!\n");
+                        if(asyncResult.get())
+                        {
+                            System.out.println("[SERVER] Checkout notification email actually sent successfully!\n");
+                        }
+                        else
+                        {
+                            System.out.println("[SERVER] Checkout notification email was NOT actually sent!\n");
+                        }
                     }
-                    else
+                    catch(ExecutionException | InterruptedException ex)
                     {
-                        System.out.println("[SERVER] Checkout notification email was NOT actually sent!\n");
+                        ex.printStackTrace();
                     }
                 }
-                catch(ExecutionException | InterruptedException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        };
-
-        thread.start();
+            };
+            thread.start();
         } catch (InterruptedException ex) {
             Logger.getLogger(EmailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }

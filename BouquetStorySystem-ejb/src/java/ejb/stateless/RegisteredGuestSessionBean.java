@@ -8,6 +8,10 @@ package ejb.stateless;
 import entity.Customer;
 import entity.RegisteredGuest;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -36,11 +40,11 @@ import util.security.CryptographicHelper;
 @Stateless
 public class RegisteredGuestSessionBean implements RegisteredGuestSessionBeanLocal {
 
+    @EJB(name = "EmailSessionBeanLocal")
+    private EmailSessionBeanLocal emailSessionBeanLocal;
+
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-
-    
-
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -63,6 +67,36 @@ public class RegisteredGuestSessionBean implements RegisteredGuestSessionBeanLoc
                 em.persist(newRegisteredGuest);
                 em.flush();
 
+                Future<Boolean> asyncResult;
+               
+                try {
+                    asyncResult = emailSessionBeanLocal.emailRegisterNotificationAsync(newRegisteredGuest, newRegisteredGuest.getEmail());
+                    Thread thread = new Thread()
+                    {
+                        public void run()
+                        {
+                            try
+                            {
+                                if(asyncResult.get())
+                                {
+                                    System.out.println("[SERVER] Registration notification email actually sent successfully!\n");
+                                }
+                                else
+                                {
+                                    System.out.println("[SERVER] Registration notification email was NOT actually sent!\n");
+                                }
+                            }
+                            catch(ExecutionException | InterruptedException ex)
+                            {
+                                ex.printStackTrace();
+                            }
+                        }
+                    };
+                    thread.start();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(RegisteredGuestSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 return newRegisteredGuest.getCustomerId();
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {

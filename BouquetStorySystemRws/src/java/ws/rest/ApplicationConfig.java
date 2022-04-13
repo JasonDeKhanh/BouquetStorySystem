@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ws.rest.BouquetResource.class);
         resources.add(ws.rest.CorsFilter.class);
         resources.add(ws.rest.CustomerResource.class);
         resources.add(ws.rest.FlowerResource.class);
