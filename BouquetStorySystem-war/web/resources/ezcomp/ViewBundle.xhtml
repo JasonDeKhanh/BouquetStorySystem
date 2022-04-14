@@ -5,6 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite">
 
     <!-- INTERFACE -->
@@ -101,11 +102,28 @@
                                <h:outputText value="#{product.value}" />
 
                             </p:column>
+                            
+<!--                            <p:column headerText="Action">
+                                <p:commandButton value="View AddOn Details" actionListener="#{viewBundleManagedBean.convertProductToAddOn}" update="@form formViewBundle:dialogViewBundle:ccViewAddOn:formViewAddOn" oncomplete="PF('dialogViewAddOn').show()" icon="ui-icon-document" title="View" rendered="#{product.key.type eq 'AddOn'}">
+                                    <f:attribute name="itemEntity" value="#{viewBundleManagedBean.productEntity}"/>
+                                    <f:setPropertyActionListener value="#{viewBundleManagedBean.currAddOn}" target="#{viewAddOnManagedBean.addOnEntityToView}"/>    
+                                </p:commandButton>
+
+                                <p:commandButton value="View Premade Bouquet Details" actionListener="#{viewBundleManagedBean.convertProductToPremadeBouquet}" update="@form formViewBundle:dialogViewBundle:ccViewPremadeBouquet:formViewPremadeBouquet" oncomplete="PF('dialogViewPremadeBouquet').show()" icon="ui-icon-document" title="View" rendered="#{product.key.type eq 'PremadeBouquet'}">
+                                    <f:attribute name="itemEntity" value="#{viewBundleManagedBean.productEntity}"/>
+                                    <f:setPropertyActionListener value="#{viewBundleManagedBean.currPremadeBouquet}" target="#{viewPremadeBouquetManagedBean.premadeBouquet}"/>    
+                                </p:commandButton>
+
+                            </p:column>-->
 
                         </p:dataTable>
+                        
+<!--                        <ez:ViewAddOn id="ccViewAddOn"/>
+                        
+                        <ez:ViewPremadeBouquet id="ccViewPremadeBouquet" />-->
   
                     </p:panelGrid>
-
+                    
                 </p:dialog>
 
             </h:form>

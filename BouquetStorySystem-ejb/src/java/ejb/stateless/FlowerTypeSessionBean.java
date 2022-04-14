@@ -5,9 +5,11 @@
  */
 package ejb.stateless;
 
+import entity.Flower;
 import entity.FlowerType;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,6 +32,9 @@ import util.exception.InputDataValidationException;
 @Stateless
 public class FlowerTypeSessionBean implements FlowerTypeSessionBeanLocal {
 
+    @EJB(name = "FlowerSessionBeanLocal")
+    private FlowerSessionBeanLocal flowerSessionBeanLocal;
+
     @PersistenceContext(unitName = "BouquetStorySystem-ejbPU")
     private EntityManager em;
 
@@ -42,6 +47,7 @@ public class FlowerTypeSessionBean implements FlowerTypeSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
     
+    @Override
     public FlowerType createNewFlowerType(FlowerType newFlowerType) throws InputDataValidationException, CreateNewFlowerTypeException {
         Set<ConstraintViolation<FlowerType>>constraintViolations = validator.validate(newFlowerType);
         
@@ -83,11 +89,6 @@ public class FlowerTypeSessionBean implements FlowerTypeSessionBeanLocal {
     {
         Query query = em.createQuery("SELECT ft FROM FlowerType ft ORDER BY ft.name ASC");
         List<FlowerType> flowerTypeEntities = query.getResultList();
-        
-        for(FlowerType typeEntity:flowerTypeEntities)
-        {
-            typeEntity.getFlowerEntities().size();
-        }
         
         return flowerTypeEntities;
     }
@@ -147,7 +148,11 @@ public class FlowerTypeSessionBean implements FlowerTypeSessionBeanLocal {
     {
         FlowerType categoryEntityToRemove = retrieveFlowerTypeByFlowerTypeId(flowerTypeId);
         
-        if(!categoryEntityToRemove.getFlowerEntities().isEmpty())
+        Query query = em.createQuery("SELECT p FROM Flower p WHERE p.flowerType.flowerTypeId = :inFlowerTypeId ORDER BY p.name ASC");
+        query.setParameter("inFlowerTypeId", flowerTypeId);
+        List<Flower> flowerEntities = query.getResultList();
+        
+        if(!flowerEntities.isEmpty())
         {
             throw new DeleteFlowerTypeException("Flower Type ID " + flowerTypeId + " is associated with existing flowers and cannot be deleted!");
         }
@@ -172,4 +177,8 @@ public class FlowerTypeSessionBean implements FlowerTypeSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
 }

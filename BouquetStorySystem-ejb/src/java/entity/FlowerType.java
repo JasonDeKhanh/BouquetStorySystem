@@ -38,8 +38,8 @@ public class FlowerType implements Serializable {
     @Size(max = 128)
     private String description;
     
-    @OneToMany(mappedBy = "flowerType", fetch = FetchType.EAGER)
-    private List<Flower> flowerEntities;
+//    @OneToMany(mappedBy = "flowerType", fetch = FetchType.EAGER)
+//    private List<Flower> flowerEntities;
 
     public FlowerType() {
     }
@@ -98,18 +98,18 @@ public class FlowerType implements Serializable {
         return "entity.FlowerType[ id=" + flowerTypeId + " ]";
     }
 
-    /**
-     * @return the flowerEntities
-     */
-    public List<Flower> getFlowerEntities() {
-        return flowerEntities;
-    }
-
-    /**
-     * @param flowerEntities the flowerEntities to set
-     */
-    public void setFlowerEntities(List<Flower> flowerEntities) {
-        this.flowerEntities = flowerEntities;
-    }
+//    /**
+//     * @return the flowerEntities
+//     */
+//    public List<Flower> getFlowerEntities() {
+//        return flowerEntities;
+//    }
+//
+//    /**
+//     * @param flowerEntities the flowerEntities to set
+//     */
+//    public void setFlowerEntities(List<Flower> flowerEntities) {
+//        this.flowerEntities = flowerEntities;
+//    }
     
 }
