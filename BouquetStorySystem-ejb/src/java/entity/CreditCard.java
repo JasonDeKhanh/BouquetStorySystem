@@ -6,11 +6,17 @@
 package entity;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import util.security.CryptographicHelper;
+import util.security.GlassFishCryptographicHelper;
 
 /**
  *
@@ -25,22 +31,33 @@ public class CreditCard implements Serializable {
     private Long creditCardId;
     // Bean Validation for this!!
     // also how to encrypt
+    @Column(nullable = false, length = 19)
+    @NotNull
+    @Size(max = 19)
     private String ccNum;
+    @Column(nullable = false, length = 32)
+    @NotNull
+    @Size(max = 32)
     private String ccHolderName;
+    @Column(nullable = false, length = 2)
+    @NotNull
+    @Size(max = 2)
     private String ccExpiryMonth;
+    @Column(nullable = false, length = 2)
+    @NotNull
+    @Size(max = 2)
     private String ccExpiryYear;
 
     public CreditCard() {
     }
 
     public CreditCard(String ccNum, String ccHolderName, String ccExpiryMonth, String ccExpiryYear) {
-        
         this();
-        
-        this.ccNum = ccNum;
+       
         this.ccHolderName = ccHolderName;
         this.ccExpiryMonth = ccExpiryMonth;
         this.ccExpiryYear = ccExpiryYear;
+        setCcNum(ccNum);
     }
     
     
@@ -53,11 +70,19 @@ public class CreditCard implements Serializable {
     }
 
     public String getCcNum() {
-        return ccNum;
+        CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
+        GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
+        return cryptographicHelper.doAESDecryption(ccNum, glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv());
+       
     }
 
     public void setCcNum(String ccNum) {
-        this.ccNum = ccNum;
+        CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
+        GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
+        try {
+            this.ccNum = new String(cryptographicHelper.doAESEncryption(ccNum, glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv()), cryptographicHelper.getDEFAULT_CHARSET_NAME());
+        } catch(UnsupportedEncodingException ex){
+        }
     }
 
     public String getCcHolderName() {

@@ -58,6 +58,15 @@ public class GiftCard extends Product implements Serializable {
     }
     
     @Override
+    public Integer getQuantityOnHand() {
+        return giftCardType.getQuantityOnHand();
+    }
+    @Override
+    public void setQuantityOnHand(Integer qty) {
+        giftCardType.setQuantityOnHand(qty);
+    }
+    
+    @Override
     public String getImgAddress() {
         return giftCardType.getImgAddress();
     }

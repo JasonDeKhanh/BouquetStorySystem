@@ -45,6 +45,10 @@ public abstract class Item implements Serializable {
     public abstract String getImgAddress();
     
     public abstract BigDecimal getUnitPrice();
+    
+    public abstract Integer getQuantityOnHand();
+    
+    public abstract void setQuantityOnHand(Integer qty);
 
     @Override
     public int hashCode() {

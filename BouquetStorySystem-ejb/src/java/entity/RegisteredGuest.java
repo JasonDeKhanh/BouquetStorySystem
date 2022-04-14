@@ -7,6 +7,7 @@ package entity;
 
 import com.sun.istack.Nullable;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,7 +45,7 @@ public class RegisteredGuest extends Customer implements Serializable {
     private List<Address> addresses;
     
     @Nullable
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CreditCard> creditCards;
 
     public RegisteredGuest() {
@@ -54,6 +55,8 @@ public class RegisteredGuest extends Customer implements Serializable {
 
     public RegisteredGuest(String firstName, String lastName, String email,String password ) {
         super(firstName, lastName, email);
+        addresses = new ArrayList<>();
+        creditCards = new ArrayList<>();
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         setPassword(password);
     }

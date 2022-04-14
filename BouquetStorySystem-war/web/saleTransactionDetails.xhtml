@@ -166,12 +166,12 @@
                        
           
 
-                        <p:commandButton value="View GiftCard message" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}" update="@form formViewSaleTransactionDetails:ccViewGiftCard:formViewGiftCard" oncomplete="PF('dialogViewGiftCard').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                        <p:commandButton value="View GiftCard message" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}"  update="@form formViewSaleTransactionDetails:ccViewGiftCard:formViewGiftCard" oncomplete="PF('dialogViewGiftCard').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCard}" target="#{viewGiftCardManagedBean.giftCardToView}"/>    
                         </p:commandButton>
 
-                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCardType}" update="@form formViewSaleTransactionDetails:ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCardType}"  update="@form formViewSaleTransactionDetails:ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCardType}" target="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView}"/>    
                         </p:commandButton>
@@ -189,10 +189,11 @@
                     </p:column>
 
                 </p:dataTable>
-                <ez:ViewAddOn id="ccViewAddOn"/>
+                
 
 
             </p:panel>
+            <ez:ViewAddOn id="ccViewAddOn"/>
             <ez:ViewBundle id="ccViewBundle"/>
 
             <ez:ViewGiftCardType id="ccViewGiftCardType"/>

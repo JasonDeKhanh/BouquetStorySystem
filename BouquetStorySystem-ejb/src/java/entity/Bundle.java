@@ -54,6 +54,15 @@ public class Bundle extends Item implements Serializable {
         return "Bundle";
     }
     
+    @Override
+    public Integer getQuantityOnHand() {
+        return null;
+    }
+    @Override
+    public void setQuantityOnHand(Integer qty) {
+        
+    }
+    
     
      public String getName() {
         return name;

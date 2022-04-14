@@ -130,7 +130,7 @@ public class RegisteredGuestSessionBean implements RegisteredGuestSessionBeanLoc
     
     @Override
     public RegisteredGuest retrieveRegisteredGuestByCustomerId(Long customerId) throws CustomerNotFoundException {
-        RegisteredGuest customer = em.find(RegisteredGuest.class, customerId);
+        RegisteredGuest customer = (RegisteredGuest)em.find(Customer.class, customerId);
 
         if (customer != null) {
             return customer;
