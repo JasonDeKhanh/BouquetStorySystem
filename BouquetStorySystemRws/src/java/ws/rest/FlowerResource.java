@@ -50,10 +50,10 @@ public class FlowerResource {
         {
             List<Flower> flowerEntities = flowerSessionBean.retrieveAllFlowers();
 
-            for(Flower flowerEntity:flowerEntities)
-            {                
-                flowerEntity.getFlowerType().setFlowerEntities(null);
-            }
+//            for(Flower flowerEntity:flowerEntities)
+//            {                
+//                flowerEntity.getFlowerType().setFlowerEntities(null);
+//            }
             
             GenericEntity<List<Flower>> genericEntity = new GenericEntity<List<Flower>>(flowerEntities) {};
 

@@ -56,13 +56,13 @@ public class BouquetResource {
         {
             List<PremadeBouquet> premadeBouquetEntities = premadeBouquetSessionBeanLocal.retrieveAllPremadeBouquets();
             
-            for(PremadeBouquet premadeBouquetEntity:premadeBouquetEntities)
-            {
-                for(Flower flowerEntity : premadeBouquetEntity.getFlowers()) {
-                    flowerEntity.getFlowerType().setFlowerEntities(null);
-                }
-                
-            }
+//            for(PremadeBouquet premadeBouquetEntity:premadeBouquetEntities)
+//            {
+//                for(Flower flowerEntity : premadeBouquetEntity.getFlowers()) {
+//                    flowerEntity.getFlowerType().setFlowerEntities(null);
+//                }
+//                
+//            }
             
             GenericEntity<List<PremadeBouquet>> genericEntity = new GenericEntity<List<PremadeBouquet>>(premadeBouquetEntities) {};
 
