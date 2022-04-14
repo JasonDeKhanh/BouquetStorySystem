@@ -4,6 +4,7 @@ import ejb.stateless.AddOnSessionBeanLocal;
 import ejb.stateless.AddressSessionBeanLocal;
 import ejb.stateless.AdminSessionBeanLocal;
 import ejb.stateless.BundleSessionBeanLocal;
+import ejb.stateless.CreditCardSessionBeanLocal;
 import ejb.stateless.CustomerSessionBeanLocal;
 import ejb.stateless.DecorationSessionBeanLocal;
 import ejb.stateless.GiftCardSessionBeanLocal;
@@ -14,6 +15,7 @@ import entity.AddOn;
 import entity.Address;
 import entity.Admin;
 import entity.Bundle;
+import entity.CreditCard;
 import entity.Customer;
 import entity.Decoration;
 import entity.GiftCard;
@@ -38,6 +40,7 @@ import util.exception.CreateNewDecorationException;
 import util.exception.CreateNewGiftCardException;
 import util.exception.CreateNewGiftCardTypeException;
 import util.exception.CreateNewSaleTransactionException;
+import util.exception.CreditCardExistException;
 import util.exception.CustomerEmailExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -51,6 +54,9 @@ import util.exception.UnknownPersistenceException;
 
 public class DataInitializationSessionBean
 {
+
+    @EJB(name = "CreditCardSessionBeanLocal")
+    private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
 
     @EJB(name = "GiftCardSessionBeanLocal")
     private GiftCardSessionBeanLocal giftCardSessionBeanLocal;
@@ -120,13 +126,15 @@ public class DataInitializationSessionBean
         {
             
             adminSessionBeanLocal.createNewAdmin(new Admin("Default", "Manager", "manager", "password"));
-
+            
             RegisteredGuest newCustomer = new RegisteredGuest("Default3", "Customer3","customer3@gmail.com","password");
             List<Address> addresses = new ArrayList<>();
             Address newAddress = new Address("Address Line","888000");
             newAddress.setCustomer((RegisteredGuest)newCustomer);
             addresses.add(newAddress);
             ((RegisteredGuest)newCustomer).setAddresses(addresses);
+            CreditCard newCreditCard = new CreditCard("123456789", "matthias", "01", "23");
+            newCustomer.getCreditCards().add(newCreditCard);
             
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));

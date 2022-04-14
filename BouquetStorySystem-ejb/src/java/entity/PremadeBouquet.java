@@ -93,6 +93,14 @@ public class PremadeBouquet extends Bouquet implements Serializable {
     public String getName() {
         return name;
     }
+    
+    @Override
+    public Integer getQuantityOnHand() {
+        return null;
+    }
+    @Override
+    public void setQuantityOnHand(Integer qty) {
+    }
 
     public void setName(String name) {
         this.name = name;

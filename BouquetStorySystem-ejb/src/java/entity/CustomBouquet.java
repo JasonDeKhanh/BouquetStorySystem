@@ -50,6 +50,14 @@ public class CustomBouquet extends Bouquet implements Serializable {
     }
     
     @Override
+    public Integer getQuantityOnHand() {
+        return null;
+    }
+    @Override
+    public void setQuantityOnHand(Integer qty) {
+    }
+    
+    @Override
     public String getImgAddress() {
         return null;
     }

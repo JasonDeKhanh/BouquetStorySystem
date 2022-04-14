@@ -79,6 +79,11 @@ public class AddOn extends Product implements Serializable {
         return "AddOn";
     }
     
+    @Override
+    public Integer getQuantityOnHand() {
+        return quantityOnHand;
+    }
+    
 //    public Long getAddOnId() {
 //        return addOnId;
 //    }
@@ -110,11 +115,8 @@ public class AddOn extends Product implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Integer getQuantityOnHand() {
-        return quantityOnHand;
-    }
-
+    
+    @Override
     public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
     }
