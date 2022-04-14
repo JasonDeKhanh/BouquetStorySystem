@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(ws.rest.CorsFilter.class);
         resources.add(ws.rest.CustomerResource.class);
         resources.add(ws.rest.FlowerResource.class);
+        resources.add(ws.rest.FlowerTypeResource.class);
     }
     
 }
