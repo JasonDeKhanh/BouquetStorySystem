@@ -64,6 +64,7 @@ public class CreateNewBundleManagedBean implements Serializable {
     private List<Product> products;
     
     private Bundle newBundleEntity;
+    private Long promotionIdToSet;
     private Long premadeBouquetIdToAdd;
     private Long addOnIdToAdd;
     private Integer quantityToSet;
@@ -89,6 +90,14 @@ public class CreateNewBundleManagedBean implements Serializable {
         {
             newBundleEntity.setProductQuantities(getProductQuantities());
             newBundleEntity.setProducts(products);
+            if (promotionIdToSet != null) {
+                for(Promotion promotion:promotionEntities) {
+                    if (promotion.getPromotionId().equals(premadeBouquetIdToAdd)) {
+                        newBundleEntity.setPromotion(promotion);
+                        break;
+                    }
+                }
+            }
             Bundle bundle = bundleSessionBeanLocal.createNewBundle(getNewBundleEntity());
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bundle created successfully (GiftCardType ID: " + bundle.getItemId() + ")", null));
@@ -244,6 +253,14 @@ public class CreateNewBundleManagedBean implements Serializable {
 
     public void setNewBundleEntity(Bundle newBundleEntity) {
         this.newBundleEntity = newBundleEntity;
+    }
+
+    public Long getPromotionIdToSet() {
+        return promotionIdToSet;
+    }
+
+    public void setPromotionIdToSet(Long promotionIdToSet) {
+        this.promotionIdToSet = promotionIdToSet;
     }
 
     public Long getPremadeBouquetIdToAdd() {

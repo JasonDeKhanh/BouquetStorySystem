@@ -52,7 +52,7 @@
                             <p:outputLabel for="promotion" value="Promotion " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="promotion" value="#{createNewBundleManagedBean.newBundleEntity.promotion}">
+                            <p:selectOneMenu id="promotion" value="#{createNewBundleManagedBean.promotionIdToSet}">
                                 <f:selectItem itemLabel="[Choose One]" noSelectionOption="true" />
                                 <f:selectItems value="#{createNewBundleManagedBean.promotionEntities}" var="promotionEntity" itemValue="#{promotionEntity.promotionId}" itemLabel="#{promotionEntity.name}" />
                             </p:selectOneMenu>
