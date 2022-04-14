@@ -140,10 +140,13 @@ public class FlowerSessionBean implements FlowerSessionBeanLocal {
     @Override
     public List<Flower> filterFlowersByCategory(Long fowerTypeId) throws FlowerTypeNotFoundException
     {
-        List<Flower> flowerEntities = new ArrayList<>();
-        FlowerType flowerTypeEntity = flowerTypeSessionBeanLocal.retrieveFlowerTypeByFlowerTypeId(fowerTypeId);
+        Query query = em.createQuery("SELECT p FROM Flower p WHERE p.flowerType.flowerTypeId = :inFlowerTypeId ORDER BY p.name ASC");
+        query.setParameter("inFlowerTypeId", fowerTypeId);
+        List<Flower> flowerEntities = query.getResultList();
         
-        flowerEntities = flowerTypeEntity.getFlowerEntities();            
+//        FlowerType flowerTypeEntity = flowerTypeSessionBeanLocal.retrieveFlowerTypeByFlowerTypeId(fowerTypeId);
+//        
+//        flowerEntities = flowerTypeEntity.getFlowerEntities();            
        
         
         for(Flower flowerEntity:flowerEntities)
