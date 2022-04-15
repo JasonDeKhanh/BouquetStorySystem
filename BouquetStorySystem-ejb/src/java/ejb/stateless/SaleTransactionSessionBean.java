@@ -206,13 +206,13 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             SaleTransaction saleTransactionToComplete = retrieveSaleTransactionBySaleTransactionId(saleTransaction.getSaleTransactionId());
             try {
                 if (saleTransaction.getIsCompleted() == false) {
-
-                    saleTransactionToComplete.setIsCompleted(true);
-
+                    
                     for (SaleTransactionLineItem saleTransactionLineItem : saleTransactionToComplete.getSaleTransactionLineItems()) {
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
                         //em.persist(saleTransactionLineItemEntity);
                     }
+
+                    saleTransactionToComplete.setIsCompleted(true);
                 } else {
                     throw new SaleTransactionAlreadyCompleted("Sale Transaction already completed");
                 }
