@@ -1,5 +1,6 @@
 package jsf.managedBean;
 
+import ejb.stateless.BundleSessionBeanLocal;
 import entity.AddOn;
 import entity.Bundle;
 import entity.PremadeBouquet;
@@ -8,7 +9,11 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import util.exception.BundleNotFoundException;
 
 /**
  *
@@ -17,6 +22,9 @@ import javax.faces.event.ActionEvent;
 @Named(value = "viewBundleManagedBean")
 @ViewScoped
 public class ViewBundleManagedBean implements Serializable {
+
+    @EJB
+    private BundleSessionBeanLocal bundleSessionBeanLocal;
 
     private Bundle bundleEntityToView;
     private Product productEntity;
@@ -32,6 +40,16 @@ public class ViewBundleManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct()
     {
+        try {
+            System.out.println("Inside try block post construct");
+            Long bundleId = Long.valueOf(
+                    FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("bundleEntityId"));
+            bundleEntityToView = bundleSessionBeanLocal.retrieveBundleByItemId(bundleId);
+        } catch (BundleNotFoundException ex) {
+            System.out.println("inside catch error block postconstruct");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Sale Transaction ID not provided", null));
+        }
     }
     
     public void convertProductToAddOn(ActionEvent event) {

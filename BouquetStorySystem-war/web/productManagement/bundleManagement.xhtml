@@ -63,9 +63,12 @@
                     </p:column>
 
                     <p:column headerText="Action" >
-                        <p:commandButton update="ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View">
+<!--                        <p:commandButton update="ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{bundleEntity}" target="#{viewBundleManagedBean.bundleEntityToView}" />
-                        </p:commandButton>
+                        </p:commandButton>-->
+                        <p:linkButton outcome="ViewBundle" icon="ui-icon-document" title="View">
+                            <f:param name="bundleEntityId" value="#{bundleEntity.itemId}" />
+                        </p:linkButton>
                         <p:commandButton actionListener="#{bundleManagementManagedBean.doUpdateBundle}" update="formUpdateBundle" oncomplete="PF('dialogUpdateBundle').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="bundleEntityToUpdate" value="#{bundleEntity}" />
                         </p:commandButton>
@@ -84,7 +87,7 @@
 
             </h:form>
             
-            <ez:ViewBundle id="ccViewBundle"/>
+<!--            <ez:ViewBundle id="ccViewBundle"/>-->
 
 
             <h:form id="formUpdateBundle">
