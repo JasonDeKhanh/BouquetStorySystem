@@ -92,8 +92,9 @@ public class CreateNewBundleManagedBean implements Serializable {
             newBundleEntity.setProducts(products);
             if (promotionIdToSet != null) {
                 for(Promotion promotion:promotionEntities) {
-                    if (promotion.getPromotionId().equals(premadeBouquetIdToAdd)) {
+                    if (promotion.getPromotionId().equals(promotionIdToSet)) {
                         newBundleEntity.setPromotion(promotion);
+                        System.out.println("Promotion Id that has been set is :" + promotion.getPromotionId());
                         break;
                     }
                 }
@@ -261,6 +262,7 @@ public class CreateNewBundleManagedBean implements Serializable {
 
     public void setPromotionIdToSet(Long promotionIdToSet) {
         this.promotionIdToSet = promotionIdToSet;
+        System.out.println("Promotion ID is: " + promotionIdToSet);
     }
 
     public Long getPremadeBouquetIdToAdd() {
