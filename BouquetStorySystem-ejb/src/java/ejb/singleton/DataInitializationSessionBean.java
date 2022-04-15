@@ -141,13 +141,13 @@ public class DataInitializationSessionBean
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(newCustomer);
     
             addressSessionBeanLocal.createNewAddress(newAddress);
-            AddOn newAddOn = addOnSessionBeanLocal.createNewAddOn(new AddOn("AddOn 2", "/uploadedFiles/e.png", "Add On 2 description", 15, 10, new BigDecimal(12.00), true));
+            AddOn newAddOn = addOnSessionBeanLocal.createNewAddOn(new AddOn("AddOn 2", "/uploadedFiles/e.png", "Add On 2 description", 1, 10, new BigDecimal(12.00), true));
             SaleTransactionLineItem newSaleTransactionLineItem = new SaleTransactionLineItem(123, 2, new BigDecimal(10.00), newAddOn);
-            GiftCardType newGiftCardType = giftCardTypeSessionBeanLocal.createNewGiftCardType(new GiftCardType("GiftCardType 1", "/uploadedFiles/e.png", "1X1", "descpription", 16, 10, new BigDecimal(15.00), true));
+            GiftCardType newGiftCardType = giftCardTypeSessionBeanLocal.createNewGiftCardType(new GiftCardType("GiftCardType 1", "/uploadedFiles/e.png", "1X1", "descpription", 1, 10, new BigDecimal(15.00), true));
             GiftCard newGiftCard = giftCardSessionBeanLocal.createNewGiftCard(new GiftCard("hello world", "/uploadedFiles/e.png"));
             newGiftCard.setGiftCardType(newGiftCardType);
             SaleTransactionLineItem secondSaleTransactionLineItem = new SaleTransactionLineItem(1234, 3, new BigDecimal(15.00), newGiftCard);
-            SaleTransaction newSaleTransaction = new SaleTransaction(1,2,new BigDecimal(20.00), new Date(), new Date(), true, "null", false, true, true);
+            SaleTransaction newSaleTransaction = new SaleTransaction(1,2,new BigDecimal(20.00), new Date(), new Date(), true, "null", false, true, false);
             List<SaleTransactionLineItem> lineItems = new ArrayList<>();
             lineItems.add(newSaleTransactionLineItem);
             lineItems.add(secondSaleTransactionLineItem);

@@ -11,22 +11,19 @@
     <ui:define name="content">
         <div>
             <h3>Sale Transaction Management</h3>
-            
+
             <h:form>
-            
+
                 <p:menubar>
 
-                    <p:submenu label="File" icon="ui-icon-document">
-                        <p:menuitem value="Create New Sale Transaction" onclick="PF('dialogCreateNewSaleTransaction').show()" icon="pi pi-plus" />
-                    </p:submenu>                                        
 
                 </p:menubar>
                 <br/>
 
             </h:form>
-            
+
             <h:form id="formAllSaleTransactions">
-            
+
 
                 <p:dataTable id="dataTableAllSaleTransactions" widgetVar="dataTableAllSaleTransactions" value="#{SalesTransactionManagedBean.saleTransactionEntities}" var="saleTransactionEntity" rowKey="#{saleTransactionEntity.saleTransactionId}" rowIndexVar="row"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
@@ -49,46 +46,52 @@
                     <p:column headerText="Total Quantity" sortBy="#{saleTransactionEntity.totalQuantity}" filterBy="#{saleTransactionEntity.totalQuantity}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.totalQuantity}" />
                     </p:column>
-                    
+
                     <p:column headerText="Total Amonut" sortBy="#{saleTransactionEntity.totalAmount}" filterBy="#{saleTransactionEntity.totalAmount}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.totalAmount}" />
                     </p:column>
-                    
+
                     <p:column headerText="Transaction Date Time" sortBy="#{saleTransactionEntity.transactionDateTime}" filterBy="#{saleTransactionEntity.transactionDateTime}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />
                     </p:column>
-                    
+
                     <p:column headerText="Collection Date Time" sortBy="#{saleTransactionEntity.collectionDateTime}" filterBy="#{saleTransactionEntity.collectionDateTime}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.collectionDateTime}" />
                     </p:column>
-                    
+
                     <p:column headerText="Self Pick Up" sortBy="#{saleTransactionEntity.isSelfPickup}" filterBy="#{saleTransactionEntity.isSelfPickup}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.isSelfPickup}" />
                     </p:column>
-                    
+
                     <p:column headerText="Delivery Address" sortBy="#{saleTransactionEntity.deliveryAddress}" filterBy="#{saleTransactionEntity.deliveryAddress}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.deliveryAddress}" />
                     </p:column>
-                    
+
                     <p:column headerText="voidRefund" sortBy="#{saleTransactionEntity.voidRefund}" filterBy="#{saleTransactionEntity.voidRefund}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.voidRefund}" />
                     </p:column>
-                    
+
                     <p:column headerText="isPreorder" sortBy="#{saleTransactionEntity.isPreorder}" filterBy="#{saleTransactionEntity.isPreorder}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.isPreorder}" />
                     </p:column>
-                    
+
                     <p:column headerText="isCompleted" sortBy="#{saleTransactionEntity.isCompleted}" filterBy="#{saleTransactionEntity.isCompleted}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.isCompleted}" />
                     </p:column>
 
-                    
-                    
+
+
                     <p:column headerText="Action">    				
-                        
+
                         <p:link outcome="/saleTransactionDetails" value="View Details">
                             <f:param name="saleTransactionId" value="#{saleTransactionEntity.saleTransactionId}" />
                         </p:link>
+                        <br>
+                        </br>
+                      
+                        <p:commandButton value="Complete Sale Transaction" actionListener="#{viewSaleTransactionManagedBean.markIsCompleted}" update="@form">
+                            <f:param name="saleTransactionId" value="#{saleTransactionEntity.saleTransactionId}" />    
+                        </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
@@ -97,13 +100,13 @@
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>  
-                
+
                 <p:growl>
                     <p:autoUpdate />
                 </p:growl>
 
             </h:form>
-            
+
         </div>
     </ui:define>
 
