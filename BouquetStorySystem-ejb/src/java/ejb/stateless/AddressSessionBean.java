@@ -124,6 +124,15 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
         
     }
     
+    @Override
+    public void deleteAddress(Long addressId) throws AddressNotFoundException
+    {
+        Address addOnEntityToRemove = retrieveAdressByAdressId(addressId);
+        
+        em.remove(addOnEntityToRemove);
+        
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Address>>constraintViolations)
     {
         String msg = "Input data validation error!:";

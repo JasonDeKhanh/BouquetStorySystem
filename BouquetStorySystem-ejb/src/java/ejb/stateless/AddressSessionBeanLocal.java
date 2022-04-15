@@ -28,5 +28,7 @@ public interface AddressSessionBeanLocal {
     public Address retrieveAdressByAdressId(Long addressId) throws AddressNotFoundException;
 
     public Address createNewAddress(Address newAdress) throws UnknownPersistenceException, InputDataValidationException;
+
+    public void deleteAddress(Long addressId) throws AddressNotFoundException;
     
 }
