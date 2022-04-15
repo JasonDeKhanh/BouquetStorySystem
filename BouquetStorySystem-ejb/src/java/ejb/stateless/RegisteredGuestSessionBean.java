@@ -158,7 +158,7 @@ public class RegisteredGuestSessionBean implements RegisteredGuestSessionBeanLoc
 
     // update
     @Override
-    public void updateRegisteredGuest(RegisteredGuest registeredGuest) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException {
+    public RegisteredGuest updateRegisteredGuest(RegisteredGuest registeredGuest) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException {
         if (registeredGuest != null && registeredGuest.getCustomerId() != null) {
             Set<ConstraintViolation<RegisteredGuest>> constraintViolations = validator.validate(registeredGuest);
 
@@ -169,6 +169,39 @@ public class RegisteredGuestSessionBean implements RegisteredGuestSessionBeanLoc
                     //should I allow upate of email and password?
                     registeredGuestToUpdate.setFirstName(registeredGuest.getFirstName());
                     registeredGuestToUpdate.setLastName(registeredGuest.getLastName());
+//                    System.out.println("=================================================");
+//                    System.out.println(registeredGuest.getPassword());
+//                    if(registeredGuest.getPassword()!= "") {
+//                        registeredGuestToUpdate.setPassword(registeredGuest.getPassword());
+//                    }
+                    return registeredGuestToUpdate;
+                } else {
+                    throw new UpdateCustomerException("Email of customer record to be updated does not match the existing record");
+                }
+            } else {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        } else {
+            throw new CustomerNotFoundException("Customer ID not provided for customer to be updated");
+        }
+
+    }
+    
+    @Override
+    public RegisteredGuest updatePassword(RegisteredGuest registeredGuest) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException {
+        if (registeredGuest != null && registeredGuest.getCustomerId() != null) {
+            Set<ConstraintViolation<RegisteredGuest>> constraintViolations = validator.validate(registeredGuest);
+
+            if (constraintViolations.isEmpty()) {
+                RegisteredGuest registeredGuestToUpdate = retrieveRegisteredGuestByCustomerId(registeredGuest.getCustomerId());
+
+                
+                System.out.println("========================================");
+                System.out.println(registeredGuest.getPassword());
+                if (registeredGuestToUpdate.getEmail().equals(registeredGuest.getEmail())) {
+                    em.merge(registeredGuest);
+//                        registeredGuestToUpdate.setPassword(registeredGuest.getPassword());
+                    return registeredGuestToUpdate;
                 } else {
                     throw new UpdateCustomerException("Email of customer record to be updated does not match the existing record");
                 }

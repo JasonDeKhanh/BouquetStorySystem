@@ -29,7 +29,9 @@ public interface RegisteredGuestSessionBeanLocal {
 
     public RegisteredGuest registeredGuestLogin(String email, String password) throws InvalidLoginCredentialException;
 
-    public void updateRegisteredGuest(RegisteredGuest registeredGuest) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException;
-    
-    
+    public RegisteredGuest updateRegisteredGuest(RegisteredGuest registeredGuest) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException;
+
+    public RegisteredGuest updatePassword(RegisteredGuest registeredGuest) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException;
+
+
 }

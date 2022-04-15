@@ -21,6 +21,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.UpdateCustomerException;
 
 /**
  * REST Web Service
@@ -106,6 +108,72 @@ public class CustomerResource {
         else
         {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new record request").build();
+        }
+    }
+    
+    @Path("updateCustomer")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomer(RegisteredGuest updateCustomer)
+    {
+        if(updateCustomer != null)
+        {
+            try
+            {                
+//                System.out.println("===================================================");
+//                System.out.println(updateCustomer.getPassword());
+                RegisteredGuest newCustomer = registeredGuestSessionBean.updateRegisteredGuest(updateCustomer);
+                newCustomer.setPassword(null);
+                newCustomer.setSalt(null);
+                newCustomer.getSaleTransactions().clear();
+                return Response.status(Response.Status.OK).entity(newCustomer).build();
+            }
+            catch(UpdateCustomerException ex)
+            {
+                return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+            }
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update product request").build();
+        }
+    }
+    
+    @Path("updatePassword")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePassword(RegisteredGuest updateCustomer)
+    {
+        if(updateCustomer != null)
+        {
+            try
+            {                
+                System.out.println("===================================================");
+                System.out.println(updateCustomer.getPassword());
+                RegisteredGuest newCustomer = registeredGuestSessionBean.updatePassword(updateCustomer);
+                newCustomer.setPassword(null);
+                newCustomer.setSalt(null);
+                newCustomer.getSaleTransactions().clear();
+                return Response.status(Response.Status.OK).entity(newCustomer).build();
+            }
+            catch(UpdateCustomerException ex)
+            {
+                return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+            }
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update product request").build();
         }
     }
 
