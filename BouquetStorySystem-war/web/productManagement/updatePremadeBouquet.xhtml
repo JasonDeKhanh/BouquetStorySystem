@@ -25,7 +25,7 @@
                             <p:outputLabel for="imgAddress" value="Upload Image: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:fileUpload listener="#{createNewPremadeBouquetManagedBean.handleImageUploadNew}" multiple="true" update="imgAddress"/>
+                            <p:fileUpload listener="#{updatePremadeBouquetManagedBean.handleImageUploadUpdate}" multiple="true" update="imgAddress"/>
                             <p:panel id="imgAddress" header="Uploaded File">
                                 <p:graphicImage value="#{updatePremadeBouquetManagedBean.updatePremadeBouquet.imgAddress}" height="100px" />
                             </p:panel>

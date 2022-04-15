@@ -25,6 +25,14 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import util.exception.ContainerNotFoundException;
+import util.exception.CreateNewSaleTransactionException;
+import util.exception.DecorationNotFoundException;
+import util.exception.FlowerNotFoundException;
+import util.exception.InsufficientQuantityException;
+import util.exception.ItemNotFoundException;
+import util.exception.MarkIsCompletedException;
+import util.exception.SaleTransactionAlreadyCompleted;
 import util.exception.SaleTransactionNotFoundException;
 
 /**
@@ -37,7 +45,6 @@ public class ViewSaleTransactionManagedBean implements Serializable {
 
     @EJB(name = "SaleTransactionSessionBeanLocal")
     private SaleTransactionSessionBeanLocal saleTransactionSessionBeanLocal;
-    
 
     private SaleTransaction saleTransactionToView;
     private Item currItem;
@@ -106,8 +113,23 @@ public class ViewSaleTransactionManagedBean implements Serializable {
 
     }
 
+    public void markIsCompleted(ActionEvent event) {
+
+        try {
+            saleTransactionSessionBeanLocal.markIsCompleted(saleTransactionToView);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sale Transaction has been updated successfully (Sale Transaction ID: " + saleTransactionToView.getSaleTransactionId() + ")", null));
+        } catch (MarkIsCompletedException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while completing the sale transaction: " + ex.getMessage(), null));
+        } catch (SaleTransactionNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while completing the sale transaction: " + ex.getMessage(), null));
+        } catch (SaleTransactionAlreadyCompleted ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while completing the sale transaction: " + ex.getMessage(), null));
+        }
+    }
+
     public GiftCardType getGiftCardType() {
-        GiftCard item = (GiftCard)currItem;
+        GiftCard item = (GiftCard) currItem;
         return item.getGiftCardType();
 
     }
@@ -143,37 +165,38 @@ public class ViewSaleTransactionManagedBean implements Serializable {
             return false;
         }
     }
-    
+
     public void convertItemToAddOn(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currAddOn = (AddOn) tempItem;
     }
-    
+
     public void convertItemToBundle(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currBundle = (Bundle) tempItem;
     }
-    
+
     public void convertItemToGiftCard(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currGiftCard = (GiftCard) tempItem;
-        currGiftCardType = currGiftCard.getGiftCardType();   
+        currGiftCardType = currGiftCard.getGiftCardType();
     }
+
     public void convertItemToGiftCardType(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currGiftCard = (GiftCard) tempItem;
-        currGiftCardType = currGiftCard.getGiftCardType();   
+        currGiftCardType = currGiftCard.getGiftCardType();
     }
-    
+
     public void convertItemToCustomBouquet(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currCustomBouquet = (CustomBouquet) tempItem;
     }
-    
+
     public void convertItemToPremadeBouquet(ActionEvent event) {
         Item tempItem = (Item) event.getComponent().getAttributes().get("itemEntity");
         currPremadeBouquet = (PremadeBouquet) tempItem;
-        
+
     }
 
     public void back(ActionEvent event) throws IOException {

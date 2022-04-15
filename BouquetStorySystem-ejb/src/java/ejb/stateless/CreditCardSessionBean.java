@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.CreditCard;
+import entity.Customer;
 import entity.RegisteredGuest;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreditCardExistException;
+import util.exception.CreditCardNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
@@ -89,14 +91,33 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     }
     
-    public List<CreditCard> retrieveRegisteredGuestCreditCards(Long registeredGuestId) throws CustomerNotFoundException {
-        RegisteredGuest customer = em.find(RegisteredGuest.class, registeredGuestId);
+    public CreditCard retrieveCreditCard(Long cardId) throws CreditCardNotFoundException {
+        CreditCard card = em.find(CreditCard.class, cardId);
 
+        if (card != null) {
+            return card;
+        } else {
+            throw new CreditCardNotFoundException("Credit Card ID " + cardId + " does not exist!");
+        }
+        
+    }
+    
+    public List<CreditCard> retrieveRegisteredGuestCreditCards(Long registeredGuestId) throws CustomerNotFoundException {
+        RegisteredGuest customer = (RegisteredGuest)em.find(Customer.class, registeredGuestId);
+        
         if (customer != null) {
             return customer.getCreditCards();
         } else {
             throw new CustomerNotFoundException("Customer ID " + registeredGuestId + " does not exist!");
         }
+        
+    }
+    
+    public void deleteCreditCard(Long creditCardId, Long registeredGuestId) throws CreditCardNotFoundException {
+        RegisteredGuest customer = (RegisteredGuest)em.find(Customer.class, registeredGuestId);
+        CreditCard cardToDelete = retrieveCreditCard(creditCardId);
+        customer.getCreditCards().remove(cardToDelete);
+        em.remove(cardToDelete);
         
     }
     

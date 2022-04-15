@@ -154,7 +154,7 @@
 
                         <p:commandButton value="View Bundle Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToBundle}" update="@form formViewSaleTransactionDetails:ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'Bundle'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
-                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currBundle}" target="#{viewBundleManagedBean.bundleEntityToView}"/>    
+                            <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currBundle}" target="#{viewBundleCCManagedBean.bundleEntityToView}"/>    
                         </p:commandButton>
                         
                        
@@ -190,9 +190,8 @@
 
                 </p:dataTable>
                 
-
-
             </p:panel>
+            
             <ez:ViewAddOn id="ccViewAddOn"/>
             <ez:ViewBundle id="ccViewBundle"/>
 
