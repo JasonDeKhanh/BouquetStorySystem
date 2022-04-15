@@ -30,7 +30,7 @@
                                     <h:outputLabel value="Item ID: " />
                                 </p:column>
                                 <p:column>
-                                    <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.itemId}" />
+                                    <h:outputText value="#{viewBundleCCManagedBean.bundleEntityToView.itemId}" />
                                 </p:column>
                             </p:row>
 
@@ -39,7 +39,7 @@
                                     <h:outputLabel value="Name: " />
                                 </p:column>
                                 <p:column>
-                                    <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.name}" />
+                                    <h:outputText value="#{viewBundleCCManagedBean.bundleEntityToView.name}" />
                                 </p:column>
                             </p:row>
 
@@ -48,16 +48,16 @@
                                     <h:outputLabel value="Image: " />
                                 </p:column>
                                 <p:column>
-                                    <p:graphicImage value="#{viewBundleManagedBean.bundleEntityToView.imgAddress}" height="100px" />
+                                    <p:graphicImage value="#{viewBundleCCManagedBean.bundleEntityToView.imgAddress}" height="100px" />
                                 </p:column>
                             </p:row>
 
-                            <p:row rendered="#{viewBundleManagedBean.bundleEntityToView.promotion != null}">
+                            <p:row rendered="#{viewBundleCCManagedBean.bundleEntityToView.promotion != null}">
                                 <p:column>
                                     <h:outputLabel value="Promotion ID: " />
                                 </p:column>
                                 <p:column>
-                                    <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.promotion.promotionId}"/>
+                                    <h:outputText value="#{viewBundleCCManagedBean.bundleEntityToView.promotion.promotionId}"/>
                                 </p:column>
                             </p:row>
 
@@ -66,7 +66,7 @@
                                     <h:outputLabel value="Unit Price: " />
                                 </p:column>
                                 <p:column>
-                                    <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.unitPrice}">
+                                    <h:outputText value="#{viewBundleCCManagedBean.bundleEntityToView.unitPrice}">
                                         <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                     </h:outputText>
                                 </p:column>
@@ -77,7 +77,7 @@
                                     <h:outputLabel value="Is On Display: " />
                                 </p:column>
                                 <p:column>
-                                    <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.isOnDisplay}" />
+                                    <h:outputText value="#{viewBundleCCManagedBean.bundleEntityToView.isOnDisplay}" />
                                 </p:column>
                             </p:row>
                             
@@ -88,7 +88,7 @@
                         <h3>Products in Bundle</h3>
                         <p:panelGrid>
                             
-                            <p:dataTable id="dataTableProducts" value="#{viewBundleManagedBean.bundleEntityToView.productQuantities}" var="product"
+                            <p:dataTable id="dataTableProducts" value="#{viewBundleCCManagedBean.bundleEntityToView.productQuantities}" var="product"
                                         rowIndexVar="rowIndex">
 
                                 <p:column headerText="Product ID">

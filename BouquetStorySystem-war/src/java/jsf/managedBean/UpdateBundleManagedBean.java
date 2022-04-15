@@ -80,6 +80,10 @@ public class UpdateBundleManagedBean implements Serializable {
         setAddOnEntities(addOnSessionBeanLocal.retrieveAllAddOns());
         setPromotionEntities(promotionSessionBeanLocal.retrieveAllPromotions());
         setPremadeBouquetEntities(premadeBouquetSessionBeanLocal.retrieveAllPremadeBouquets());
+        Promotion noPromotion = new Promotion();
+        noPromotion.setName("Set To No Promotion");
+        noPromotion.setPromotionId(new Long(99999));
+        promotionEntities.add(noPromotion);
         
         try {
             System.out.println("Inside try block post construct");
@@ -100,7 +104,8 @@ public class UpdateBundleManagedBean implements Serializable {
         {
             bundleEntityToUpdate.setProductQuantities(getProductQuantities());
             bundleEntityToUpdate.setProducts(products);
-            if (promotionIdToSet != null) {
+            bundleEntityToUpdate.setPromotion(null);
+            if (promotionIdToSet != null && promotionIdToSet != 99999) {
                 for(Promotion promotion:promotionEntities) {
                     if (promotion.getPromotionId().equals(promotionIdToSet)) {
                         bundleEntityToUpdate.setPromotion(promotion);
