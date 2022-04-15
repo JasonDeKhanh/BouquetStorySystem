@@ -6,8 +6,10 @@
 package ejb.stateless;
 
 import entity.CreditCard;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreditCardExistException;
+import util.exception.CreditCardNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
@@ -20,5 +22,13 @@ import util.exception.UnknownPersistenceException;
 public interface CreditCardSessionBeanLocal {
 
     public CreditCard createNewCreditCard(Long registeredGuestId, CreditCard newCreditCard) throws CustomerNotFoundException, CreditCardExistException, UnknownPersistenceException, InputDataValidationException;
+
+    public CreditCard retrieveCreditCard(Long cardId) throws CreditCardNotFoundException;
+
+    public List<CreditCard> retrieveRegisteredGuestCreditCards(Long registeredGuestId) throws CustomerNotFoundException;
+
+    public void deleteCreditCard(Long creditCardId, Long registeredGuestId) throws CreditCardNotFoundException;
+
+    public String decryptCcNum(String cipherText);
     
 }
