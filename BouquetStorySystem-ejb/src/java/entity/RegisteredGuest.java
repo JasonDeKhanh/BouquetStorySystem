@@ -45,7 +45,7 @@ public class RegisteredGuest extends Customer implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Address> addresses;
     
-    @JoinColumn(nullable = false)
+    
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CreditCard> creditCards;
 

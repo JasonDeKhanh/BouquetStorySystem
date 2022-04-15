@@ -15,9 +15,9 @@
                     Only authorized account can access this site.                                                            
                 </p>
             </article>
-            
+
         </h:panelGroup>
-        
+
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <article>
                 <h3>Welcome to Bouquet Story Admin Site</h3>                       
@@ -25,18 +25,45 @@
                     You are logged in :D                                                          
                 </p>
             </article>
-            
+
+            <h:form>
+                <p:growl id="messages" showDetail="true" />
+
+                <h:panelGrid columnClasses="value" style="padding-left: 5%; padding-right: 5%">
+                    <h3 style="margin-top: 0">Delivery Schedule</h3>
+                    <p:schedule id="schedule" value="#{scheduleManagedBean.scheduleModel}" widgetVar="myschedule" timeZone="GMT+8">
+
+                        <p:ajax event="dateSelect" listener="#{scheduleManagedBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        <p:ajax event="eventSelect" listener="#{scheduleManagedBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        <p:ajax event="eventMove" listener="#{scheduleManagedBean.onEventMove}" update="messages" />
+                        <p:ajax event="eventResize" listener="#{scheduleManagedBean.onEventResize}" update="messages" />
+
+                    </p:schedule>
+
+                </h:panelGrid>
+
+                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <h:panelGrid id="eventDetails" columns="2">
+                        <p:outputLabel for="title" value="Titles:" />
+                        <p:inputText id="title" value="#{scheduleManagedBean.scheduleEvent.title}" required="true" />
+
+                        <p:outputLabel for="from" value="From:" />
+                        <p:calendar id="from" value="#{scheduleManagedBean.scheduleEvent.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm"/>
+
+                        <p:outputLabel for="to" value="To:" />
+                        <p:calendar id="to" value="#{scheduleManagedBean.scheduleEvent.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm"/>
+
+                        <p:outputLabel for="allDay" value="All Day:" />
+                        <h:selectBooleanCheckbox id="allDay" value="#{scheduleManagedBean.scheduleEvent.allDay}" />
+
+                        <p:commandButton type="reset" value="Reset" />
+                        <p:commandButton id="addButton" value="Save" actionListener="#{scheduleManagedBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                    </h:panelGrid>
+                </p:dialog>    
+            </h:form>
+
         </h:panelGroup>
+
+
     </ui:define>
-
-    
-    <p:dataTable>
-        <p:column headerText="Test1">
-            <h:outputText value="Sup" />
-        </p:column>
-
-        <p:column headerText="Test2">
-            <h:outputText value="Hey" />
-        </p:column>
-    </p:dataTable>
 </ui:composition>

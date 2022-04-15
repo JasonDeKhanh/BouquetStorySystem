@@ -133,9 +133,9 @@ public class DataInitializationSessionBean
             newAddress.setCustomer((RegisteredGuest)newCustomer);
             addresses.add(newAddress);
             ((RegisteredGuest)newCustomer).setAddresses(addresses);
-//            CreditCard newCreditCard = new CreditCard("123456789", "matthias", "01", "23");
-//            newCustomer.getCreditCards().add(newCreditCard);
-//            
+            CreditCard newCreditCard = new CreditCard("123456789", "matthias", "01", "23");
+            newCustomer.getCreditCards().add(newCreditCard);
+            
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));
             registeredGuestSessionBeanLocal.createNewRegisteredGuest(newCustomer);

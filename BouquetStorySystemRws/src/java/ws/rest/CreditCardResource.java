@@ -56,12 +56,16 @@ public class CreditCardResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllAddresses(@QueryParam("username") String username)
+    public Response retrieveAllCreditCards(@QueryParam("username") String username)
     {
         try
         {
+            System.out.println("======================");
+            System.out.println(username);
             RegisteredGuest customerEntity = registeredGuestSessionBeanLocal.retrieveRegisteredGuestByEmail(username);
             
+            System.out.println("======================");
+            System.out.println(customerEntity.getCustomerId());
             List<CreditCard> creditCardEntities = creditCardSessionBeanLocal.retrieveRegisteredGuestCreditCards(customerEntity.getCustomerId());
             
             
