@@ -66,7 +66,7 @@
 <!--                        <p:commandButton update="ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{bundleEntity}" target="#{viewBundleManagedBean.bundleEntityToView}" />
                         </p:commandButton>-->
-                        <p:linkButton outcome="ViewBundle" icon="ui-icon-document" title="View">
+                        <p:linkButton outcome="viewBundle" icon="ui-icon-document" title="View">
                             <f:param name="bundleEntityId" value="#{bundleEntity.itemId}" />
                         </p:linkButton>
                         <p:linkButton outcome="updateBundle" icon="ui-icon-pencil" title="Update">

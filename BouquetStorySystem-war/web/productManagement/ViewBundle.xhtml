@@ -78,9 +78,13 @@
                         <h:outputText value="#{viewBundleManagedBean.bundleEntityToView.isOnDisplay}" />
                     </p:column>
                 </p:row>
+                
+            </p:panelGrid>
 
-                <br />
-                <h3>Products in Bundle</h3>
+            <br />
+            
+            <h3>Products in Bundle</h3>
+            <p:panelGrid>
                 <p:dataTable id="dataTableProducts" value="#{viewBundleManagedBean.bundleEntityToView.productQuantities}" var="product"
                             rowIndexVar="rowIndex">
 
