@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ws.rest.AddOnResource.class);
         resources.add(ws.rest.AddressResource.class);
         resources.add(ws.rest.BouquetResource.class);
         resources.add(ws.rest.BundleResource.class);
@@ -36,6 +37,8 @@ public class ApplicationConfig extends Application {
         resources.add(ws.rest.CustomerResource.class);
         resources.add(ws.rest.FlowerResource.class);
         resources.add(ws.rest.FlowerTypeResource.class);
+        resources.add(ws.rest.GiftCardTypeResource.class);
+        resources.add(ws.rest.PremadeBouquetResource.class);
     }
     
 }
