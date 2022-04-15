@@ -20,6 +20,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
@@ -28,6 +29,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.InvalidLoginCredentialException;
+import ws.datamodel.AddressReq;
 
 /**
  * REST Web Service
@@ -82,13 +84,15 @@ public class AddressResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAddress(Address newAddress)
+    public Response createAddress(AddressReq addressReq)
     {
-        if(newAddress != null)
+        if(addressReq != null)
         {
             try
             {
-                Address addressEntity = addressSessionBeanLocal.createNewAddress(newAddress);
+                Address address = addressReq.getAddress();
+                address.setCustomer(registeredGuestSessionBeanLocal.retrieveRegisteredGuestByEmail(addressReq.getUsername()));
+                Address addressEntity = addressSessionBeanLocal.createNewAddress(address);
                 
                 return Response.status(Response.Status.OK).entity(addressEntity.getAddressId()).build();
             }
@@ -118,6 +122,31 @@ public class AddressResource {
         catch(Exception ex)
         {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProduct(Address updateAddress)
+    {
+        if(updateAddress != null)
+        {
+            try
+            {                
+                
+                addressSessionBeanLocal.updateAdress(updateAddress);
+                
+                return Response.status(Response.Status.OK).build();
+            }
+            catch(Exception ex)
+            {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update product request").build();
         }
     }
     
