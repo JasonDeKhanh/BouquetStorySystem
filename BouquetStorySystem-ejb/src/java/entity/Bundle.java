@@ -104,7 +104,7 @@ public class Bundle extends Item implements Serializable {
             totalPrice = totalPrice.add(subTotal);
         }
         if (promotion != null) {
-            totalPrice = totalPrice.multiply(promotion.getDiscountPercent());
+            totalPrice = totalPrice.multiply(new BigDecimal(1).subtract(promotion.getDiscountPercent()));
         }
         return totalPrice;
     }
