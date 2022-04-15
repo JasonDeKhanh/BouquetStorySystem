@@ -84,7 +84,7 @@
                             <h:outputLabel value="Premade Bouquet" for="selPremadeBouquet" styleClass="label" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="selPremadeBouquet" value="#{createNewBundleManagedBean.premadeBouquetIdToAdd}" required="true">
+                            <p:selectOneMenu id="selPremadeBouquet" value="#{createNewBundleManagedBean.premadeBouquetIdToAdd}">
                                 <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />
                                 <f:selectItems value="#{createNewBundleManagedBean.premadeBouquetEntities}" var="premadeBouquetEntity" itemValue="#{premadeBouquetEntity.itemId}" itemLabel="#{premadeBouquetEntity.name}" />
                                 <p:ajax event="change" update="panelGridSelectBouquet" />
@@ -122,7 +122,7 @@
                     </p:row>
 
                     <p:row>
-                        <p:column colspan="3">
+                        <p:column colspan="3" rendered="#{createNewBundleManagedBean.premadeBouquetById != null}" >
                             <p:commandButton value="Add Premade Bouquet" immediate="true" update="@this formCreateNewBundle:dataTableProducts" actionListener="#{createNewBundleManagedBean.addPremadeBouquetToMap}" />
                         </p:column>                        
                     </p:row>
@@ -135,7 +135,7 @@
                             <h:outputLabel value="Add On" for="selAddOn" styleClass="label" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="selAddOn" value="#{createNewBundleManagedBean.addOnIdToAdd}" required="true">
+                            <p:selectOneMenu id="selAddOn" value="#{createNewBundleManagedBean.addOnIdToAdd}" >
                                 <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />
                                 <f:selectItems value="#{createNewBundleManagedBean.addOnEntities}" var="addOnEntity" itemValue="#{addOnEntity.itemId}" itemLabel="#{addOnEntity.name}" />
                                 <p:ajax event="change" update="panelGridSelectAddOn" />
@@ -173,7 +173,7 @@
                     </p:row>
 
                     <p:row>
-                        <p:column colspan="3">
+                        <p:column colspan="3" rendered="#{createNewBundleManagedBean.addOnById != null}" >
                             <p:commandButton value="Add add on" immediate="true" update="@this formCreateNewBundle:dataTableProducts" actionListener="#{createNewBundleManagedBean.addAddOnToMap}" />
                         </p:column>                        
                     </p:row>

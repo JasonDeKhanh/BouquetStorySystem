@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../templates/defaultTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        
+        <h3>Update Bundle</h3>
+        
+        <h:form id="formUpdateBundle">
+                
+            <p:messages id="messagesUpdateBundle" redisplay="false"/>
+
+            <h3>General</h3>
+            <p:panelGrid>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="name" value="#{updateBundleManagedBean.bundleEntityToUpdate.name}" placeholder="Bundle 1" required="true" requiredMessage="Name is required" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="name" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="imgAddress" value="Upload Image: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:fileUpload listener="#{updateBundleManagedBean.handleImageUploadNew}" multiple="true" update="imgAddress"/>
+                        <p:panel id="imgAddress" header="Uploaded File" visible="#{updateBundleManagedBean.showUploadedFile}">
+                            <p:graphicImage value="#{updateBundleManagedBean.uploadedFilePath}" height="100px" />
+                        </p:panel>
+                    </p:column>
+                    <p:column>
+                        <p:message for="imgAddress" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="promotion" value="Promotion " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="promotion" value="#{updateBundleManagedBean.promotionIdToSet}">
+                            <f:selectItem itemLabel="[Choose One]" noSelectionOption="true" />
+                            <f:selectItems value="#{updateBundleManagedBean.promotionEntities}" var="promotionEntity" itemValue="#{promotionEntity.promotionId}" itemLabel="#{promotionEntity.name}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="promotion" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="isOnDisplay" value="Display " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox id="isOnDisplay" value="#{updateBundleManagedBean.bundleEntityToUpdate.isOnDisplay}" itemLabel="Display on shop"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="isOnDisplay" />
+                    </p:column>
+                </p:row>
+
+            </p:panelGrid>
+
+            <h3>Select Premade Bouquet to add to Bundle</h3>
+            <p:panelGrid id="panelGridSelectBouquet">
+
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="Premade Bouquet" for="selPremadeBouquet" styleClass="label" />
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="selPremadeBouquet" value="#{updateBundleManagedBean.premadeBouquetIdToAdd}">
+                            <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />
+                            <f:selectItems value="#{updateBundleManagedBean.premadeBouquetEntities}" var="premadeBouquetEntity" itemValue="#{premadeBouquetEntity.itemId}" itemLabel="#{premadeBouquetEntity.name}" />
+                            <p:ajax event="change" update="panelGridSelectBouquet" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="selPremadeBouquet" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+
+                    </p:column>
+                    <p:column headerText="Image" rendered="#{updateBundleManagedBean.premadeBouquetById != null}" >
+                        <p:graphicImage value="#{updateBundleManagedBean.premadeBouquetById.imgAddress}" height="200px"/>
+                    </p:column>
+                    <p:column>
+
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="quantityBouquetToSet" value="Quantity To Set " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:spinner id="quantityBouquetToSet" value="#{updateBundleManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" >
+                            <p:ajax process="@this"/>
+                        </p:spinner>
+                    </p:column>
+                    <p:column>
+                        <p:message for="quantityBouquetToSet" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="3" rendered="#{updateBundleManagedBean.premadeBouquetById != null}">
+                        <p:commandButton value="Add Premade Bouquet" immediate="true" update="@this formUpdateBundle:dataTableProducts" actionListener="#{updateBundleManagedBean.addPremadeBouquetToMap}" />
+                    </p:column>                        
+                </p:row>
+            </p:panelGrid>
+
+            <h3>Select Add On to add to Bundle</h3>
+            <p:panelGrid id="panelGridSelectAddOn">
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="Add On" for="selAddOn" styleClass="label" />
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="selAddOn" value="#{updateBundleManagedBean.addOnIdToAdd}">
+                            <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />
+                            <f:selectItems value="#{updateBundleManagedBean.addOnEntities}" var="addOnEntity" itemValue="#{addOnEntity.itemId}" itemLabel="#{addOnEntity.name}" />
+                            <p:ajax event="change" update="panelGridSelectAddOn" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="selAddOn" />
+                    </p:column>
+
+                    <p:row>
+                        <p:column>
+
+                        </p:column>
+                        <p:column headerText="Image" rendered="#{updateBundleManagedBean.addOnById != null}" >
+                            <p:graphicImage value="#{updateBundleManagedBean.addOnById.imgAddress}" height="200px"/>
+                        </p:column>
+                        <p:column>
+
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="quantityAddOnToSet" value="Quantity To Set " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="quantityAddOnToSet" value="#{updateBundleManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" >
+                                <p:ajax process="@this"/>
+                            </p:spinner>
+                        </p:column>
+                        <p:column>
+                            <p:message for="quantityAddOnToSet" />
+                        </p:column>
+                    </p:row>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="3" rendered="#{updateBundleManagedBean.addOnById != null}">
+                        <p:commandButton value="Add add on" immediate="true" update="@this formUpdateBundle:dataTableProducts" actionListener="#{updateBundleManagedBean.addAddOnToMap}" />
+                    </p:column>                        
+                </p:row>
+            </p:panelGrid>
+
+            <h3>Current Products in Bundle</h3>
+            <p:dataTable id="dataTableProducts" value="#{updateBundleManagedBean.productQuantities}" var="product"
+                        rowIndexVar="rowIndex">
+
+               <p:column headerText="Product ID">
+
+                   <h:outputText value="#{product.key.itemId}" />
+
+               </p:column>
+
+                <p:column headerText="Product Name">
+
+                    <h:outputText value="#{product.key.name}" />
+
+                 </p:column>
+
+                 <p:column headerText="Image" >
+                     <p:graphicImage value="#{product.key.imgAddress}" height="200px"/>
+                 </p:column>
+
+                <p:column headerText="Quantity">
+
+                   <h:outputText value="#{product.value}" />
+
+               </p:column>
+
+               <p:column headerText="Action">
+
+                   <p:commandLink value="Remove" process="@this" update="formUpdateBundle:dataTableProducts" actionListener="#{updateBundleManagedBean.removeProductFromMap}">
+                       <f:attribute name="productToRemove" value="#{product.key}" />
+                   </p:commandLink>
+
+               </p:column>
+
+            </p:dataTable>
+
+            <p:row>
+                <p:column colspan="3">
+                    <p:commandButton type="reset" value="Clear" />&nbsp;
+                    <p:commandButton  value="Create New Bundle" update="@this @form" actionListener="#{updateBundleManagedBean.updateBundle}" />
+                </p:column>
+            </p:row>
+        </h:form>
+        
+    </ui:define>
+
+</ui:composition>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.stateless.AddOnSessionBeanLocal;
@@ -33,18 +28,20 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import util.exception.AddOnNotFoundException;
+import util.exception.BundleNotFoundException;
 import util.exception.CreateNewBundleException;
 import util.exception.InputDataValidationException;
 import util.exception.PremadeBouquetNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdateBundleException;
 
 /**
  *
  * @author JORD-SSD
  */
-@Named(value = "createNewBundleManagedBean")
+@Named(value = "updateBundleManagedBean")
 @ViewScoped
-public class CreateNewBundleManagedBean implements Serializable {
+public class UpdateBundleManagedBean implements Serializable {
 
     @EJB
     private PremadeBouquetSessionBeanLocal premadeBouquetSessionBeanLocal;
@@ -63,7 +60,7 @@ public class CreateNewBundleManagedBean implements Serializable {
     private Map<Product, Integer> productQuantities;
     private List<Product> products;
     
-    private Bundle newBundleEntity;
+    private Bundle bundleEntityToUpdate;
     private Long promotionIdToSet;
     private Long premadeBouquetIdToAdd;
     private Long addOnIdToAdd;
@@ -72,8 +69,8 @@ public class CreateNewBundleManagedBean implements Serializable {
     private String uploadedFilePath;
     private Boolean showUploadedFile;
     
-    public CreateNewBundleManagedBean() {
-        newBundleEntity = new Bundle();
+    public UpdateBundleManagedBean() {
+        bundleEntityToUpdate = new Bundle();
         productQuantities = new HashMap<>();
         products = new ArrayList<>();
     }
@@ -83,29 +80,42 @@ public class CreateNewBundleManagedBean implements Serializable {
         setAddOnEntities(addOnSessionBeanLocal.retrieveAllAddOns());
         setPromotionEntities(promotionSessionBeanLocal.retrieveAllPromotions());
         setPremadeBouquetEntities(premadeBouquetSessionBeanLocal.retrieveAllPremadeBouquets());
+        
+        try {
+            System.out.println("Inside try block post construct");
+            Long bundleId = Long.valueOf(
+                    FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("bundleEntityId"));
+            setBundleEntityToUpdate(bundleSessionBeanLocal.retrieveBundleByItemId(bundleId));
+            setProductQuantities(bundleEntityToUpdate.getProductQuantities());
+            setProducts(bundleEntityToUpdate.getProducts());
+        } catch (BundleNotFoundException ex) {
+            System.out.println("inside catch error block postconstruct");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Bundle ID not provided", null));
+        }
     }
     
-    public void createNewBundle(ActionEvent event) {
+    public void updateBundle(ActionEvent event) {
         try
         {
-            newBundleEntity.setProductQuantities(getProductQuantities());
-            newBundleEntity.setProducts(products);
+            bundleEntityToUpdate.setProductQuantities(getProductQuantities());
+            bundleEntityToUpdate.setProducts(products);
             if (promotionIdToSet != null) {
                 for(Promotion promotion:promotionEntities) {
                     if (promotion.getPromotionId().equals(promotionIdToSet)) {
-                        newBundleEntity.setPromotion(promotion);
+                        bundleEntityToUpdate.setPromotion(promotion);
                         System.out.println("Promotion Id that has been set is :" + promotion.getPromotionId());
                         break;
                     }
                 }
             }
-            Bundle bundle = bundleSessionBeanLocal.createNewBundle(getNewBundleEntity());
+            bundleSessionBeanLocal.updateBundle(bundleEntityToUpdate);
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bundle created successfully (Bundle ID: " + bundle.getItemId() + ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bundle has been updated successfully (Bundle ID: " + bundleEntityToUpdate.getItemId() + ")", null));
         }
-        catch (InputDataValidationException | CreateNewBundleException | UnknownPersistenceException ex)
+        catch (InputDataValidationException | BundleNotFoundException | UpdateBundleException ex)
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new Bundle: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the Bundle: " + ex.getMessage(), null));
         }
     }
     
@@ -200,7 +210,7 @@ public class CreateNewBundleManagedBean implements Serializable {
             setShowUploadedFile((Boolean) true);
 
             // Would it be correct to put setImgAddress(uploadedFilePath) here??
-            newBundleEntity.setImgAddress(uploadedFilePath);
+            bundleEntityToUpdate.setImgAddress(uploadedFilePath);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
@@ -248,12 +258,12 @@ public class CreateNewBundleManagedBean implements Serializable {
         this.products = products;
     }
 
-    public Bundle getNewBundleEntity() {
-        return newBundleEntity;
+    public Bundle getBundleEntityToUpdate() {
+        return bundleEntityToUpdate;
     }
 
-    public void setNewBundleEntity(Bundle newBundleEntity) {
-        this.newBundleEntity = newBundleEntity;
+    public void setBundleEntityToUpdate(Bundle bundleEntityToUpdate) {
+        this.bundleEntityToUpdate = bundleEntityToUpdate;
     }
 
     public Long getPromotionIdToSet() {
@@ -262,7 +272,6 @@ public class CreateNewBundleManagedBean implements Serializable {
 
     public void setPromotionIdToSet(Long promotionIdToSet) {
         this.promotionIdToSet = promotionIdToSet;
-        System.out.println("Promotion ID is: " + promotionIdToSet);
     }
 
     public Long getPremadeBouquetIdToAdd() {

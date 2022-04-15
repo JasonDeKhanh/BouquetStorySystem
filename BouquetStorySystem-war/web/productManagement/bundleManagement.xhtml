@@ -69,9 +69,9 @@
                         <p:linkButton outcome="ViewBundle" icon="ui-icon-document" title="View">
                             <f:param name="bundleEntityId" value="#{bundleEntity.itemId}" />
                         </p:linkButton>
-                        <p:commandButton actionListener="#{bundleManagementManagedBean.doUpdateBundle}" update="formUpdateBundle" oncomplete="PF('dialogUpdateBundle').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="bundleEntityToUpdate" value="#{bundleEntity}" />
-                        </p:commandButton>
+                        <p:linkButton outcome="updateBundle" icon="ui-icon-pencil" title="Update">
+                            <f:param name="bundleEntityId" value="#{bundleEntity.itemId}" />
+                        </p:linkButton>
                         <p:commandButton icon="ui-icon-trash" actionListener="#{bundleManagementManagedBean.deleteBundle}" update="formAllBundles:dataTableAllBundles formAllBundles:messages">
                             <f:attribute name="bundleEntityToDelete" value="#{bundleEntity}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{bundleEntity.name}?" icon="ui-icon-alert" />
@@ -90,7 +90,7 @@
 <!--            <ez:ViewBundle id="ccViewBundle"/>-->
 
 
-            <h:form id="formUpdateBundle">
+<!--            <h:form id="formUpdateBundle">
 
                 <p:dialog id="dialogUpdateBundle" widgetVar="dialogUpdateBundle" header="Update Bundle" closable="true">
 
@@ -254,7 +254,7 @@
 
                 </p:dialog>
 
-            </h:form>
+            </h:form>-->
 
         </div>
     </ui:define>
