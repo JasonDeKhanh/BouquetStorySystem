@@ -5,7 +5,7 @@
  */
 package entity;
 
-import com.sun.istack.Nullable;
+//import com.sun.istack.Nullable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -40,11 +41,11 @@ public class RegisteredGuest extends Customer implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
     
-    @Nullable
+//    @JoinColumn(nullable = false)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Address> addresses;
     
-    @Nullable
+    @JoinColumn(nullable = false)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CreditCard> creditCards;
 
