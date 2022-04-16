@@ -19,14 +19,11 @@ import entity.Product;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 import java.math.BigDecimal;
-<<<<<<< HEAD
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-=======
 import java.util.ArrayList;
->>>>>>> da18f7d52e5ace88297f98d17f0a2c54698cfe72
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;

@@ -43,10 +43,7 @@ public interface SaleTransactionSessionBeanLocal {
 
     public void debitQuantityOnHand(Item currItem, Integer quantityToDebit) throws ContainerNotFoundException, DecorationNotFoundException, FlowerNotFoundException, ItemNotFoundException, InsufficientQuantityException;
 
-<<<<<<< HEAD
     public void updateDeliveryDate(Long saleTransactionId, LocalDateTime newDate);
-=======
     public List<SaleTransaction> retrieveAllSaleTransactionsByCustomerId(Long customerId);
->>>>>>> da18f7d52e5ace88297f98d17f0a2c54698cfe72
     
 }
