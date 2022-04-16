@@ -19,10 +19,14 @@ import entity.Product;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 import java.math.BigDecimal;
+<<<<<<< HEAD
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+=======
+import java.util.ArrayList;
+>>>>>>> da18f7d52e5ace88297f98d17f0a2c54698cfe72
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -78,21 +82,54 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
         if (newSaleTransaction != null) {
             try {
+                System.out.println("=====================");
+                System.out.println(customerId);
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+                System.out.println(customer.getEmail());
+                
                 newSaleTransaction.setCustomer(customer);
                 customer.getSaleTransactions().add(newSaleTransaction);
-
+                
                 em.persist(newSaleTransaction);
+                
 
+
+//                System.out.println("============one=====================");
                 if (newSaleTransaction.getIsPreorder() == false) {
 
                     for (SaleTransactionLineItem saleTransactionLineItem : newSaleTransaction.getSaleTransactionLineItems()) {
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
-                        //em.persist(saleTransactionLineItemEntity);
+                        System.out.println("in for loop! weee");
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSerialNumber());
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getQuantity());
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getUnitPrice());
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSaleTranscationLineItemId());
+                        
+                        em.persist(saleTransactionLineItem);
+//                        System.out.println("============two====================="); 
+//                        System.out.println("" + );
+//                        List<SaleTransactionLineItem> lineItems = new ArrayList<>();
+                        if(saleTransactionLineItem.getItemEntity() instanceof CustomBouquet) {
+//                            em.persist(saleTransactionLineItem.getItemEntity());
+//                            em.persist(saleTransactionLineItem);
+                        } else {
+//                            em.persist(saleTransactionLineItem);
+                        }
                     }
                     newSaleTransaction.setIsCompleted(true);
                 }
-
+                
+                System.out.println("============================================================jrfvdm cxerkdm,");
+                System.out.println(newSaleTransaction.getIsSelfPickup());
+                System.out.println(newSaleTransaction.getTotalAmount());
+                System.out.println(newSaleTransaction.getCollectionDateTime());
+                 
+                
+                
+                System.out.println("newSaleTransaction.lineItem.items: " + newSaleTransaction.getSaleTransactionLineItems().toString());
+                System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
+                
+                
                 em.flush();
 
                 return newSaleTransaction;
@@ -236,6 +273,16 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     @Override
     public List<SaleTransaction> retrieveAllSaleTransactions() {
         Query query = em.createQuery("SELECT st FROM SaleTransaction st");
+
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<SaleTransaction> retrieveAllSaleTransactionsByCustomerId(Long customerId) {
+        Query query = em.createQuery("SELECT st FROM SaleTransaction st WHERE st.customer.customerId = :inCustomerId");
+        
+
+        query.setParameter("inCustomerId", customerId);
 
         return query.getResultList();
     }
