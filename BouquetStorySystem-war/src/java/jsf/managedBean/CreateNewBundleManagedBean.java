@@ -94,7 +94,6 @@ public class CreateNewBundleManagedBean implements Serializable {
                 for(Promotion promotion:promotionEntities) {
                     if (promotion.getPromotionId().equals(promotionIdToSet)) {
                         newBundleEntity.setPromotion(promotion);
-                        System.out.println("Promotion Id that has been set is :" + promotion.getPromotionId());
                         break;
                     }
                 }
