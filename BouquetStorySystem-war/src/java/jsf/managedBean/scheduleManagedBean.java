@@ -28,6 +28,8 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -56,12 +58,24 @@ public class scheduleManagedBean implements Serializable {
 
         for (SaleTransaction saleTransaction : saleTransactions) {
             scheduleModel.addEvent(DefaultScheduleEvent.builder()
-                    .title("Order for Customer" + saleTransaction.getCustomer().getFirstName() + "\n" + "Self PickUp: " + saleTransaction.getIsSelfPickup() + "\n" + "Delivery Address: " + saleTransaction.getDeliveryAddress() )
+                    .title("Order for Customer" + saleTransaction.getCustomer().getFirstName() + "\n" + "Self PickUp: " + saleTransaction.getIsSelfPickup() + "\n" + "Delivery Address: " + saleTransaction.getDeliveryAddress())
                     .startDate(convertToLocalDateTimeViaInstant(saleTransaction.getCollectionDateTime()))
                     .endDate(convertToLocalDateTimeViaInstant(saleTransaction.getCollectionDateTime()))
-                    .description("Self PickUp:" + saleTransaction.getIsSelfPickup() + "//" + saleTransaction.getDeliveryAddress() )
+                    .description("" + saleTransaction.getSaleTransactionId())
                     .build());
 
+        }
+    }
+
+    public String getFormatDate() {
+        if (scheduleEvent.getStartDate() == null) {
+            return "";
+        } else {
+            LocalDateTime date = scheduleEvent.getStartDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            
+            String formatDateTime = date.format(formatter);
+            return formatDateTime;
         }
     }
 
@@ -114,6 +128,7 @@ public class scheduleManagedBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
 
         addMessage(message);
+        saleTransactionSessionBeanLocal.updateDeliveryDate(Long.valueOf(scheduleEvent.getScheduleEvent().getDescription()), scheduleEvent.getScheduleEvent().getStartDate());
     }
 
     public void onEventResize(ScheduleEntryResizeEvent scheduleEvent) {

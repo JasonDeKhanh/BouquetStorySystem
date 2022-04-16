@@ -73,10 +73,13 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel value="Collection Date Time: " style="font-weight: bold;" />
+                            <p:outputLabel value="Collection Date: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.collectionDateTime}" />
+                            <h:outputText value="#{viewSaleTransactionManagedBean.saleTransactionToView.collectionDateTime}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                            
                         </p:column>
                     </p:row>
 

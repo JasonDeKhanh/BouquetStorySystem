@@ -55,8 +55,10 @@
                         <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />
                     </p:column>
 
-                    <p:column headerText="Collection Date Time" sortBy="#{saleTransactionEntity.collectionDateTime}" filterBy="#{saleTransactionEntity.collectionDateTime}" filterMatchMode="contains">
-                        <h:outputText value="#{saleTransactionEntity.collectionDateTime}" />
+                    <p:column headerText="Collection Date" sortBy="#{saleTransactionEntity.collectionDateTime}" filterBy="#{saleTransactionEntity.collectionDateTime}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.collectionDateTime}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Self Pick Up" sortBy="#{saleTransactionEntity.isSelfPickup}" filterBy="#{saleTransactionEntity.isSelfPickup}" filterMatchMode="contains">
@@ -89,7 +91,7 @@
                         <br>
                         </br>
                       
-                        <p:commandButton value="Complete Sale Transaction" actionListener="#{viewSaleTransactionManagedBean.markIsCompleted}" update="@form">
+                        <p:commandButton value="Complete Sale Transaction" actionListener="#{viewSaleTransactionManagedBean.markIsCompleted}" update="@form" rendered="#{saleTransactionEntity.isCompleted == false}">
                             <f:param name="saleTransactionId" value="#{saleTransactionEntity.saleTransactionId}" />    
                         </p:commandButton>
                     </p:column>
