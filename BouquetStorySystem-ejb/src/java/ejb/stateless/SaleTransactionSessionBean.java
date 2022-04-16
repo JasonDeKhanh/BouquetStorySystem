@@ -75,30 +75,26 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
         if (newSaleTransaction != null) {
             try {
-                System.out.println("=====================");
-                System.out.println(customerId);
+                System.out.println("==============inside createNewSaleTransaction seesion bean=======");
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                 System.out.println(customer.getEmail());
                 
                 newSaleTransaction.setCustomer(customer);
                 customer.getSaleTransactions().add(newSaleTransaction);
-                
-                em.persist(newSaleTransaction);
-                
-
-
+          
 //                System.out.println("============one=====================");
                 if (newSaleTransaction.getIsPreorder() == false) {
 
                     for (SaleTransactionLineItem saleTransactionLineItem : newSaleTransaction.getSaleTransactionLineItems()) {
+                        System.out.println("======+++>>>>"+saleTransactionLineItem.getItemEntity().getItemId());
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
                         System.out.println("in for loop! weee");
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSerialNumber());
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getQuantity());
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getUnitPrice());
-                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSaleTranscationLineItemId());
+                       // System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSaleTranscationLineItemId());
                         
-                        em.persist(saleTransactionLineItem);
+//                        em.persist(saleTransactionLineItem);
 //                        System.out.println("============two====================="); 
 //                        System.out.println("" + );
 //                        List<SaleTransactionLineItem> lineItems = new ArrayList<>();
@@ -115,12 +111,13 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 System.out.println("============================================================jrfvdm cxerkdm,");
                 System.out.println(newSaleTransaction.getIsSelfPickup());
                 System.out.println(newSaleTransaction.getTotalAmount());
-                System.out.println(newSaleTransaction.getCollectionDateTime());
-                 
+//                System.out.println(newSaleTransaction.getCollectionDateTime());
+                
+                em.persist(newSaleTransaction);
                 
                 
-                System.out.println("newSaleTransaction.lineItem.items: " + newSaleTransaction.getSaleTransactionLineItems().toString());
-                System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
+                System.out.println("newSaleTransaction.lineItem.items: " + newSaleTransaction.getSaleTransactionLineItems());
+              //  System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
                 
                 
                 em.flush();

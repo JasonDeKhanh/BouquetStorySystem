@@ -5,6 +5,7 @@
  */
 package ws.datamodel;
 
+import entity.Item;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 
@@ -16,11 +17,13 @@ public class SalesTransactionReq {
     private String username;
     private SaleTransaction saleTransaction;
     private SaleTransactionLineItem[] saleTransactionLineItems;
+    private int[] items;
 
-    public SalesTransactionReq(String username, SaleTransaction saleTransaction, SaleTransactionLineItem[] saleTransactionLineItems) {
+    public SalesTransactionReq(String username, SaleTransaction saleTransaction, SaleTransactionLineItem[] saleTransactionLineItems, int[] items) {
         this.username = username;
         this.saleTransaction = saleTransaction;
         this.saleTransactionLineItems = saleTransactionLineItems;
+        this.items = items;
     }
 
     public SalesTransactionReq() {
@@ -49,5 +52,20 @@ public class SalesTransactionReq {
     public void setSaleTransactionLineItems(SaleTransactionLineItem[] saleTransactionLineItems) {
         this.saleTransactionLineItems = saleTransactionLineItems;
     }
-    
+
+    /**
+     * @return the items
+     */
+    public int[] getItems() {
+        return items;
+    }
+
+    /**
+     * @param items the items to set
+     */
+    public void setItems(int[] items) {
+        this.items = items;
+    }
 }
+
+
