@@ -79,8 +79,11 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 System.out.println(customerId);
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                 System.out.println(customer.getEmail());
-                newSaleTransaction.setCustomer(customer);
                 
+                newSaleTransaction.setCustomer(customer);
+                customer.getSaleTransactions().add(newSaleTransaction);
+                
+                em.persist(newSaleTransaction);
                 
 
 
@@ -89,7 +92,13 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
 
                     for (SaleTransactionLineItem saleTransactionLineItem : newSaleTransaction.getSaleTransactionLineItems()) {
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
+                        System.out.println("in for loop! weee");
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSerialNumber());
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getQuantity());
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getUnitPrice());
+                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSaleTranscationLineItemId());
                         
+                        em.persist(saleTransactionLineItem);
 //                        System.out.println("============two====================="); 
 //                        System.out.println("" + );
 //                        List<SaleTransactionLineItem> lineItems = new ArrayList<>();
@@ -108,8 +117,12 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 System.out.println(newSaleTransaction.getTotalAmount());
                 System.out.println(newSaleTransaction.getCollectionDateTime());
                  
-                em.persist(newSaleTransaction);
-                customer.getSaleTransactions().add(newSaleTransaction);
+                
+                
+                System.out.println("newSaleTransaction.lineItem.items: " + newSaleTransaction.getSaleTransactionLineItems().toString());
+                System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
+                
+                
                 em.flush();
 
                 return newSaleTransaction;

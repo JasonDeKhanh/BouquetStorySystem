@@ -77,6 +77,8 @@ public class SaleTransactionResource {
                 List<SaleTransactionLineItem> lineItems = new ArrayList<>();
                 
                 for(SaleTransactionLineItem item : saleTransactionLineItems ) {
+                    System.out.println("in saleTrans rws, lineItem.item: " + item.getItemEntity());
+                    
                     SaleTransactionLineItem newItem = new SaleTransactionLineItem(item.getSerialNumber(),item.getQuantity(),item.getUnitPrice(),item.getItemEntity());
                     
                     lineItems.add(newItem);
