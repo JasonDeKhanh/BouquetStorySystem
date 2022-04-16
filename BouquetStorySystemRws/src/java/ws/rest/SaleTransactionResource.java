@@ -9,11 +9,13 @@ import ejb.stateless.CustomerSessionBeanLocal;
 import ejb.stateless.ItemSessionBeanLocal;
 import ejb.stateless.RegisteredGuestSessionBeanLocal;
 import ejb.stateless.SaleTransactionSessionBeanLocal;
+import ejb.stateless.UnregisteredGuestSessionBeanLocal;
 import entity.Customer;
 import entity.Item;
 import entity.RegisteredGuest;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
+import entity.UnregisteredGuest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +44,8 @@ import ws.datamodel.SalesTransactionReq;
 @Path("SaleTransaction")
 public class SaleTransactionResource {
 
+    UnregisteredGuestSessionBeanLocal unregisteredGuestSessionBean = lookupUnregisteredGuestSessionBeanLocal();
+
     ItemSessionBeanLocal itemSessionBean = lookupItemSessionBeanLocal();
 
     RegisteredGuestSessionBeanLocal registeredGuestSessionBeanLocal = lookupRegisteredGuestSessionBeanLocal();
@@ -68,7 +72,15 @@ public class SaleTransactionResource {
         {
             try
             {
-                Customer customer = customerSessionBean.retrieveCustomerByEmail(newSalesTransactionReq.getUsername());
+                Customer customer;
+                
+                try{
+                    customer = customerSessionBean.retrieveCustomerByEmail(newSalesTransactionReq.getUsername());
+                }catch(Exception ex) {
+                    UnregisteredGuest newGuest = new UnregisteredGuest(newSalesTransactionReq.getFirstName(), newSalesTransactionReq.getLastName(), newSalesTransactionReq.getUsername());
+                    Long customerId = unregisteredGuestSessionBean.createNewUnregisteredGuest(newGuest);
+                    customer = customerSessionBean.retrieveCustomerByEmail(newSalesTransactionReq.getUsername());
+                }
                 
                 SaleTransactionLineItem[] saleTransactionLineItems = newSalesTransactionReq.getSaleTransactionLineItems();
                
@@ -184,6 +196,16 @@ public class SaleTransactionResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (ItemSessionBeanLocal) c.lookup("java:global/BouquetStorySystem/BouquetStorySystem-ejb/ItemSessionBean!ejb.stateless.ItemSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private UnregisteredGuestSessionBeanLocal lookupUnregisteredGuestSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (UnregisteredGuestSessionBeanLocal) c.lookup("java:global/BouquetStorySystem/BouquetStorySystem-ejb/UnregisteredGuestSessionBean!ejb.stateless.UnregisteredGuestSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

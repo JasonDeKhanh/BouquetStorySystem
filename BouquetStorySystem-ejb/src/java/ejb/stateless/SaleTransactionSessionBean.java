@@ -78,7 +78,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     @Override
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
         if (newSaleTransaction != null) {
-            try {
+//            try {
                 System.out.println("==============inside createNewSaleTransaction seesion bean=======");
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                 System.out.println(customer.getEmail());
@@ -91,7 +91,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
 
                     for (SaleTransactionLineItem saleTransactionLineItem : newSaleTransaction.getSaleTransactionLineItems()) {
                         System.out.println("======+++>>>>"+saleTransactionLineItem.getItemEntity().getItemId());
-                        debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
+//                        debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
                         System.out.println("in for loop! weee");
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSerialNumber());
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getQuantity());
@@ -127,12 +127,12 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 em.flush();
 
                 return newSaleTransaction;
-            } catch (ContainerNotFoundException | DecorationNotFoundException | FlowerNotFoundException | ItemNotFoundException | InsufficientQuantityException ex) {
-                // The line below rolls back all changes made to the database.
-                eJBContext.setRollbackOnly();
-
-                throw new CreateNewSaleTransactionException(ex.getMessage());
-            }
+//            } catch (ContainerNotFoundException | DecorationNotFoundException | FlowerNotFoundException | ItemNotFoundException | InsufficientQuantityException ex) {
+//                // The line below rolls back all changes made to the database.
+//                eJBContext.setRollbackOnly();
+//
+//                throw new CreateNewSaleTransactionException(ex.getMessage());
+//            }
         } else {
             throw new CreateNewSaleTransactionException("Sale transaction information not provided");
         }

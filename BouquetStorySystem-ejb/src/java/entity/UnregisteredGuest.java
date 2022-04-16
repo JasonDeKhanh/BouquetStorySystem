@@ -23,6 +23,10 @@ public class UnregisteredGuest extends Customer implements Serializable {
     public UnregisteredGuest() {
         super();
     }
+    
+    public UnregisteredGuest(String firstName, String lastName, String email){
+        super(firstName, lastName, email);
+    }
 
     
     
