@@ -61,6 +61,18 @@
                         <p:message for="promotion" />
                     </p:column>
                 </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="description" value="Description: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="description" value="#{updateBundleManagedBean.bundleEntityToUpdate.description}" placeholder="Bundle details" required="true" requiredMessage="Description is required" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="description" />
+                    </p:column>
+                </p:row>
 
                 <p:row>
                     <p:column>
@@ -218,7 +230,7 @@
             <p:row>
                 <p:column colspan="3">
                     <p:commandButton type="reset" value="Clear" />&nbsp;
-                    <p:commandButton  value="Create New Bundle" update="@this @form" actionListener="#{updateBundleManagedBean.updateBundle}" />
+                    <p:commandButton  value="Update Bundle" update="@this @form" actionListener="#{updateBundleManagedBean.updateBundle}" />
                 </p:column>
             </p:row>
         </h:form>

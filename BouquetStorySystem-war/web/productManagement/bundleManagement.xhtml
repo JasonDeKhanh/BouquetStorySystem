@@ -45,6 +45,10 @@
                         </h:outputText>
                     </p:column>
                     
+                    <p:column headerText="Description" sortBy="#{bundleEntity.description}" filterBy="#{bundleEntity.description}" filterMatchMode="contains">
+                        <h:outputText value="#{bundleEntity.description}" />
+                    </p:column>
+                    
                     <p:column headerText="Display" sortBy="#{bundleEntity.isOnDisplay}" filterBy="#{bundleEntity.isOnDisplay}" filterMatchMode="contains">
                         <h:outputText value="#{bundleEntity.isOnDisplay}" />
                     </p:column>
