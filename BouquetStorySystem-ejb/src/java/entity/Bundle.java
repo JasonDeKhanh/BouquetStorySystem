@@ -75,7 +75,8 @@ public class Bundle extends Item implements Serializable {
         }
         unitPrice = totalPrice;
         if (promotion != null) {
-            unitPrice = totalPrice.multiply(new BigDecimal(1).subtract(promotion.getDiscountPercent())).setScale(2, RoundingMode.HALF_EVEN);
+            unitPrice = totalPrice.multiply(new BigDecimal(100).subtract(new BigDecimal(promotion.getDiscountPercent())))
+                    .divide(new BigDecimal(100), 2, RoundingMode.HALF_EVEN);
         }
     }
     
