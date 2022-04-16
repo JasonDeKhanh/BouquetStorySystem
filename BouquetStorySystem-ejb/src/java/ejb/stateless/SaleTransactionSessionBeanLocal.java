@@ -7,6 +7,7 @@ package ejb.stateless;
 
 import entity.Item;
 import entity.SaleTransaction;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.ContainerNotFoundException;
@@ -41,5 +42,7 @@ public interface SaleTransactionSessionBeanLocal {
     public void markIsCompleted(SaleTransaction saleTransaction) throws SaleTransactionAlreadyCompleted, SaleTransactionNotFoundException, MarkIsCompletedException;
 
     public void debitQuantityOnHand(Item currItem, Integer quantityToDebit) throws ContainerNotFoundException, DecorationNotFoundException, FlowerNotFoundException, ItemNotFoundException, InsufficientQuantityException;
+
+    public void updateDeliveryDate(Long saleTransactionId, LocalDateTime newDate);
     
 }

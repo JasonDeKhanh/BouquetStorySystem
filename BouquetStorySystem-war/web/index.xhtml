@@ -33,7 +33,7 @@
                     <h3 style="margin-top: 0">Delivery Schedule</h3>
                     <p:schedule id="schedule" value="#{scheduleManagedBean.scheduleModel}" widgetVar="myschedule" timeZone="GMT+8">
 
-                        <p:ajax event="dateSelect" listener="#{scheduleManagedBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        <!--p:ajax event="dateSelect" listener="#{scheduleManagedBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" /-->
                         <p:ajax event="eventSelect" listener="#{scheduleManagedBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                         <p:ajax event="eventMove" listener="#{scheduleManagedBean.onEventMove}" update="messages" />
                         <p:ajax event="eventResize" listener="#{scheduleManagedBean.onEventResize}" update="messages" />
@@ -45,19 +45,19 @@
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel for="title" value="Titles:" />
-                        <p:inputText id="title" value="#{scheduleManagedBean.scheduleEvent.title}" required="true" />
+                        <h:outputText id="title" value="#{scheduleManagedBean.scheduleEvent.title}" />
 
-                        <p:outputLabel for="from" value="From:" />
-                        <p:calendar id="from" value="#{scheduleManagedBean.scheduleEvent.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm"/>
 
-                        <p:outputLabel for="to" value="To:" />
-                        <p:calendar id="to" value="#{scheduleManagedBean.scheduleEvent.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm"/>
+                        <p:outputLabel for="Delivery" value="Delivery Date:" />
+                        <h:outputText id="Delivery" value="#{scheduleManagedBean.formatDate}" />
+                        
+ 
+                        <p:linkButton outcome="/saleTransactionDetails" title="View Sale Transaction Details" value="View Sale Transaction Details">
+                            <f:param name="saleTransactionId" value="#{scheduleManagedBean.scheduleEvent.description}" />
+                        </p:linkButton>
 
-                        <p:outputLabel for="allDay" value="All Day:" />
-                        <h:selectBooleanCheckbox id="allDay" value="#{scheduleManagedBean.scheduleEvent.allDay}" />
 
-                        <p:commandButton type="reset" value="Reset" />
-                        <p:commandButton id="addButton" value="Save" actionListener="#{scheduleManagedBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+
                     </h:panelGrid>
                 </p:dialog>    
             </h:form>
