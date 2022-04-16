@@ -14,6 +14,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -51,6 +52,20 @@ public class GiftCardTypeResource {
         }			
         catch(Exception ex)
         {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("retrieveGiftCardType/{giftCardTypeId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveGiftCardType(@PathParam("giftCardTypeId") Long giftCardTypeId) {
+        try {
+            GiftCardType giftCardTypeEntity = giftCardTypeSessionBeanLocal.retrieveGiftCardTypeByGiftCardTypeId(giftCardTypeId);
+            
+            return Response.status(Response.Status.OK).entity(giftCardTypeEntity).build();
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }

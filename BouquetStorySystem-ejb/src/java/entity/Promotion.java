@@ -31,9 +31,9 @@ public class Promotion implements Serializable {
     private String name;
     @Column(nullable = false)
     @NotNull
-    @DecimalMin(value = "0.0", inclusive = true)
-    @DecimalMax(value = "1.0", inclusive = true)
-    private BigDecimal discountPercent;
+    @Min(value = 0)
+    @Max(value = 100)
+    private Integer discountPercent;
 
     public Long getPromotionId() {
         return promotionId;
@@ -51,11 +51,11 @@ public class Promotion implements Serializable {
         this.name = name;
     }
 
-    public BigDecimal getDiscountPercent() {
+    public Integer getDiscountPercent() {
         return discountPercent;
     }
 
-    public void setDiscountPercent(BigDecimal discountPercent) {
+    public void setDiscountPercent(Integer discountPercent) {
         this.discountPercent = discountPercent;
     }
 

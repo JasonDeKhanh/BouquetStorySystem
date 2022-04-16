@@ -41,5 +41,7 @@ public interface SaleTransactionSessionBeanLocal {
     public void markIsCompleted(SaleTransaction saleTransaction) throws SaleTransactionAlreadyCompleted, SaleTransactionNotFoundException, MarkIsCompletedException;
 
     public void debitQuantityOnHand(Item currItem, Integer quantityToDebit) throws ContainerNotFoundException, DecorationNotFoundException, FlowerNotFoundException, ItemNotFoundException, InsufficientQuantityException;
+
+    public List<SaleTransaction> retrieveAllSaleTransactionsByCustomerId(Long customerId);
     
 }

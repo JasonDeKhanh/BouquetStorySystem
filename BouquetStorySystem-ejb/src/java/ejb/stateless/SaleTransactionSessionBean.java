@@ -19,6 +19,7 @@ import entity.Product;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -74,21 +75,41 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
         if (newSaleTransaction != null) {
             try {
+                System.out.println("=====================");
+                System.out.println(customerId);
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+                System.out.println(customer.getEmail());
                 newSaleTransaction.setCustomer(customer);
-                customer.getSaleTransactions().add(newSaleTransaction);
+                
+                
 
-                em.persist(newSaleTransaction);
 
+//                System.out.println("============one=====================");
                 if (newSaleTransaction.getIsPreorder() == false) {
 
                     for (SaleTransactionLineItem saleTransactionLineItem : newSaleTransaction.getSaleTransactionLineItems()) {
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
-                        //em.persist(saleTransactionLineItemEntity);
+                        
+//                        System.out.println("============two====================="); 
+//                        System.out.println("" + );
+//                        List<SaleTransactionLineItem> lineItems = new ArrayList<>();
+                        if(saleTransactionLineItem.getItemEntity() instanceof CustomBouquet) {
+//                            em.persist(saleTransactionLineItem.getItemEntity());
+//                            em.persist(saleTransactionLineItem);
+                        } else {
+//                            em.persist(saleTransactionLineItem);
+                        }
                     }
                     newSaleTransaction.setIsCompleted(true);
                 }
-
+                
+                System.out.println("============================================================jrfvdm cxerkdm,");
+                System.out.println(newSaleTransaction.getIsSelfPickup());
+                System.out.println(newSaleTransaction.getTotalAmount());
+                System.out.println(newSaleTransaction.getCollectionDateTime());
+                 
+                em.persist(newSaleTransaction);
+                customer.getSaleTransactions().add(newSaleTransaction);
                 em.flush();
 
                 return newSaleTransaction;
@@ -228,6 +249,16 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     @Override
     public List<SaleTransaction> retrieveAllSaleTransactions() {
         Query query = em.createQuery("SELECT st FROM SaleTransaction st");
+
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<SaleTransaction> retrieveAllSaleTransactionsByCustomerId(Long customerId) {
+        Query query = em.createQuery("SELECT st FROM SaleTransaction st WHERE st.customer.customerId = :inCustomerId");
+        
+
+        query.setParameter("inCustomerId", customerId);
 
         return query.getResultList();
     }

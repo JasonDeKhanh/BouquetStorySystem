@@ -9,6 +9,8 @@
 
     <ui:define name="content">
         
+         <p:commandButton value="Back to View All Bundles" action="bundleManagement.xhtml"/>
+        
         <h3>Update Bundle</h3>
         
         <h:form id="formUpdateBundle">
@@ -59,6 +61,18 @@
                         <p:message for="promotion" />
                     </p:column>
                 </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="description" value="Description: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="description" value="#{updateBundleManagedBean.bundleEntityToUpdate.description}" placeholder="Bundle details" required="true" requiredMessage="Description is required" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="description" />
+                    </p:column>
+                </p:row>
 
                 <p:row>
                     <p:column>
@@ -107,15 +121,15 @@
 
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="quantityBouquetToSet" value="Quantity To Set " style="font-weight: bold;" />
+                        <p:outputLabel for="premadeBouquetQuantityToSet" value="Quantity To Set " style="font-weight: bold;" />
                     </p:column>
                     <p:column>
-                        <p:spinner id="quantityBouquetToSet" value="#{updateBundleManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" >
+                        <p:spinner id="premadeBouquetQuantityToSet" value="#{updateBundleManagedBean.premadeBouquetQuantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" >
                             <p:ajax process="@this"/>
                         </p:spinner>
                     </p:column>
                     <p:column>
-                        <p:message for="quantityBouquetToSet" />
+                        <p:message for="premadeBouquetQuantityToSet" />
                     </p:column>
                 </p:row>
 
@@ -157,15 +171,15 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="quantityAddOnToSet" value="Quantity To Set " style="font-weight: bold;" />
+                            <p:outputLabel for="addOnQuantityToSet" value="Quantity To Set " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:spinner id="quantityAddOnToSet" value="#{updateBundleManagedBean.quantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" >
+                            <p:spinner id="addOnQuantityToSet" value="#{updateBundleManagedBean.addOnQuantityToSet}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity to set is required" >
                                 <p:ajax process="@this"/>
                             </p:spinner>
                         </p:column>
                         <p:column>
-                            <p:message for="quantityAddOnToSet" />
+                            <p:message for="addOnQuantityToSet" />
                         </p:column>
                     </p:row>
                 </p:row>
@@ -216,7 +230,7 @@
             <p:row>
                 <p:column colspan="3">
                     <p:commandButton type="reset" value="Clear" />&nbsp;
-                    <p:commandButton  value="Create New Bundle" update="@this @form" actionListener="#{updateBundleManagedBean.updateBundle}" />
+                    <p:commandButton  value="Update Bundle" update="@this @form" actionListener="#{updateBundleManagedBean.updateBundle}" />
                 </p:column>
             </p:row>
         </h:form>
