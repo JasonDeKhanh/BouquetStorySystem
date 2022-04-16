@@ -81,13 +81,6 @@ public class Bundle extends Item implements Serializable {
         }
     }
     
-    public void updateDescription() {
-        description = "";
-        for (Map.Entry<Product, Integer> entry:productQuantities.entrySet()) {
-            description += entry.getKey().getName() + " x" + entry.getValue() + "<br>";
-        }
-    }
-    
     @Override
     public Integer getQuantityOnHand() {
         return null;
@@ -140,7 +133,6 @@ public class Bundle extends Item implements Serializable {
     public void setProductQuantities(Map<Product, Integer> productQuantities) {
         this.productQuantities = productQuantities;
         updateUnitPrice();
-        updateDescription();
     }
     
     @Override
