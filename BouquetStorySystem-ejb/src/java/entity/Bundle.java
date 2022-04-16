@@ -49,6 +49,7 @@ public class Bundle extends Item implements Serializable {
     @DecimalMin("0.00")
     @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
     private BigDecimal totalPrice;
+    private String description;
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
@@ -77,6 +78,13 @@ public class Bundle extends Item implements Serializable {
         if (promotion != null) {
             unitPrice = totalPrice.multiply(new BigDecimal(100).subtract(new BigDecimal(promotion.getDiscountPercent())))
                     .divide(new BigDecimal(100), 2, RoundingMode.HALF_EVEN);
+        }
+    }
+    
+    public void updateDescription() {
+        description = "";
+        for (Map.Entry<Product, Integer> entry:productQuantities.entrySet()) {
+            description += entry.getKey().getName() + " x" + entry.getValue() + "<br>";
         }
     }
     
@@ -132,6 +140,7 @@ public class Bundle extends Item implements Serializable {
     public void setProductQuantities(Map<Product, Integer> productQuantities) {
         this.productQuantities = productQuantities;
         updateUnitPrice();
+        updateDescription();
     }
     
     @Override
@@ -149,6 +158,14 @@ public class Bundle extends Item implements Serializable {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Boolean getIsOnDisplay() {
