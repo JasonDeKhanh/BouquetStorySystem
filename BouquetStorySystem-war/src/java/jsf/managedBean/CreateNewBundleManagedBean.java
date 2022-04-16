@@ -67,7 +67,8 @@ public class CreateNewBundleManagedBean implements Serializable {
     private Long promotionIdToSet;
     private Long premadeBouquetIdToAdd;
     private Long addOnIdToAdd;
-    private Integer quantityToSet;
+    private Integer premadeBouquetQuantityToSet;
+    private Integer addOnQuantityToSet;
     
     private String uploadedFilePath;
     private Boolean showUploadedFile;
@@ -129,7 +130,7 @@ public class CreateNewBundleManagedBean implements Serializable {
     public void addPremadeBouquetToMap(ActionEvent event) {
         try {
             Product productToAdd = premadeBouquetSessionBeanLocal.retrievePremadeBouquetByItemId(premadeBouquetIdToAdd);
-            productQuantities.put(productToAdd, quantityToSet);
+            productQuantities.put(productToAdd, premadeBouquetQuantityToSet);
             if (!products.contains(productToAdd)) {
                 products.add(productToAdd);
             }
@@ -141,7 +142,7 @@ public class CreateNewBundleManagedBean implements Serializable {
     public void addAddOnToMap(ActionEvent event) {
         try {
             Product productToAdd = addOnSessionBeanLocal.retrieveAddOnByAddOnId(addOnIdToAdd);
-            productQuantities.put(productToAdd, quantityToSet);
+            productQuantities.put(productToAdd, addOnQuantityToSet);
             if (!products.contains(productToAdd)) {
                 products.add(productToAdd);
             }
@@ -280,12 +281,20 @@ public class CreateNewBundleManagedBean implements Serializable {
         this.addOnIdToAdd = addOnIdToAdd;
     }
 
-    public Integer getQuantityToSet() {
-        return quantityToSet;
+    public Integer getPremadeBouquetQuantityToSet() {
+        return premadeBouquetQuantityToSet;
     }
 
-    public void setQuantityToSet(Integer quantityToSet) {
-        this.quantityToSet = quantityToSet;
+    public void setPremadeBouquetQuantityToSet(Integer premadeBouquetQuantityToSet) {
+        this.premadeBouquetQuantityToSet = premadeBouquetQuantityToSet;
+    }
+
+    public Integer getAddOnQuantityToSet() {
+        return addOnQuantityToSet;
+    }
+
+    public void setAddOnQuantityToSet(Integer addOnQuantityToSet) {
+        this.addOnQuantityToSet = addOnQuantityToSet;
     }
 
     public String getUploadedFilePath() {
