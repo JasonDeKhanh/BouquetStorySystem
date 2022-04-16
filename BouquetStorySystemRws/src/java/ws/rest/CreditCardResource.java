@@ -60,8 +60,11 @@ public class CreditCardResource {
     {
         try
         {
+            System.out.println("================");
+            System.out.println(username);
             RegisteredGuest customerEntity = registeredGuestSessionBeanLocal.retrieveRegisteredGuestByEmail(username);
-            
+            System.out.println("================");
+            System.out.println(customerEntity.getCustomerId());
             List<CreditCard> creditCardEntities = creditCardSessionBeanLocal.retrieveRegisteredGuestCreditCards(customerEntity.getCustomerId());
             
             
