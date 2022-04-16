@@ -90,6 +90,9 @@ public class RestockingManagedBean implements Serializable {
         allSaleTransactionList = saleTransactionSessionBeanLocal.retrieveAllSaleTransactions();
         comingSaleTransactionList = new ArrayList<>();
         flowersMap = new HashMap<>();
+        
+        
+        
 
     }
 
@@ -97,12 +100,13 @@ public class RestockingManagedBean implements Serializable {
      * @return the addOnList
      */
     public List<AddOn> getAddOnList() {
+        List<AddOn> tempList = new ArrayList<>();
         for (AddOn addOn : addOnList) {
-            if (addOn.getQuantityOnHand() > addOn.getReorderQuantity()) {
-                addOnList.remove(addOn);
+            if (addOn.getQuantityOnHand() < addOn.getReorderQuantity()) {
+                tempList.add(addOn);
             }
         }
-        return addOnList;
+        return tempList;
     }
 
     /**
@@ -116,24 +120,27 @@ public class RestockingManagedBean implements Serializable {
      * @return the giftCardTypeList
      */
     public List<GiftCardType> getGiftCardTypeList() {
+        List<GiftCardType> tempList = new ArrayList<>();
         for (GiftCardType giftCardType : giftCardTypeList) {
-            if (giftCardType.getQuantityOnHand() > giftCardType.getReorderQuantity()) {
-                giftCardTypeList.remove(giftCardType);
+            if (giftCardType.getQuantityOnHand() < giftCardType.getReorderQuantity()) {
+                tempList.add(giftCardType);
             }
         }
-        return giftCardTypeList;
+        return tempList;
     }
 
     /**
      * @return the decorationList
      */
     public List<Decoration> getDecorationList() {
+        List<Decoration> tempList = new ArrayList<>();
         for (Decoration deco : decorationList) {
-            if (deco.getQuantityOnHand() > deco.getReorderQuantity()) {
-                decorationList.remove(deco);
+            if (deco.getQuantityOnHand() < deco.getReorderQuantity()) {
+                tempList.add(deco);
             }
         }
-        return decorationList;
+        
+        return tempList;
     }
 
     /**
@@ -147,12 +154,14 @@ public class RestockingManagedBean implements Serializable {
      * @return the containerList
      */
     public List<Container> getContainerList() {
+        List<Container> tempList = new ArrayList<>();
         for (Container container : containerList) {
-            if (container.getQuantityOnHand() > container.getReorderQuantity()) {
-                containerList.remove(container);
+            if (container.getQuantityOnHand() < container.getReorderQuantity()) {
+               tempList.add(container);
             }
         }
-        return containerList;
+        
+        return tempList;
     }
 
     /**
@@ -166,12 +175,14 @@ public class RestockingManagedBean implements Serializable {
      * @return the flowerList
      */
     public List<Flower> getFlowerList() {
+        List<Flower> tempList = new ArrayList<>();
         for (Flower flower : flowerList) {
-            if (flower.getQuantityOnHand() > flower.getReorderQuantity()) {
-                flowerList.remove(flower);
+            if (flower.getQuantityOnHand() < flower.getReorderQuantity()) {
+                tempList.add(flower);
             }
         }
-        return flowerList;
+        
+        return tempList;
     }
 
     /**

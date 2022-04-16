@@ -8,7 +8,7 @@
                 template="./../templates/defaultTemplate.xhtml">
 
     <ui:define name="content">
-        <p:panel header="List of low stock AddOns" rendered="#{restockingManagedBean.addOnList.size() != 0}">
+        <p:panel header="Low stock AddOns" rendered="#{restockingManagedBean.addOnList.size() != 0}">
             
             
             <p:dataTable id="dataTablelowStockAddOns" widgetVar="dataTablelowStockAddOns" value="#{restockingManagedBean.addOnList}" var="addOnEntity" rowKey="#{addOnEntity.itemId}" rowIndexVar="row" rendered="#{restockingManagedBean.addOnList.size() != 0}">
@@ -172,7 +172,7 @@
                     <h:outputText value="#{decorationEntity.quantityOnHand}" />
                 </p:column>
 
-                <p:column headerText="SKU Code" >
+                <p:column headerText="Reorder Quantity" >
                     <h:outputText value="#{decorationEntity.reorderQuantity}" />
                 </p:column>
 
