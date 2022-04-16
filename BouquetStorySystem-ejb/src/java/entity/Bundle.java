@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -36,6 +39,16 @@ public class Bundle extends Item implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;
     private Map<Product, Integer> productQuantities;
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+    private BigDecimal unitPrice;
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+    private BigDecimal totalPrice;
     @Column(nullable = false)
     @NotNull
     private Boolean isOnDisplay;
@@ -54,16 +67,29 @@ public class Bundle extends Item implements Serializable {
         return "Bundle";
     }
     
+    public void updateUnitPrice() {
+        totalPrice = new BigDecimal(0);
+        for (Map.Entry<Product, Integer> entry:productQuantities.entrySet()) {
+            BigDecimal subTotal = entry.getKey().getUnitPrice().multiply(BigDecimal.valueOf(entry.getValue()));
+            totalPrice = totalPrice.add(subTotal);
+        }
+        unitPrice = totalPrice;
+        if (promotion != null) {
+            unitPrice = totalPrice.multiply(new BigDecimal(1).subtract(promotion.getDiscountPercent())).setScale(2, RoundingMode.HALF_EVEN);
+        }
+    }
+    
     @Override
     public Integer getQuantityOnHand() {
         return null;
     }
+    
     @Override
     public void setQuantityOnHand(Integer qty) {
         
     }
     
-    
+    @Override
      public String getName() {
         return name;
     }
@@ -72,6 +98,7 @@ public class Bundle extends Item implements Serializable {
         this.name = name;
     }
 
+    @Override
     public String getImgAddress() {
         return imgAddress;
     }
@@ -86,6 +113,7 @@ public class Bundle extends Item implements Serializable {
 
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
+        updateUnitPrice();
     }
 
     public List<Product> getProducts() {
@@ -96,25 +124,30 @@ public class Bundle extends Item implements Serializable {
         this.products = products;
     }
 
-    @Override
-    public BigDecimal getUnitPrice() {
-        BigDecimal totalPrice = new BigDecimal(0);
-        for (Map.Entry<Product, Integer> entry:productQuantities.entrySet()) {
-            BigDecimal subTotal = entry.getKey().getUnitPrice().multiply(BigDecimal.valueOf(entry.getValue()));
-            totalPrice = totalPrice.add(subTotal);
-        }
-        if (promotion != null) {
-            totalPrice = totalPrice.multiply(new BigDecimal(1).subtract(promotion.getDiscountPercent()));
-        }
-        return totalPrice;
-    }
-
     public Map<Product, Integer> getProductQuantities() {
         return productQuantities;
     }
 
     public void setProductQuantities(Map<Product, Integer> productQuantities) {
         this.productQuantities = productQuantities;
+        updateUnitPrice();
+    }
+    
+    @Override
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Boolean getIsOnDisplay() {

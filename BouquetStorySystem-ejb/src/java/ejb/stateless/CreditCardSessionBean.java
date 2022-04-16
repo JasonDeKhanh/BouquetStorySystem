@@ -107,6 +107,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         RegisteredGuest customer = (RegisteredGuest)em.find(Customer.class, registeredGuestId);
         
         if (customer != null) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return customer.getCreditCards();
         } else {
             throw new CustomerNotFoundException("Customer ID " + registeredGuestId + " does not exist!");
