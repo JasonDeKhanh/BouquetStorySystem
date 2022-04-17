@@ -41,6 +41,7 @@ public class ApplicationConfig extends Application {
         resources.add(ws.rest.FlowerResource.class);
         resources.add(ws.rest.FlowerTypeResource.class);
         resources.add(ws.rest.GiftCardTypeResource.class);
+        resources.add(ws.rest.ItemResource.class);
         resources.add(ws.rest.PremadeBouquetResource.class);
         resources.add(ws.rest.SaleTransactionResource.class);
     }

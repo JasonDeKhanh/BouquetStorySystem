@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.Item;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.ItemNotFoundException;
 
@@ -17,5 +18,6 @@ import util.exception.ItemNotFoundException;
 public interface ItemSessionBeanLocal {
 
     public Item retrieveItemByItemId(Long itemId) throws ItemNotFoundException;
+    public List<Item> retrieveAllAdminCreatedItems();
     
 }

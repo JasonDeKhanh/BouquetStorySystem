@@ -6,9 +6,11 @@
 package ejb.stateless;
 
 import entity.Item;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import util.exception.ItemNotFoundException;
 
 /**
@@ -35,6 +37,13 @@ public class ItemSessionBean implements ItemSessionBeanLocal {
         {
             throw new ItemNotFoundException("Item ID " + itemId + " does not exist!");
         }               
+    }
+    
+    @Override
+    public List<Item> retrieveAllAdminCreatedItems() {
+        Query query = em.createQuery("SELECT i FROM Item i WHERE TYPE(i) = Bundle OR TYPE(i) = PremadeBouquet OR TYPE(i) = AddOn");
+        
+        return query.getResultList();
     }
     
     
