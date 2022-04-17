@@ -53,6 +53,9 @@ import util.exception.SaleTransactionNotFoundException;
 @Stateless
 public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLocal {
 
+    @EJB(name = "EmailSessionBeanLocal")
+    private EmailSessionBeanLocal emailSessionBeanLocal;
+
     @EJB(name = "DecorationSessionBeanLocal")
     private DecorationSessionBeanLocal decorationSessionBeanLocal;
 
@@ -75,6 +78,8 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
+    
+    
 
     @Override
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
@@ -124,14 +129,18 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 //  System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
 
                 em.flush();
-
+               try {
+                emailSessionBeanLocal.emailCheckoutNotificationAsync(newSaleTransaction, customer.getEmail());
+               } catch(InterruptedException ex) {
+                   ex.printStackTrace();
+               }
                 return newSaleTransaction;
             } catch (ContainerNotFoundException | DecorationNotFoundException | FlowerNotFoundException | ItemNotFoundException | InsufficientQuantityException ex) {
                 // The line below rolls back all changes made to the database.
                 eJBContext.setRollbackOnly();
 
                 throw new CreateNewSaleTransactionException(ex.getMessage());
-            }
+            } 
         } else {
             throw new CreateNewSaleTransactionException("Sale transaction information not provided");
         }
