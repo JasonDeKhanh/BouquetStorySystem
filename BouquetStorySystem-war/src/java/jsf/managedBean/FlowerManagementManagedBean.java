@@ -98,6 +98,7 @@ public class FlowerManagementManagedBean implements Serializable {
             newFlowerEntity = new Flower();
             newFlowerEntityType = null;
             uploadedFilePath = null;
+            showUploadedFile = false;
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New flower created successfully (Flower ID: " + pe.getFlowerId() + ")", null));
         } catch (InputDataValidationException | CreateNewFlowerException | FlowerTypeNotFoundException | UnknownPersistenceException ex) {
