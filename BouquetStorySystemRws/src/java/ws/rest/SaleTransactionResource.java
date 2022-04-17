@@ -35,6 +35,10 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ws.datamodel.SalesTransactionReq;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * REST Web Service
@@ -61,6 +65,12 @@ public class SaleTransactionResource {
      * Creates a new instance of SaleTransactionResource
      */
     public SaleTransactionResource() {
+    }
+    
+    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
     
     @PUT
@@ -94,11 +104,39 @@ public class SaleTransactionResource {
          
                 
                 SaleTransaction newSaleTransactionToAdd = newSalesTransactionReq.getSaleTransaction();
-//                
-//                System.out.println("====xx==="+ newSaleTransactionToAdd.getCollectionDateTime());
+                System.out.println("====================> A sample new Date() can be persist in EJB: "+ new Date());
+//                //collectionDateTimecollectionDatetimecollectionDatetime collectionDatetime
+                System.out.println("====================> Retrive Collection Time from json: "+ newSaleTransactionToAdd.getCollectionDateTime());
+//                System.out.println("==========================================>: "+ newSaleTransactionToAdd.getCollectionDateTime().toString());
 //                System.out.println("===xx===="+ newSaleTransactionToAdd.getTransactionDateTime());
+//                Date collecitonTime = new Date(newSaleTransactionToAdd.getCollectionDateTime().toString());
+                
+//                Date collectioDate = new Date(newSaleTransactionToAdd.getCollectionDateTime().getTime());
+                
+//                Timestamp ts=new Timestamp(newSaleTransactionToAdd.getCollectionDateTime().getTime());  
+
+//                Date firstDate1 = new Date(2022, 12, 12);
+                if(newSaleTransactionToAdd.getCollectionDateTime() instanceof Date) {
+                    System.out.println("============this datteeeeeeee");
+                }
+                LocalDateTime newDate = convertToLocalDateTimeViaInstant(newSaleTransactionToAdd.getCollectionDateTime());
+                
+                Instant instant = newDate.atZone(ZoneId.systemDefault()).toInstant();
+                Date date = Date.from(instant);
+                newSaleTransactionToAdd.setCollectionDateTime(date);
+
+//                newSaleTransactionToAdd.setCollectionDateTime(new Date());
+                
 //                
-                newSaleTransactionToAdd.setCollectionDateTime(new Date());
+//                
+//                public void updateDeliveryDate(Long saleTransactionId, LocalDateTime newDate) {
+//        SaleTransaction saleTransaction = em.find(SaleTransaction.class, saleTransactionId);
+//        Instant instant = newDate.atZone(ZoneId.systemDefault()).toInstant();
+//        Date date = Date.from(instant);
+//        saleTransaction.setCollectionDateTime(date);
+
+//    }
+//               
                 newSaleTransactionToAdd.setTransactionDateTime(new Date());
                 
                 List<SaleTransactionLineItem> lineItems = new ArrayList<>();
