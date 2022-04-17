@@ -148,6 +148,7 @@ public class GiftCardTypeSessionBean implements GiftCardTypeSessionBeanLocal {
         GiftCardType giftCardTypeEntityToRemove = retrieveGiftCardTypeByGiftCardTypeId(giftCardTypeId);
         
         Query query = em.createQuery("SELECT g FROM GiftCard g WHERE g.giftCardType.giftCardTypeId = :inGiftCardTypeId");
+        query.setParameter("inGiftCardTypeId", giftCardTypeId);
         List<GiftCard> giftCards = query.getResultList();
         
         if(!giftCards.isEmpty())

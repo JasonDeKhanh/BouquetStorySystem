@@ -79,7 +79,7 @@
                             <f:setPropertyActionListener value="#{giftCardTypeEntity}" target="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView}" />
                         </p:commandButton>
                         <p:commandButton actionListener="#{giftCardTypeManagementManagedBean.doUpdateGiftCardType}" update="formUpdateGiftCardType" oncomplete="PF('dialogUpdateGiftCardType').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="decorationEntityToUpdate" value="#{giftCardTypeEntity}" />
+                            <f:attribute name="giftCardTypeEntityToUpdate" value="#{giftCardTypeEntity}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-trash" actionListener="#{giftCardTypeManagementManagedBean.deleteGiftCardType}" update="formAllGiftCardTypes:dataTableAllGiftCardTypes formAllGiftCardTypes:messages">
                             <f:attribute name="giftCardTypeEntityToDelete" value="#{giftCardTypeEntity}" />

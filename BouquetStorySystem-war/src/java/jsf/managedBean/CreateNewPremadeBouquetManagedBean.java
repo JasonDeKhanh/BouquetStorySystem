@@ -286,6 +286,8 @@ public class CreateNewPremadeBouquetManagedBean implements Serializable {
             newPremadeBouquet = new PremadeBouquet();
             showUploadedFile = false;
             uploadedFilePath = null;
+            newFlowers = new HashMap<>();
+            newDecorations = new HashMap<>();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New premade bouquet created successfully (PremadeBouquet ID: " + pb.getItemId()+ ")", null));
         } 
         catch (InputDataValidationException | CreateNewPremadeBouquetException | ContainerNotFoundException | UnknownPersistenceException ex) 

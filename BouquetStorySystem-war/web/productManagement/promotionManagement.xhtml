@@ -166,7 +166,7 @@
                                 <p:outputLabel for="discountPercent" value="Discount Percent " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="discountPercent" value="#{promotionManagementManagedBean.newPromotionEntity.discountPercent}" placeholder="0" min="0" max="100" stepFactor="1" required="true" requiredMessage="discountPercent is required" />
+                                <p:spinner id="discountPercent" value="#{promotionManagementManagedBean.selectedPromotionEntityToUpdate.discountPercent}" placeholder="0" min="0" max="100" stepFactor="1" required="true" requiredMessage="discountPercent is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="discountPercent" />
