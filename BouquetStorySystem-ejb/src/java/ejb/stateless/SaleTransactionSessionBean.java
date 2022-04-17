@@ -78,8 +78,6 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-    
-    
 
     @Override
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
@@ -129,18 +127,18 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 //  System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
 
                 em.flush();
-               try {
-                emailSessionBeanLocal.emailCheckoutNotificationAsync(newSaleTransaction, customer.getEmail());
-               } catch(InterruptedException ex) {
-                   ex.printStackTrace();
-               }
+                try {
+                    emailSessionBeanLocal.emailCheckoutNotificationAsync(newSaleTransaction, customer.getEmail());
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
                 return newSaleTransaction;
             } catch (ContainerNotFoundException | DecorationNotFoundException | FlowerNotFoundException | ItemNotFoundException | InsufficientQuantityException ex) {
                 // The line below rolls back all changes made to the database.
                 eJBContext.setRollbackOnly();
 
                 throw new CreateNewSaleTransactionException(ex.getMessage());
-            } 
+            }
         } else {
             throw new CreateNewSaleTransactionException("Sale transaction information not provided");
         }
@@ -160,35 +158,34 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 if (updatedProduct instanceof Bouquet) {
                     Integer bouqeutQty = entry.getValue();
                     Bouquet bouquet = (Bouquet) updatedProduct;
-                    for(int i = 0; i < bouqeutQty; i++){
-                    for (Map.Entry<Flower, Integer> entry2 : bouquet.getFlowerQuantities().entrySet()) {
-                        Flower updatedFlower = flowerSessionBeanLocal.retrieveFlowerByFlowerId(entry2.getKey().getFlowerId());
+                    for (int i = 0; i < bouqeutQty; i++) {
+                        for (Map.Entry<Flower, Integer> entry2 : bouquet.getFlowerQuantities().entrySet()) {
+                            Flower updatedFlower = flowerSessionBeanLocal.retrieveFlowerByFlowerId(entry2.getKey().getFlowerId());
 
-                        if (updatedFlower.getQuantityOnHand() >= (quantityToDebit * entry2.getValue())) {
-                            updatedFlower.setQuantityOnHand(updatedFlower.getQuantityOnHand() - (quantityToDebit * entry2.getValue()));
+                            if (updatedFlower.getQuantityOnHand() >= (quantityToDebit * entry2.getValue())) {
+                                updatedFlower.setQuantityOnHand(updatedFlower.getQuantityOnHand() - (quantityToDebit * entry2.getValue()));
+                            } else {
+                                throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
+                            }
+                        }
+
+                        for (Map.Entry<Decoration, Integer> entry3 : bouquet.getDecorationQuantities().entrySet()) {
+                            Decoration updatedDecoration = decorationSessionBeanLocal.retrieveDecorationByDecorationId(entry3.getKey().getDecorationId());
+
+                            if (updatedDecoration.getQuantityOnHand() >= (quantityToDebit * entry3.getValue())) {
+                                updatedDecoration.setQuantityOnHand(updatedDecoration.getQuantityOnHand() - (quantityToDebit * entry3.getValue()));
+                            } else {
+                                throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
+                            }
+                        }
+
+                        if (bouquet.getContainer().getQuantityOnHand() >= quantityToDebit) {
+                            bouquet.getContainer().setQuantityOnHand(bouquet.getContainer().getQuantityOnHand() - quantityToDebit);
                         } else {
                             throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
                         }
                     }
-
-                    for (Map.Entry<Decoration, Integer> entry3 : bouquet.getDecorationQuantities().entrySet()) {
-                        Decoration updatedDecoration = decorationSessionBeanLocal.retrieveDecorationByDecorationId(entry3.getKey().getDecorationId());
-
-                        if (updatedDecoration.getQuantityOnHand() >= (quantityToDebit * entry3.getValue())) {
-                            updatedDecoration.setQuantityOnHand(updatedDecoration.getQuantityOnHand() - (quantityToDebit * entry3.getValue()));
-                        } else {
-                            throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
-                        }
-                    }
-
-                    if (bouquet.getContainer().getQuantityOnHand() >= quantityToDebit) {
-                        bouquet.getContainer().setQuantityOnHand(bouquet.getContainer().getQuantityOnHand() - quantityToDebit);
-                    } else {
-                        throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
-                    }
-                }
-                } 
-                else {
+                } else {
                     if (updatedProduct.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
                         updatedProduct.setQuantityOnHand(updatedProduct.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
                     } else {
