@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.AddOn;
+import entity.Bouquet;
 import entity.Bundle;
 import entity.Container;
 import entity.CustomBouquet;
@@ -19,6 +20,10 @@ import entity.Product;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,34 +80,30 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
     public SaleTransaction createNewSaleTransaction(Long customerId, SaleTransaction newSaleTransaction) throws CustomerNotFoundException, CreateNewSaleTransactionException {
         if (newSaleTransaction != null) {
             try {
-                System.out.println("=====================");
-                System.out.println(customerId);
+                System.out.println("==============inside createNewSaleTransaction seesion bean=======");
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                 System.out.println(customer.getEmail());
-                
+
                 newSaleTransaction.setCustomer(customer);
                 customer.getSaleTransactions().add(newSaleTransaction);
-                
-                em.persist(newSaleTransaction);
-                
-
 
 //                System.out.println("============one=====================");
                 if (newSaleTransaction.getIsPreorder() == false) {
 
                     for (SaleTransactionLineItem saleTransactionLineItem : newSaleTransaction.getSaleTransactionLineItems()) {
+                        System.out.println("======+++>>>>" + saleTransactionLineItem.getItemEntity().getItemId());
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
                         System.out.println("in for loop! weee");
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSerialNumber());
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getQuantity());
                         System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getUnitPrice());
-                        System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSaleTranscationLineItemId());
-                        
-                        em.persist(saleTransactionLineItem);
+                        // System.out.println("saleTransactionLineItem in for loop: " + saleTransactionLineItem.getSaleTranscationLineItemId());
+
+//                        em.persist(saleTransactionLineItem);
 //                        System.out.println("============two====================="); 
 //                        System.out.println("" + );
 //                        List<SaleTransactionLineItem> lineItems = new ArrayList<>();
-                        if(saleTransactionLineItem.getItemEntity() instanceof CustomBouquet) {
+                        if (saleTransactionLineItem.getItemEntity() instanceof CustomBouquet) {
 //                            em.persist(saleTransactionLineItem.getItemEntity());
 //                            em.persist(saleTransactionLineItem);
                         } else {
@@ -111,18 +112,17 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                     }
                     newSaleTransaction.setIsCompleted(true);
                 }
-                
+
                 System.out.println("============================================================jrfvdm cxerkdm,");
                 System.out.println(newSaleTransaction.getIsSelfPickup());
                 System.out.println(newSaleTransaction.getTotalAmount());
-                System.out.println(newSaleTransaction.getCollectionDateTime());
-                 
-                
-                
-                System.out.println("newSaleTransaction.lineItem.items: " + newSaleTransaction.getSaleTransactionLineItems().toString());
-                System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
-                
-                
+//                System.out.println(newSaleTransaction.getCollectionDateTime());
+
+                em.persist(newSaleTransaction);
+
+                System.out.println("newSaleTransaction.lineItem.items: " + newSaleTransaction.getSaleTransactionLineItems());
+                //  System.out.println("newsaleTransaction lineItem[0].item.name:" + newSaleTransaction.getSaleTransactionLineItems().get(0).getItemEntity());
+
                 em.flush();
 
                 return newSaleTransaction;
@@ -145,13 +145,44 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             Bundle item = (Bundle) itemSessionBeanLocal.retrieveItemByItemId(currItem.getItemId());
             for (Map.Entry<Product, Integer> entry : item.getProductQuantities().entrySet()) {
                 Product updatedProduct = productSessionBeanLocal.retrieveProductByItemId(entry.getKey().getItemId());
+                System.out.println("!!!!!!!!!" + updatedProduct.getItemId());
+                System.out.println("XXXXXXXXXXX" + updatedProduct.getQuantityOnHand());
 
-                if (updatedProduct.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
-                    updatedProduct.setQuantityOnHand(updatedProduct.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
+                if (updatedProduct instanceof Bouquet) {
+                    Bouquet bouquet = (Bouquet) updatedProduct;
+                    for (Map.Entry<Flower, Integer> entry2 : bouquet.getFlowerQuantities().entrySet()) {
+                        Flower updatedFlower = flowerSessionBeanLocal.retrieveFlowerByFlowerId(entry2.getKey().getFlowerId());
+
+                        if (updatedFlower.getQuantityOnHand() >= (quantityToDebit * entry2.getValue())) {
+                            updatedFlower.setQuantityOnHand(updatedFlower.getQuantityOnHand() - (quantityToDebit * entry2.getValue()));
+                        } else {
+                            throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
+                        }
+                    }
+
+                    for (Map.Entry<Decoration, Integer> entry3 : bouquet.getDecorationQuantities().entrySet()) {
+                        Decoration updatedDecoration = decorationSessionBeanLocal.retrieveDecorationByDecorationId(entry3.getKey().getDecorationId());
+
+                        if (updatedDecoration.getQuantityOnHand() >= (quantityToDebit * entry3.getValue())) {
+                            updatedDecoration.setQuantityOnHand(updatedDecoration.getQuantityOnHand() - (quantityToDebit * entry3.getValue()));
+                        } else {
+                            throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
+                        }
+                    }
+
+                    if (bouquet.getContainer().getQuantityOnHand() >= quantityToDebit) {
+                        bouquet.getContainer().setQuantityOnHand(bouquet.getContainer().getQuantityOnHand() - quantityToDebit);
+                    } else {
+                        throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
+                    }
+
                 } else {
-                    throw new InsufficientQuantityException("Insufficient quantity");
+                    if (updatedProduct.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
+                        updatedProduct.setQuantityOnHand(updatedProduct.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
+                    } else {
+                        throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
+                    }
                 }
-
             }
 
         } else if (currItem instanceof AddOn) {
@@ -160,7 +191,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             if (item.getQuantityOnHand() >= quantityToDebit) {
                 item.setQuantityOnHand(item.getQuantityOnHand() - quantityToDebit);
             } else {
-                throw new InsufficientQuantityException("Insufficient quantity");
+                throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
             }
 
         } else if (currItem instanceof GiftCard) {
@@ -169,7 +200,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             if (item.getGiftCardType().getQuantityOnHand() >= quantityToDebit) {
                 item.getGiftCardType().setQuantityOnHand(item.getGiftCardType().getQuantityOnHand() - quantityToDebit);
             } else {
-                throw new InsufficientQuantityException("Insufficient quantity");
+                throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
             }
 
         } else if (currItem instanceof CustomBouquet) {
@@ -181,7 +212,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 if (updatedFlower.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
                     updatedFlower.setQuantityOnHand(updatedFlower.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
                 } else {
-                    throw new InsufficientQuantityException("Insufficient quantity");
+                    throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
                 }
             }
 
@@ -191,14 +222,14 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 if (updatedDecoration.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
                     updatedDecoration.setQuantityOnHand(updatedDecoration.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
                 } else {
-                    throw new InsufficientQuantityException("Insufficient quantity");
+                    throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
                 }
             }
 
             if (item.getContainer().getQuantityOnHand() >= quantityToDebit) {
                 item.getContainer().setQuantityOnHand(item.getContainer().getQuantityOnHand() - quantityToDebit);
             } else {
-                throw new InsufficientQuantityException("Insufficient quantity");
+                throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
             }
 
         } else if (currItem instanceof PremadeBouquet) {
@@ -210,7 +241,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 if (updatedFlower.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
                     updatedFlower.setQuantityOnHand(updatedFlower.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
                 } else {
-                    throw new InsufficientQuantityException("Insufficient quantity");
+                    throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
                 }
             }
 
@@ -220,14 +251,14 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 if (updatedDecoration.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
                     updatedDecoration.setQuantityOnHand(updatedDecoration.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
                 } else {
-                    throw new InsufficientQuantityException("Insufficient quantity");
+                    throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
                 }
             }
             Container updatedContainer = containerSessionBeanLocal.retrieveContainerByContainerId(item.getContainer().getContainerId());
             if (updatedContainer.getQuantityOnHand() >= quantityToDebit) {
                 updatedContainer.setQuantityOnHand(item.getContainer().getQuantityOnHand() - quantityToDebit);
             } else {
-                throw new InsufficientQuantityException("Insufficient quantity");
+                throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
             }
 
         }
@@ -240,7 +271,7 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             SaleTransaction saleTransactionToComplete = retrieveSaleTransactionBySaleTransactionId(saleTransaction.getSaleTransactionId());
             try {
                 if (saleTransaction.getIsCompleted() == false) {
-                    
+
                     for (SaleTransactionLineItem saleTransactionLineItem : saleTransactionToComplete.getSaleTransactionLineItems()) {
                         debitQuantityOnHand(saleTransactionLineItem.getItemEntity(), saleTransactionLineItem.getQuantity());
                         //em.persist(saleTransactionLineItemEntity);
@@ -250,9 +281,12 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 } else {
                     throw new SaleTransactionAlreadyCompleted("Sale Transaction already completed");
                 }
-            } catch (ContainerNotFoundException | DecorationNotFoundException | FlowerNotFoundException | ItemNotFoundException | InsufficientQuantityException ex) {
+            } catch (ContainerNotFoundException | DecorationNotFoundException | FlowerNotFoundException | ItemNotFoundException ex) {
                 eJBContext.setRollbackOnly();
                 throw new MarkIsCompletedException(ex.getMessage());
+            } catch (InsufficientQuantityException ex) {
+                eJBContext.setRollbackOnly();
+                throw new MarkIsCompletedException("Insufficient quantity");
             }
         } else {
             throw new SaleTransactionNotFoundException("Sale Transaction ID not provided");
@@ -265,11 +299,10 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
 
         return query.getResultList();
     }
-    
+
     @Override
     public List<SaleTransaction> retrieveAllSaleTransactionsByCustomerId(Long customerId) {
         Query query = em.createQuery("SELECT st FROM SaleTransaction st WHERE st.customer.customerId = :inCustomerId");
-        
 
         query.setParameter("inCustomerId", customerId);
 
@@ -315,5 +348,14 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
         } else {
             throw new SaleTransactionAlreadyVoidedRefundedException("The sale transaction has aready been voided/refunded");
         }
+    }
+
+    @Override
+    public void updateDeliveryDate(Long saleTransactionId, LocalDateTime newDate) {
+        SaleTransaction saleTransaction = em.find(SaleTransaction.class, saleTransactionId);
+        Instant instant = newDate.atZone(ZoneId.systemDefault()).toInstant();
+        Date date = Date.from(instant);
+        saleTransaction.setCollectionDateTime(date);
+
     }
 }

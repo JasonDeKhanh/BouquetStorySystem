@@ -6,13 +6,16 @@
 package ws.rest;
 
 import ejb.stateless.CustomerSessionBeanLocal;
+import ejb.stateless.ItemSessionBeanLocal;
 import ejb.stateless.RegisteredGuestSessionBeanLocal;
 import ejb.stateless.SaleTransactionSessionBeanLocal;
-import entity.Address;
+import ejb.stateless.UnregisteredGuestSessionBeanLocal;
 import entity.Customer;
+import entity.Item;
 import entity.RegisteredGuest;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
+import entity.UnregisteredGuest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +44,10 @@ import ws.datamodel.SalesTransactionReq;
 @Path("SaleTransaction")
 public class SaleTransactionResource {
 
+    UnregisteredGuestSessionBeanLocal unregisteredGuestSessionBean = lookupUnregisteredGuestSessionBeanLocal();
+
+    ItemSessionBeanLocal itemSessionBean = lookupItemSessionBeanLocal();
+
     RegisteredGuestSessionBeanLocal registeredGuestSessionBeanLocal = lookupRegisteredGuestSessionBeanLocal();
 
     CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
@@ -65,29 +72,52 @@ public class SaleTransactionResource {
         {
             try
             {
-                Customer customer = customerSessionBean.retrieveCustomerByEmail(newSalesTransactionReq.getUsername());
+                Customer customer;
+                
+                try{
+                    customer = customerSessionBean.retrieveCustomerByEmail(newSalesTransactionReq.getUsername());
+                }catch(Exception ex) {
+                    UnregisteredGuest newGuest = new UnregisteredGuest(newSalesTransactionReq.getFirstName(), newSalesTransactionReq.getLastName(), newSalesTransactionReq.getUsername());
+                    Long customerId = unregisteredGuestSessionBean.createNewUnregisteredGuest(newGuest);
+                    customer = customerSessionBean.retrieveCustomerByEmail(newSalesTransactionReq.getUsername());
+                }
                 
                 SaleTransactionLineItem[] saleTransactionLineItems = newSalesTransactionReq.getSaleTransactionLineItems();
+               
+                List<Item> items = new ArrayList<>();
+                
+                
+                for(int i :  newSalesTransactionReq.getItems()){
+                    Long id = new Long(i);
+                    items.add(itemSessionBean.retrieveItemByItemId(id));
+                }
+         
+                
                 SaleTransaction newSaleTransactionToAdd = newSalesTransactionReq.getSaleTransaction();
-                System.out.println("======="+ newSaleTransactionToAdd.getCollectionDateTime());
-                System.out.println("======="+ newSaleTransactionToAdd.getTransactionDateTime());
+//                
+//                System.out.println("====xx==="+ newSaleTransactionToAdd.getCollectionDateTime());
+//                System.out.println("===xx===="+ newSaleTransactionToAdd.getTransactionDateTime());
+//                
                 newSaleTransactionToAdd.setCollectionDateTime(new Date());
                 newSaleTransactionToAdd.setTransactionDateTime(new Date());
                 
                 List<SaleTransactionLineItem> lineItems = new ArrayList<>();
                 
-                for(SaleTransactionLineItem item : saleTransactionLineItems ) {
-                    System.out.println("in saleTrans rws, lineItem.item: " + item.getItemEntity());
+//                for(SaleTransactionLineItem lineItem : saleTransactionLineItems ) {
+                for(int i = 0; i < saleTransactionLineItems.length;i++) {
+                    System.out.println("in saleTrans rws, lineItem.item: " + saleTransactionLineItems[i].getItemEntity());
                     
-                    SaleTransactionLineItem newItem = new SaleTransactionLineItem(item.getSerialNumber(),item.getQuantity(),item.getUnitPrice(),item.getItemEntity());
+                    SaleTransactionLineItem newLineItem = new SaleTransactionLineItem(saleTransactionLineItems[i].getSerialNumber(),saleTransactionLineItems[i].getQuantity(),saleTransactionLineItems[i].getUnitPrice(),saleTransactionLineItems[i].getItemEntity());
+                    newLineItem.setItemEntity(items.get(i));
                     
-                    lineItems.add(newItem);
+                    System.out.println("=====================>"+newLineItem.getItemEntity().getItemId());
+                    lineItems.add(newLineItem);
                 }
                 newSaleTransactionToAdd.setSaleTransactionLineItems(lineItems);
                 
                 SaleTransaction salesTransaction = saleTransactionSessionBeanLocal.createNewSaleTransaction(customer.getCustomerId(),newSaleTransactionToAdd);
                 
-                return Response.status(Response.Status.OK).entity(newSaleTransactionToAdd).build();
+                return Response.status(Response.Status.OK).entity(salesTransaction.getSaleTransactionId()).build();
             }
             catch(Exception ex)
             {
@@ -156,6 +186,26 @@ public class SaleTransactionResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (RegisteredGuestSessionBeanLocal) c.lookup("java:global/BouquetStorySystem/BouquetStorySystem-ejb/RegisteredGuestSessionBean!ejb.stateless.RegisteredGuestSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private ItemSessionBeanLocal lookupItemSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (ItemSessionBeanLocal) c.lookup("java:global/BouquetStorySystem/BouquetStorySystem-ejb/ItemSessionBean!ejb.stateless.ItemSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private UnregisteredGuestSessionBeanLocal lookupUnregisteredGuestSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (UnregisteredGuestSessionBeanLocal) c.lookup("java:global/BouquetStorySystem/BouquetStorySystem-ejb/UnregisteredGuestSessionBean!ejb.stateless.UnregisteredGuestSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

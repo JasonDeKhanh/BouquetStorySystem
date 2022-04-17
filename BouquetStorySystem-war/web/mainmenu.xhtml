@@ -9,77 +9,89 @@
         <h3>Main Menu</h3>
         <nav>
             <h:form>
-                    
+
                 <p:menu toggleable="true" style="width:250px;">
 
                     <p:submenu label="System">
                         <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
                         <p:menuitem value="Logout" actionListener="#{adminLoginManagedBean.logout}" icon="pi pi-sign-out" rendered="#{sessionScope.isLogin == true}" />
                     </p:submenu>
-                    
+
                     <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Manage Customer" outcome="/adminManagement/manageCustomer.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Manage Admin"  outcome="/adminManagement/manageAdmin.xhtml"  icon="pi pi-sign-out"/>
                     </p:submenu>
-                    
+
                     <p:submenu label="Bouquet Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Flower Type Management" outcome="/productManagement/flowerTypeManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Flower Management" outcome="/productManagement/flowerManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Container Type Management" outcome="/productManagement/containerTypeManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Container Management" outcome="/productManagement/containerManagement.xhtml" icon="pi pi-home" />
-                        <p:menuitem value="Bouquet Management" icon="pi pi-home" />
+                       
                         <p:menuitem value="Premade Bouquet Management" outcome="/productManagement/premadeBouquetManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Create Premade Bouquet" outcome="/productManagement/createNewPremadeBouquet.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Decoration Management" outcome="/productManagement/decorationManagement.xhtml" icon="pi pi-home" />
                     </p:submenu>
-                    
+
 <!--                    <p:submenu label="Decoration Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Decoration Management" outcome="/productManagement/decorationManagement.xhtml" icon="pi pi-home" />
-                    </p:submenu>-->
-                    
+    <p:menuitem value="Decoration Management" outcome="/productManagement/decorationManagement.xhtml" icon="pi pi-home" />
+</p:submenu>-->
+
                     <p:submenu label="Product Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Gift Card Type Management" outcome="/productManagement/giftCardTypeManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Add On Management" outcome="/productManagement/addOnManagement.xhtml" icon="pi pi-home" />
                     </p:submenu>
-                    
-<!--                     ugly, fix css later somehow idk lol 
-                    <p:submenu label="Container Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Container Type Management" outcome="/productManagement/containerTypeManagement.xhtml" icon="pi pi-home" />
-                        <p:menuitem value="Container Management" outcome="/productManagement/containerManagement.xhtml" icon="pi pi-home" />
-                    </p:submenu>-->
-                    
+
+                    <!--                     ugly, fix css later somehow idk lol 
+                                        <p:submenu label="Container Management" rendered="#{sessionScope.isLogin == true}">
+                                            <p:menuitem value="Container Type Management" outcome="/productManagement/containerTypeManagement.xhtml" icon="pi pi-home" />
+                                            <p:menuitem value="Container Management" outcome="/productManagement/containerManagement.xhtml" icon="pi pi-home" />
+                                        </p:submenu>-->
+
 <!--                    <p:submenu label="Add On Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Add On Management" outcome="/productManagement/addOnManagement.xhtml" icon="pi pi-home" />
-                    </p:submenu>-->
-                    
+    <p:menuitem value="Add On Management" outcome="/productManagement/addOnManagement.xhtml" icon="pi pi-home" />
+</p:submenu>-->
+
 <!--                    <p:submenu label="Bouquets" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Bouquet Management" icon="pi pi-home" />
-                        <p:menuitem value="Premade Bouquet Management" outcome="/productManagement/premadeBouquetManagement.xhtml" icon="pi pi-home" />
-                        <p:menuitem value="Create Premade Bouquet" outcome="/productManagement/createNewPremadeBouquet.xhtml" icon="pi pi-home" />
-                    </p:submenu>-->
-                    
+    <p:menuitem value="Bouquet Management" icon="pi pi-home" />
+    <p:menuitem value="Premade Bouquet Management" outcome="/productManagement/premadeBouquetManagement.xhtml" icon="pi pi-home" />
+    <p:menuitem value="Create Premade Bouquet" outcome="/productManagement/createNewPremadeBouquet.xhtml" icon="pi pi-home" />
+</p:submenu>-->
+
                     <p:submenu label="Bundles" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Bundle Management" outcome="/productManagement/bundleManagement.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Create Bundle" outcome="/productManagement/createNewBundle.xhtml" icon="pi pi-home" />
                         <p:menuitem value="View All Promotions" outcome="/productManagement/promotionManagement.xhtml" icon="pi pi-home" />
                     </p:submenu>
-                    
+
                     <p:submenu label="Sale Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="View All Sale Transactions" outcome="/viewSaleTransactions.xhtml" icon="pi pi-home" />
+
+                    </p:submenu>
+
+                    <p:submenu label="Jasper Report" rendered="#{sessionScope.isLogin == true}">
+
                         <p:menuitem value="Generate Reports" outcome="/saleTransactionReport.xhtml" icon="pi pi-home" />
                     </p:submenu>
-                    
-<!--                    <p:submenu label="Promotion Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="View All Promotions" outcome="/productManagement/promotionManagement.xhtml" icon="pi pi-home" />
+
+                    <p:submenu label="Restock Management" rendered="#{sessionScope.isLogin == true}">
+
+                        <p:menuitem value="Check Low Stock Items" outcome="/productManagement/restockingPage.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Check Flowers needed for Pre Orders" outcome="/productManagement/requiredFlowerQuantity.xhtml" icon="pi pi-home" />
                     </p:submenu>
+
+
+<!--                    <p:submenu label="Promotion Management" rendered="#{sessionScope.isLogin == true}">
+    <p:menuitem value="View All Promotions" outcome="/productManagement/promotionManagement.xhtml" icon="pi pi-home" />
+</p:submenu>
                     -->
-                    
-                    
+
+
                 </p:menu>
 
             </h:form>
         </nav>
-            
+
     </section>
 
 </ui:composition>

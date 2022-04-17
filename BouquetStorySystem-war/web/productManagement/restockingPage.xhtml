@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./../templates/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <p:panel header="Low stock AddOns" rendered="#{restockingManagedBean.addOnList.size() != 0}">
+            
+            
+            <p:dataTable id="dataTablelowStockAddOns" widgetVar="dataTablelowStockAddOns" value="#{restockingManagedBean.addOnList}" var="addOnEntity" rowKey="#{addOnEntity.itemId}" rowIndexVar="row" rendered="#{restockingManagedBean.addOnList.size() != 0}">
+                
+                <p:column headerText="Item ID">
+                    <h:outputText value="#{addOnEntity.itemId}" />
+                </p:column>                            
+
+                <p:column headerText="Image">
+                    <p:graphicImage value="#{addOnEntity.imgAddress}" height="100px"/>
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{addOnEntity.name}" />
+                </p:column>
+
+                <p:column headerText="Quantity on Hand">
+                    <h:outputText value="#{addOnEntity.quantityOnHand}" />
+                </p:column>
+
+                <p:column headerText="Reorder Quantity">
+                    <h:outputText value="#{addOnEntity.reorderQuantity}" />
+                </p:column>
+
+                <p:column headerText="Unit Price" >
+                    <h:outputText value="#{addOnEntity.unitPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Display" >
+                    <h:outputText value="#{addOnEntity.isOnDisplay}" />
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+            
+            
+        <p:panel header="Low Stock GiftCardTypes" rendered="#{restockingManagedBean.giftCardTypeList.size() != 0}">
+            
+
+            <p:dataTable id="dataTableLowStockGiftCardTypes" widgetVar="dataTableLowStockGiftCardTypes" value="#{restockingManagedBean.giftCardTypeList}" var="giftCardTypeEntity" rowKey="#{giftCardTypeEntity.giftCardTypeId}" rowIndexVar="row" rendered="#{restockingManagedBean.giftCardTypeList.size() != 0}">
+
+
+
+                <p:column headerText="Gift Card Type ID" >
+                    <h:outputText value="#{giftCardTypeEntity.giftCardTypeId}" />
+                </p:column>                            
+
+                <p:column headerText="Image">
+                    <p:graphicImage value="#{giftCardTypeEntity.imgAddress}" height="100px"/>
+                </p:column>
+
+                <p:column headerText="Name" >
+                    <h:outputText value="#{giftCardTypeEntity.name}" />
+                </p:column>
+
+                <p:column headerText="Size Dimensions" >
+                    <h:outputText value="#{giftCardTypeEntity.sizeDimensions}" />
+                </p:column>
+
+                <p:column headerText="Quantity on Hand">
+                    <h:outputText value="#{giftCardTypeEntity.quantityOnHand}" />
+                </p:column>
+
+                <p:column headerText="Reorder Quantity" >
+                    <h:outputText value="#{giftCardTypeEntity.reorderQuantity}" />
+                </p:column>
+
+                <p:column headerText="Unit Price" >
+                    <h:outputText value="#{giftCardTypeEntity.unitPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Display" >
+                    <h:outputText value="#{giftCardTypeEntity.isOnDisplay}" />
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+        
+        <p:panel header="Low Stock Containers" rendered="#{restockingManagedBean.containerList.size() != 0}">
+            
+
+            <p:dataTable id="dataTableLockStockContainers" widgetVar="dataTableLowStockContainers" value="#{restockingManagedBean.containerList}" var="containerEntity" rowKey="#{containerEntity.containerId}" rowIndexVar="row" rendered="#{restockingManagedBean.containerList.size() != 0}">
+
+
+
+                <p:column headerText="Container ID" >
+                    <h:outputText value="#{containerEntity.containerId}" />
+                </p:column>                            
+
+                <p:column headerText="Image">
+                    <p:graphicImage value="#{containerEntity.imgAddress}" height="100px"/>
+                </p:column>
+
+                <p:column headerText="Type" >
+                    <h:outputText value="#{containerEntity.containerType.name}" />
+                </p:column>
+
+                <p:column headerText="Dimensions" >
+                    <h:outputText value="#{containerEntity.containerType.dimensions}" />
+                </p:column>
+
+                <p:column headerText="Color" >
+                    <h:outputText value="#{containerEntity.color}" />
+                </p:column>
+
+                <p:column headerText="Description" >
+                    <h:outputText value="#{containerEntity.description}" />
+                </p:column>
+
+                <p:column headerText="Quantity on Hand" >
+                    <h:outputText value="#{containerEntity.quantityOnHand}" />
+                </p:column>
+
+                <p:column headerText="Reorder Quantity" >
+                    <h:outputText value="#{containerEntity.reorderQuantity}" />
+                </p:column>
+
+                <p:column headerText="Flower Limit" >
+                    <h:outputText value="#{containerEntity.flowerLimit}" />
+                </p:column>
+
+                <p:column headerText="Unit Price" >
+                    <h:outputText value="#{containerEntity.unitPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Display" >
+                    <h:outputText value="#{containerEntity.isOnDisplay}" />
+                </p:column>
+
+
+            </p:dataTable>
+        
+        </p:panel>
+        <p:panel header="Low Stock Decorations" rendered="#{restockingManagedBean.decorationList.size() != 0}">
+        
+            
+
+            <p:dataTable id="dataTableLowStockDecorations" widgetVar="dataTableLowStockDecorations" value="#{restockingManagedBean.decorationList}" var="decorationEntity" rowKey="#{decorationEntity.decorationId}" rowIndexVar="row" rendered="#{restockingManagedBean.decorationList.size() != 0}">
+
+
+
+                <p:column headerText="Decoration ID" >
+                    <h:outputText value="#{decorationEntity.decorationId}" />
+                </p:column>                            
+
+                <p:column headerText="Image">
+                    <p:graphicImage value="#{decorationEntity.imgAddress}" height="100px"/>
+                </p:column>
+
+                <p:column headerText="Name" >
+                    <h:outputText value="#{decorationEntity.name}" />
+                </p:column>
+
+                <p:column headerText="Quantity on Hand" >
+                    <h:outputText value="#{decorationEntity.quantityOnHand}" />
+                </p:column>
+
+                <p:column headerText="Reorder Quantity" >
+                    <h:outputText value="#{decorationEntity.reorderQuantity}" />
+                </p:column>
+
+                <p:column headerText="Unit Price">
+                    <h:outputText value="#{decorationEntity.unitPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Display" >
+                    <h:outputText value="#{decorationEntity.isOnDisplay}" />
+                </p:column>
+
+
+
+            </p:dataTable>
+
+        </p:panel>
+
+        <p:panel header="Low Stock Flowers" rendered="#{restockingManagedBean.flowerList.size() != 0}">
+            
+
+            <p:dataTable id="dataTableLowStockFlowers" widgetVar="dataTableLowStockFlowers" value="#{restockingManagedBean.flowerList}" var="flowerEntity" rowKey="#{flowerEntity.flowerId}" rowIndexVar="row" rendered="#{restockingManagedBean.flowerList.size() != 0}" >
+
+
+                <p:column headerText="Flower ID" >
+                    <h:outputText value="#{flowerEntity.flowerId}" />
+                </p:column>                            
+
+                <p:column headerText="Image">
+                    <p:graphicImage value="#{flowerEntity.imgAddress}" height="100px"/>
+                </p:column>
+
+                <p:column headerText="Name" >
+                    <h:outputText value="#{flowerEntity.name}" />
+                </p:column>
+
+                <p:column headerText="Type" > 
+                    <h:outputText value="#{flowerEntity.flowerType.name}" />
+                </p:column>
+
+                <p:column headerText="Color" >
+                    <h:outputText value="#{flowerEntity.flowerColor}" />
+                </p:column>
+
+                <p:column headerText="Quantity on Hand">
+                    <h:outputText value="#{flowerEntity.quantityOnHand}" />
+                </p:column>
+
+                <p:column headerText="SKU Code" >
+                    <h:outputText value="#{flowerEntity.reorderQuantity}" />
+                </p:column>
+
+                <p:column headerText="Unit Price" >
+                    <h:outputText value="#{flowerEntity.unitPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Display" >
+                    <h:outputText value="#{flowerEntity.isOnDisplay}" />
+                </p:column>
+
+
+
+            </p:dataTable>
+          
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
