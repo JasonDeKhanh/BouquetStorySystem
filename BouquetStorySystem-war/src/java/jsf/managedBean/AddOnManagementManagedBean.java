@@ -69,6 +69,8 @@ public class AddOnManagementManagedBean implements Serializable {
             getAddOnEntities().add(gct);
 
             newAddOnEntity = new AddOn();
+            uploadedFilePath = null;
+            showUploadedFile = false;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New add on created successfully (AddOn ID: " + gct.getItemId()+ ")", null));
         }
         catch(InputDataValidationException | CreateNewAddOnException | UnknownPersistenceException ex)
