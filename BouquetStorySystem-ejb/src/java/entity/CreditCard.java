@@ -31,9 +31,9 @@ public class CreditCard implements Serializable {
     private Long creditCardId;
     // Bean Validation for this!!
     // also how to encrypt
-    @Column(nullable = false, length = 19)
+    @Column(nullable = false, length = 255)
     @NotNull
-    @Size(max = 19)
+    @Size(max = 255)
     private String ccNum;
     @Column(nullable = false, length = 32)
     @NotNull
@@ -80,9 +80,11 @@ public class CreditCard implements Serializable {
         CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
         GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
         try {
+            System.out.println("!!!!!!!!!!!!!!!CCNUM" + new String(cryptographicHelper.doAESEncryption(ccNum, glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv()), cryptographicHelper.getDEFAULT_CHARSET_NAME()));
             this.ccNum = new String(cryptographicHelper.doAESEncryption(ccNum, glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv()), cryptographicHelper.getDEFAULT_CHARSET_NAME());
         } catch(UnsupportedEncodingException ex){
         }
+        
     }
 
     public String getCcHolderName() {
