@@ -127,39 +127,42 @@ public class DataInitializationSessionBean
             
             adminSessionBeanLocal.createNewAdmin(new Admin("Default", "Manager", "manager", "password"));
             
-            RegisteredGuest newCustomer = new RegisteredGuest("Default3", "Customer3","customer3@gmail.com","password");
-            List<Address> addresses = new ArrayList<>();
-            Address newAddress = new Address("Address Line","888000");
-            newAddress.setCustomer((RegisteredGuest)newCustomer);
-            addresses.add(newAddress);
-            ((RegisteredGuest)newCustomer).setAddresses(addresses);
+//            RegisteredGuest newCustomer = new RegisteredGuest("Default3", "Customer3","customer3@gmail.com","password");
+//            List<Address> addresses = new ArrayList<>();
+//            Address newAddress = new Address("Address Line","888000");
+//            newAddress.setCustomer((RegisteredGuest)newCustomer);
+//            addresses.add(newAddress);
+//            ((RegisteredGuest)newCustomer).setAddresses(addresses);
 //            CreditCard newCreditCard = new CreditCard("123456789", "matthias", "01", "23");
 //            newCustomer.getCreditCards().add(newCreditCard);
 //            
-            registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
-            registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));
-            registeredGuestSessionBeanLocal.createNewRegisteredGuest(newCustomer);
-    
-            addressSessionBeanLocal.createNewAddress(newAddress);
-            AddOn newAddOn = addOnSessionBeanLocal.createNewAddOn(new AddOn("AddOn 2", "/uploadedFiles/e.png", "Add On 2 description", 1, 10, new BigDecimal(12.00), true));
-            SaleTransactionLineItem newSaleTransactionLineItem = new SaleTransactionLineItem(123, 2, new BigDecimal(10.00), newAddOn);
-            GiftCardType newGiftCardType = giftCardTypeSessionBeanLocal.createNewGiftCardType(new GiftCardType("GiftCardType 1", "/uploadedFiles/e.png", "1X1", "descpription", 1, 10, new BigDecimal(15.00), true));
-            GiftCard newGiftCard = giftCardSessionBeanLocal.createNewGiftCard(new GiftCard("hello world", "/uploadedFiles/e.png"));
-            newGiftCard.setGiftCardType(newGiftCardType);
-            SaleTransactionLineItem secondSaleTransactionLineItem = new SaleTransactionLineItem(1234, 3, new BigDecimal(15.00), newGiftCard);
-            SaleTransaction newSaleTransaction = new SaleTransaction(1,2,new BigDecimal(20.00), new Date(), new Date(), true, "null", false, true, false);
-            List<SaleTransactionLineItem> lineItems = new ArrayList<>();
-            lineItems.add(newSaleTransactionLineItem);
-            lineItems.add(secondSaleTransactionLineItem);
-            newSaleTransaction.setSaleTransactionLineItems(lineItems);
-            saleTransactionSessionBeanLocal.createNewSaleTransaction(newCustomer.getCustomerId(), newSaleTransaction);
-            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration A","xxx.png","Some description...",200,300,new BigDecimal(12.90), true));
-            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration B","xxx.png","Some description...",100,200,new BigDecimal(9.90), false));
-            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration C","xxx.png","Some description...",200,500,new BigDecimal(20.90), true));
-            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration D","xxx.png","Some description...",250,400,new BigDecimal(4.90), false));
+//            registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default", "Customer","customer@gmail.com","password"));
+//            registeredGuestSessionBeanLocal.createNewRegisteredGuest(new RegisteredGuest("Default2", "Customer2","customer2@gmail.com","password"));
+//            registeredGuestSessionBeanLocal.createNewRegisteredGuest(newCustomer);
+//    
+//            addressSessionBeanLocal.createNewAddress(newAddress);
+//            AddOn newAddOn = addOnSessionBeanLocal.createNewAddOn(new AddOn("AddOn 2", "/uploadedFiles/e.png", "Add On 2 description", 1, 10, new BigDecimal(12.00), true));
+//            SaleTransactionLineItem newSaleTransactionLineItem = new SaleTransactionLineItem(123, 2, new BigDecimal(10.00), newAddOn);
+//            GiftCardType newGiftCardType = giftCardTypeSessionBeanLocal.createNewGiftCardType(new GiftCardType("GiftCardType 1", "/uploadedFiles/e.png", "1X1", "descpription", 1, 10, new BigDecimal(15.00), true));
+//            GiftCard newGiftCard = giftCardSessionBeanLocal.createNewGiftCard(new GiftCard("hello world", "/uploadedFiles/e.png"));
+//            newGiftCard.setGiftCardType(newGiftCardType);
+//            SaleTransactionLineItem secondSaleTransactionLineItem = new SaleTransactionLineItem(1234, 3, new BigDecimal(15.00), newGiftCard);
+//            SaleTransaction newSaleTransaction = new SaleTransaction(1,2,new BigDecimal(20.00), new Date(), new Date(), true, "null", false, true, false);
+//            List<SaleTransactionLineItem> lineItems = new ArrayList<>();
+//            lineItems.add(newSaleTransactionLineItem);
+//            lineItems.add(secondSaleTransactionLineItem);
+//            newSaleTransaction.setSaleTransactionLineItems(lineItems);
+//            saleTransactionSessionBeanLocal.createNewSaleTransaction(newCustomer.getCustomerId(), newSaleTransaction);
+//            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration A","xxx.png","Some description...",200,300,new BigDecimal(12.90), true));
+//            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration B","xxx.png","Some description...",100,200,new BigDecimal(9.90), false));
+//            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration C","xxx.png","Some description...",200,500,new BigDecimal(20.90), true));
+//            decorationSessionBeanLocal.createNewDecoration(new Decoration("Decoration D","xxx.png","Some description...",250,400,new BigDecimal(4.90), false));
         }
-        catch(AdminUsernameExistException | CustomerEmailExistException | CreateNewDecorationException | UnknownPersistenceException | InputDataValidationException | CustomerNotFoundException | CreateNewSaleTransactionException | CreateNewAddOnException | CreateNewGiftCardTypeException | CreateNewGiftCardException ex)
-        {
+//        catch(AdminUsernameExistException | CustomerEmailExistException | CreateNewDecorationException | UnknownPersistenceException | InputDataValidationException | CustomerNotFoundException | CreateNewSaleTransactionException | CreateNewAddOnException | CreateNewGiftCardTypeException | CreateNewGiftCardException ex)
+//        {
+//            ex.printStackTrace();
+//        }
+        catch(Exception ex){
             ex.printStackTrace();
         }
     }
