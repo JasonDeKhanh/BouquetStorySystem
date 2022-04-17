@@ -13,11 +13,13 @@ import ejb.stateless.GiftCardTypeSessionBeanLocal;
 import ejb.stateless.SaleTransactionSessionBeanLocal;
 import entity.AddOn;
 import entity.Bouquet;
+import entity.Bundle;
 import entity.Container;
 import entity.Decoration;
 import entity.Flower;
 import entity.GiftCard;
 import entity.GiftCardType;
+import entity.Product;
 import entity.SaleTransaction;
 import entity.SaleTransactionLineItem;
 import javax.inject.Named;
@@ -34,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-
+import util.exception.InsufficientQuantityException;
 
 /**
  *
@@ -90,9 +92,6 @@ public class RestockingManagedBean implements Serializable {
         allSaleTransactionList = saleTransactionSessionBeanLocal.retrieveAllSaleTransactions();
         comingSaleTransactionList = new ArrayList<>();
         flowersMap = new HashMap<>();
-        
-        
-        
 
     }
 
@@ -139,7 +138,7 @@ public class RestockingManagedBean implements Serializable {
                 tempList.add(deco);
             }
         }
-        
+
         return tempList;
     }
 
@@ -157,10 +156,10 @@ public class RestockingManagedBean implements Serializable {
         List<Container> tempList = new ArrayList<>();
         for (Container container : containerList) {
             if (container.getQuantityOnHand() < container.getReorderQuantity()) {
-               tempList.add(container);
+                tempList.add(container);
             }
         }
-        
+
         return tempList;
     }
 
@@ -181,7 +180,7 @@ public class RestockingManagedBean implements Serializable {
                 tempList.add(flower);
             }
         }
-        
+
         return tempList;
     }
 
@@ -196,13 +195,14 @@ public class RestockingManagedBean implements Serializable {
      * @return the comingSaleTransactionList
      */
     public List<SaleTransaction> getComingSaleTransactionList() {
-        
-            return comingSaleTransactionList;
-        
+
+        return comingSaleTransactionList;
+
     }
-        /**
-         * @param comingSaleTransactionList the comingSaleTransactionList to set
-         */
+
+    /**
+     * @param comingSaleTransactionList the comingSaleTransactionList to set
+     */
     public void setComingSaleTransactionList(List<SaleTransaction> comingSaleTransactionList) {
         this.comingSaleTransactionList = comingSaleTransactionList;
     }
@@ -211,36 +211,58 @@ public class RestockingManagedBean implements Serializable {
      * @return the flowersMap
      */
     public Map<Flower, Integer> getFlowersMap() {
-        
+
         for (SaleTransaction saleTransaction : allSaleTransactionList) {
             Date dateNow = new Date();
             LocalDate newDate = LocalDate.now().plusDays(7);
             ZoneId defaultZoneId = ZoneId.systemDefault();
             Date datePlus7 = Date.from(newDate.atStartOfDay(defaultZoneId).toInstant());
-            
-            if((saleTransaction.getCollectionDateTime().after(dateNow) && saleTransaction.getCollectionDateTime().before(datePlus7)) && saleTransaction.getIsPreorder()) {
+
+            if ((saleTransaction.getCollectionDateTime().after(dateNow) && saleTransaction.getCollectionDateTime().before(datePlus7)) && saleTransaction.getIsPreorder()) {
                 comingSaleTransactionList.add(saleTransaction);
-            }          
+            }
         }
-        
+
         for (SaleTransaction saleTransaction : comingSaleTransactionList) {
-            for(SaleTransactionLineItem lineItem: saleTransaction.getSaleTransactionLineItems()) {
-                if( lineItem.getItemEntity() instanceof Bouquet) {
-                    Bouquet bouquet = (Bouquet)lineItem.getItemEntity();
-                    
+            for (SaleTransactionLineItem lineItem : saleTransaction.getSaleTransactionLineItems()) {
+                if (lineItem.getItemEntity() instanceof Bundle) {
+                    Bundle bundle = (Bundle) lineItem.getItemEntity();
+                    for (Map.Entry<Product, Integer> entry6 : bundle.getProductQuantities().entrySet()) {
+                        Product updatedProduct = entry6.getKey();
+                        Integer productqty = entry6.getValue();
+
+                        if (updatedProduct instanceof Bouquet) {
+                            Bouquet bouquet = (Bouquet) updatedProduct;
+                            for (Map.Entry<Flower, Integer> entry : bouquet.getFlowerQuantities().entrySet()) {
+                                if (flowersMap.containsKey(entry.getKey())) {
+                                    Integer qty = flowersMap.get(entry.getKey()) + entry.getValue() * productqty;
+                                    flowersMap.put(entry.getKey(), qty);
+                                } else {
+                                    flowersMap.put(entry.getKey(), entry.getValue() * productqty);
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+                Integer lineItemQty = lineItem.getQuantity();
+                if (lineItem.getItemEntity() instanceof Bouquet) {
+                    Bouquet bouquet = (Bouquet) lineItem.getItemEntity();
+
                     for (Map.Entry<Flower, Integer> entry : bouquet.getFlowerQuantities().entrySet()) {
                         if (flowersMap.containsKey(entry.getKey())) {
-                            Integer qty = flowersMap.get(entry.getKey()) + entry.getValue();
+                            Integer qty = flowersMap.get(entry.getKey()) + entry.getValue() * lineItemQty;
                             flowersMap.put(entry.getKey(), qty);
                         } else {
-                            flowersMap.put(entry.getKey(), entry.getValue());
+                            flowersMap.put(entry.getKey(), entry.getValue() * lineItemQty);
                         }
                     }
                 }
             }
 
         }
-            
+
         return flowersMap;
     }
 

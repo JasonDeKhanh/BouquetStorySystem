@@ -158,7 +158,9 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 System.out.println("XXXXXXXXXXX" + updatedProduct.getQuantityOnHand());
 
                 if (updatedProduct instanceof Bouquet) {
+                    Integer bouqeutQty = entry.getValue();
                     Bouquet bouquet = (Bouquet) updatedProduct;
+                    for(int i = 0; i < bouqeutQty; i++){
                     for (Map.Entry<Flower, Integer> entry2 : bouquet.getFlowerQuantities().entrySet()) {
                         Flower updatedFlower = flowerSessionBeanLocal.retrieveFlowerByFlowerId(entry2.getKey().getFlowerId());
 
@@ -184,8 +186,9 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                     } else {
                         throw new InsufficientQuantityException("Insufficient quantity, Please select PreOrder!");
                     }
-
-                } else {
+                }
+                } 
+                else {
                     if (updatedProduct.getQuantityOnHand() >= (quantityToDebit * entry.getValue())) {
                         updatedProduct.setQuantityOnHand(updatedProduct.getQuantityOnHand() - (quantityToDebit * entry.getValue()));
                     } else {
