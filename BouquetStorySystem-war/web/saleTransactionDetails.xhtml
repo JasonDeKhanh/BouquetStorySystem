@@ -155,7 +155,7 @@
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currAddOn}" target="#{viewAddOnManagedBean.addOnEntityToView}"/>    
                         </p:commandButton>
 
-                        <p:commandButton value="View Bundle Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToBundle}" update="@form formViewSaleTransactionDetails:ccViewBundle:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'Bundle'}">
+                        <p:commandButton value="View Bundle Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToBundle}" update="@form formViewSaleTransactionDetails:ccViewBundle2:formViewBundle" oncomplete="PF('dialogViewBundle').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'Bundle'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currBundle}" target="#{viewBundleCCManagedBean.bundleEntityToView}"/>    
                         </p:commandButton>
@@ -169,22 +169,22 @@
                        
           
 
-                        <p:commandButton value="View GiftCard message" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}"  update="@form formViewSaleTransactionDetails:ccViewGiftCard:formViewGiftCard" oncomplete="PF('dialogViewGiftCard').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                        <p:commandButton value="View GiftCard message" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCard}"  update="@form formViewSaleTransactionDetails:ccViewGiftCard2:formViewGiftCard" oncomplete="PF('dialogViewGiftCard').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCard}" target="#{viewGiftCardManagedBean.giftCardToView}"/>    
                         </p:commandButton>
 
-                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCardType}"  update="@form formViewSaleTransactionDetails:ccViewGiftCardType:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
+                        <p:commandButton value="View GiftCardType Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToGiftCardType}"  update="@form formViewSaleTransactionDetails:ccViewGiftCardType2:formViewGiftCardType" oncomplete="PF('dialogViewGiftCardType').show()" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'GiftCard'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currGiftCardType}" target="#{viewGiftCardTypeManagedBean.giftCardTypeEntityToView}"/>    
                         </p:commandButton>
 
-                        <p:commandButton value="View Custom Bouquet Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToCustomBouquet}" update="@form formViewSaleTransactionDetails:ccViewCustomBouquet:formViewCustomBouquet" oncomplete="PF('dialogViewCustomBouquet" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'CustomBouquet'}">
+                        <p:commandButton value="View Custom Bouquet Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToCustomBouquet}" update="@form formViewSaleTransactionDetails:ccViewCustomBouquet2:formViewCustomBouquet" oncomplete="PF('dialogViewCustomBouquet" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'CustomBouquet'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currCustomBouquet}" target="#{viewCustomBouquetManagedBean.customBouquetToView}"/>    
                         </p:commandButton>
 
-                        <p:commandButton value="View Premade Bouquet Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToPremadeBouquet}" update="@form formViewSaleTransactionDetails:ccViewPremadeBouquet:formViewPremadeBouquet" oncomplete="PF('dialogViewPremadeBouquet" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'PremadeBouquet'}">
+                        <p:commandButton value="View Premade Bouquet Details" actionListener="#{viewSaleTransactionManagedBean.convertItemToPremadeBouquet}" update="@form formViewSaleTransactionDetails:ccViewPremadeBouquet2:formViewPremadeBouquet2" oncomplete="PF('dialogViewPremadeBouquet2" icon="ui-icon-document" title="View" rendered="#{saleTransactionLineItem.itemEntity.type eq 'PremadeBouquet'}">
                             <f:attribute name="itemEntity" value="#{saleTransactionLineItem.itemEntity}"/>
                             <f:setPropertyActionListener value="#{viewSaleTransactionManagedBean.currPremadeBouquet}" target="#{viewPremadeBouquetDetailsManagedBean.premadeBouquet}"/>    
                         </p:commandButton>
@@ -196,13 +196,13 @@
             </p:panel>
             
             <ez:ViewAddOn id="ccViewAddOn"/>
-            <ez:ViewBundle id="ccViewBundle"/>
+            <ez:ViewBundle id="ccViewBundle2"/>
 
-            <ez:ViewGiftCardType id="ccViewGiftCardType"/>
+            <ez:ViewGiftCardType id="ccViewGiftCardType2"/>
 
-            <ez:ViewGiftCard id="ccViewGiftCard"/>
-            <ez:ViewCustomBouquet id="ccViewCustomBouquet"/>
-            <ez:ViewPremadeBouquet id="ccViewPremadeBouquet"/>
+            <ez:ViewGiftCard id="ccViewGiftCard2"/>
+            <ez:ViewCustomBouquet id="ccViewCustomBouquet2"/>
+            <ez:ViewPremadeBouquet id="ccViewPremadeBouquet2"/>
 
         </h:form>
         <!--/f:view-->
