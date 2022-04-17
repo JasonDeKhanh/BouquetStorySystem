@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.Customer;
+import entity.SaleTransaction;
 import java.util.concurrent.Future;
 import javax.ejb.Local;
 
@@ -21,5 +22,7 @@ public interface EmailSessionBeanLocal {
     public Future<Boolean> emailRegisterNotificationAsync(Customer customerEntity, String toEmailAddress) throws InterruptedException;
 
     public Future<Boolean> emailCollectionOrDeliverTimerNotificationAsync(Customer customerEntity, String toEmailAddress) throws InterruptedException;
+
+    public Future<Boolean> emailCheckoutNotificationAsync(SaleTransaction saleTransactionEntity, String toEmailAddress) throws InterruptedException;
     
 }

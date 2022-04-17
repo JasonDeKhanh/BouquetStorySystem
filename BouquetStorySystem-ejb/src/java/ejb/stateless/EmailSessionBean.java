@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.Customer;
+import entity.SaleTransaction;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
@@ -53,25 +54,25 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
         return new AsyncResult<>(result);
     }
     
-//    
-//    @Override
-//    public Boolean emailCheckoutNotificationSync(SaleTransactionEntity saleTransactionEntity, String toEmailAddress)
-//    {
-//        EmailManager emailManager = new EmailManager(GMAIL_USERNAME, GMAIL_PASSWORD);
-//        Boolean result = emailManager.emailCheckoutNotification(saleTransactionEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
-//        
-//        return result;
-//    } 
-//    
-//    
-//    
-//    @Asynchronous
-//    @Override
-//    public Future<Boolean> emailCheckoutNotificationAsync(SaleTransactionEntity saleTransactionEntity, String toEmailAddress) throws InterruptedException
-//    {        
-//        EmailManager emailManager = new EmailManager(GMAIL_USERNAME, GMAIL_PASSWORD);
-//        Boolean result = emailManager.emailCheckoutNotification(saleTransactionEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
-//        
-//        return new AsyncResult<>(result);
-//    }
+    /*
+    @Override
+    public Boolean emailCheckoutNotificationSync(SaleTransaction saleTransactionEntity, String toEmailAddress)
+    {
+        EmailManager emailManager = new EmailManager(GMAIL_USERNAME, GMAIL_PASSWORD);
+        Boolean result = emailManager.emailCheckoutNotification(saleTransactionEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
+        
+        return result;
+    } 
+    */
+    
+    
+    @Asynchronous
+    @Override
+    public Future<Boolean> emailCheckoutNotificationAsync(SaleTransaction saleTransactionEntity, String toEmailAddress) throws InterruptedException
+    {        
+        EmailManager emailManager = new EmailManager(GMAIL_USERNAME, GMAIL_PASSWORD);
+        Boolean result = emailManager.emailCheckoutNotification(saleTransactionEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
+        
+        return new AsyncResult<>(result);
+    }
 }
