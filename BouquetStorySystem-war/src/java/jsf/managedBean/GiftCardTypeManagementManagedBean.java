@@ -68,6 +68,7 @@ public class GiftCardTypeManagementManagedBean implements Serializable {
             GiftCardType gct = giftCardTypeSessionBeanLocal.createNewGiftCardType(getNewGiftCardTypeEntity());
             getGiftCardTypeEntities().add(gct);
 
+            newGiftCardTypeEntity = new GiftCardType();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New gift card type created successfully (GiftCardType ID: " + gct.getGiftCardTypeId()+ ")", null));
         }
         catch(InputDataValidationException | CreateNewGiftCardTypeException | UnknownPersistenceException ex)
